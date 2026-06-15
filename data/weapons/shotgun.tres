@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_shotgun_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"shotgun"
+display_name = "Scrap Shotgun"
+min_damage = 15
+max_damage = 60
+accuracy = 0.7
+ammo_slot = &"shells"
+range = &"near"
+crit_chance = 0.15
+crit_multiplier = 2.5

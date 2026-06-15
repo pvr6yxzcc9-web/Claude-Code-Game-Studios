@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_the_convoy_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_the_convoy"
+title = "The Convoy"
+body = "Salvage log 0031. We weren't refugees. We were couriers. Forty-two of us, sealed into the cargo hold of the 'Anvil's Promise' for a contract run from Nexus-7 to the convoy's flagship. The Rift pulled us out at the transfer point. The convoy never came. The flagship is gone. The cargo — whatever it was — is still in the hold we used to ride in. We've been calling the lower decks 'the convoy' ever since. The name stuck. The cargo didn't move."
+unlock_condition = &"read_log_wreckage_inspection"
+related_fragment_ids = Array[StringName]([&"fragment_marlows_daughter"])
+lore_layer = 2

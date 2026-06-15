@@ -1,0 +1,57 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_marlow_memory_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_marlow_memory"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "...the reactor's still cold. I told them not to lift without the comm array. They lifted anyway. Who are you. Why are you in my engine room.",
+"choices": [
+{"label": "I found your personal log.", "next": "log_acknowledge"},
+{"label": "I'm looking for the cargo hold.", "next": "cargo_reject"},
+{"label": "Nothing. Goodbye.", "next": "bye"}
+]
+},
+&"log_acknowledge": {
+"text": "You read the log. Then you know the code. The birthday. If you have the birthday, you can open the hold. I sealed it from the inside. The only way out is the bolt. I will not cut it. I will not let you cut it. Not until the convoy comes.",
+"choices": [
+{"label": "The convoy is gone.", "next": "convoy_truth"},
+{"label": "I'm sorry.", "next": "log_sorry"}
+]
+},
+&"cargo_reject": {
+"text": "There is no cargo hold. There is only the hold we were sealed in. Forty-two of us. The convoy called it cargo. We called it home. I will not talk about the hold with someone who hasn't read the log.",
+"choices": [
+{"label": "I read it.", "next": "log_acknowledge"},
+{"label": "Sorry.", "next": "bye"}
+]
+},
+&"convoy_truth": {
+"text": "...fifty years. I was counting. The captain said the convoy would find us. The captain was wrong. If you are telling the truth, then I sealed forty-two of us in for nothing. Forty-two families waiting to go home. I sealed them in. I sealed myself in. Go. Take what is left in the upper decks. Do not open the bolt.",
+"choices": [
+{"label": "I won't.", "next": "bye_promise"},
+{"label": "Maybe I have to.", "next": "bye_warning"}
+]
+},
+&"log_sorry": {
+"text": "Sorry is not a code. Sorry is not a key. Sorry does not open the hold. I will be here. The reactor is still cold. The bolt is still drawn.",
+"choices": [
+{"label": "Goodbye.", "next": "bye"}
+]
+},
+&"bye_promise": {
+"text": "Then I will wait. The convoy was family once. If the convoy is gone, I will wait alone. That is what mothers do.",
+"choices": []
+},
+&"bye_warning": {
+"text": "Then you are the convoy now. The same mistake, the same door. The cargo is not yours to deliver. I will not stop you. I could not stop myself.",
+"choices": []
+},
+&"bye": {
+"text": "The reactor is still cold. The bolt is still drawn. Goodbye, hunter.",
+"choices": []
+}
+}

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ending_B_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ending_B"
+start_node_id = &"ending"
+nodes = {
+&"ending": {
+"text": "The bolt is still drawn. The cargo bay is still sealed. You found enough to know the convoy was family, but not enough to know what it was carrying. Marlow is still waiting in the engine room. The drones are still guarding. You have learned part of the truth. The rest is still in the hold. If you come back, the door is still there. If you do not, the door will keep. The convoy was patient. The convoy is patient still.",
+"choices": []
+}
+}

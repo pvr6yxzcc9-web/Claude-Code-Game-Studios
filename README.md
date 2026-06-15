@@ -1,312 +1,163 @@
-<p align="center">
-  <h1 align="center">Claude Code Game Studios</h1>
-  <p align="center">
-    Turn a single Claude Code session into a full game development studio.
-    <br />
-    49 agents. 73 skills. One coordinated AI team.
-  </p>
-</p>
+# Railhunter (钢轨猎人)
 
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
-  <a href=".claude/agents"><img src="https://img.shields.io/badge/agents-49-blueviolet" alt="49 Agents"></a>
-  <a href=".claude/skills"><img src="https://img.shields.io/badge/skills-73-green" alt="73 Skills"></a>
-  <a href=".claude/hooks"><img src="https://img.shields.io/badge/hooks-12-orange" alt="12 Hooks"></a>
-  <a href=".claude/rules"><img src="https://img.shields.io/badge/rules-11-red" alt="11 Rules"></a>
-  <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/built%20for-Claude%20Code-f5f5f5?logo=anthropic" alt="Built for Claude Code"></a>
-  <a href="https://www.buymeacoffee.com/donchitos3"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20this%20project-FFDD00?logo=buymeacoffee&logoColor=black" alt="Buy Me a Coffee"></a>
-  <a href="https://github.com/sponsors/Donchitos"><img src="https://img.shields.io/badge/GitHub%20Sponsors-Support%20this%20project-ea4aaa?logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
-</p>
+> **Status (2026-06-14)**: Vertical slice ship-ready. Boss fight winnable, ending UI works, full F5 walkthrough passes.
+
+A turn-based 2D pixel-art sci-fi RPG built in **Godot 4.6** (C# + GDScript hybrid).
+You pilot a mech through the wreckage of a convoy, fighting scavengers, discovering fragments of what happened, and choosing what to remember.
+
+> **Engine**: Godot 4.6.3 stable.mono
+> **Language**: GDScript (gameplay/UI) + C# reserved for performance-critical paths
+> **Test framework**: GUT (Godot Unit Test) + 11 Python lint tools
+> **Save format**: JSON in `user://save_<slot>.json`
+> **Platform**: PC (Steam, Epic, itch.io)
 
 ---
 
-## Why This Exists
+## How to Run
 
-Building a game solo with AI is powerful — but a single chat session has no structure. No one stops you from hardcoding magic numbers, skipping design docs, or writing spaghetti code. There's no QA pass, no design review, no one asking "does this actually fit the game's vision?"
+### From Godot Editor
+1. Open the project in Godot 4.6.3+
+2. Make sure the GUT plugin is enabled (Project > Project Settings > Plugins)
+3. Press **F5** to play
 
-**Claude Code Game Studios** solves this by giving your AI session the structure of a real studio. Instead of one general-purpose assistant, you get 49 specialized agents organized into a studio hierarchy — directors who guard the vision, department leads who own their domains, and specialists who do the hands-on work. Each agent has defined responsibilities, escalation paths, and quality gates.
-
-The result: you still make every decision, but now you have a team that asks the right questions, catches mistakes early, and keeps your project organized from first brainstorm to launch.
-
----
-
-## Table of Contents
-
-- [What's Included](#whats-included)
-- [Studio Hierarchy](#studio-hierarchy)
-- [Slash Commands](#slash-commands)
-- [Getting Started](#getting-started)
-- [Upgrading](#upgrading)
-- [Project Structure](#project-structure)
-- [How It Works](#how-it-works)
-- [Design Philosophy](#design-philosophy)
-- [Customization](#customization)
-- [Platform Support](#platform-support)
-- [Community](#community)
-- [Supporting This Project](#supporting-this-project)
-- [License](#license)
-
----
-
-## What's Included
-
-| Category | Count | Description |
-|----------|-------|-------------|
-| **Agents** | 49 | Specialized subagents across design, programming, art, audio, narrative, QA, and production |
-| **Skills** | 73 | Slash commands for every workflow phase (`/start`, `/design-system`, `/create-epics`, `/create-stories`, `/dev-story`, `/story-done`, etc.) |
-| **Hooks** | 12 | Automated validation on commits, pushes, asset changes, session lifecycle, agent audit trail, and gap detection |
-| **Rules** | 11 | Path-scoped coding standards enforced when editing gameplay, engine, AI, UI, network code, and more |
-| **Templates** | 41 | Document templates for GDDs, UX specs, ADRs, sprint plans, HUD design, accessibility, and more |
-
-## Studio Hierarchy
-
-Agents are organized into three tiers, matching how real studios operate:
-
-```
-Tier 1 — Directors (Opus)
-  creative-director    technical-director    producer
-
-Tier 2 — Department Leads (Sonnet)
-  game-designer        lead-programmer       art-director
-  audio-director       narrative-director    qa-lead
-  release-manager      localization-lead
-
-Tier 3 — Specialists (Sonnet/Haiku)
-  gameplay-programmer  engine-programmer     ai-programmer
-  network-programmer   tools-programmer      ui-programmer
-  systems-designer     level-designer        economy-designer
-  technical-artist     sound-designer        writer
-  world-builder        ux-designer           prototyper
-  performance-analyst  devops-engineer       analytics-engineer
-  security-engineer    qa-tester             accessibility-specialist
-  live-ops-designer    community-manager
+### From CLI (headless)
+```bash
+# Export release build (requires Godot export templates + export_presets.cfg)
+./tools/build.sh linux        # build/railhunter.x86_64
+./tools/build.sh windows      # build/railhunter.exe
+./tools/build.sh debug linux  # build/railhunter-debug.x86_64
 ```
 
-### Engine Specialists
+### From CLI (tests)
+```bash
+# All CI lints (10 hard-fail + 1 backlog)
+for f in tools/lint_*.py tools/sync_*.py; do python "$f"; done
 
-The template includes agent sets for all three major engines. Use the set that matches your project:
+# GUT unit tests
+godot --headless --script tests/runners/gut_runner.gd
+```
 
-| Engine | Lead Agent | Sub-Specialists |
-|--------|-----------|-----------------|
-| **Godot 4** | `godot-specialist` | GDScript, Shaders, GDExtension |
-| **Unity** | `unity-specialist` | DOTS/ECS, Shaders/VFX, Addressables, UI Toolkit |
-| **Unreal Engine 5** | `unreal-specialist` | GAS, Blueprints, Replication, UMG/CommonUI |
+---
 
-## Slash Commands
+## What Works (Vertical Slice Scope)
 
-Type `/` in Claude Code to access all 73 skills:
+| Feature | Status | Source |
+|---------|--------|--------|
+| 10-room chapter 1 (room 0-9, 9 doors) | ✅ | `src/scene/level_runtime.gd` |
+| Turn-based combat (manual + auto modes) | ✅ | `src/battle/battle_scene.gd` |
+| 1 boss fight (Marrow Sentinel, 200HP, balanced for 100HP player) | ✅ | `data/enemies/boss_marrow_sentinel.tres` |
+| Weapon / Ammo build system (8 weapons, 5 ammo) | ✅ | `data/weapons/`, `data/ammo/` |
+| Mech parts (2 arms) | ✅ | `data/mech/`, `src/autoload/mech_loadout.gd` |
+| Story fragments (7 total: 4 auto + 3 boss-victory) | ✅ | `data/fragments/` |
+| 3 endings (A=revelation, B=partial, C=default) | ✅ | `data/npcs/dlg_ending_*.tres` |
+| Save / Load (autosave 60s + manual 3 slots) | ✅ | `src/autoload/save_manager.gd` |
+| Pause menu, Codex, HUD, dialogue UI | ✅ | `src/ui/` |
+| Breakable wall (hidden area in room 4) | ✅ | `src/scene/breakable_wall.gd` |
+| 3 NPCs + 3 dialogue trees | ✅ | `data/npcs/`, `data/dialogue_trees/` |
 
-**Onboarding & Navigation**
-`/start` `/help` `/project-stage-detect` `/setup-engine` `/adopt`
+## What's a Placeholder (Art / Audio)
 
-**Game Design**
-`/brainstorm` `/map-systems` `/design-system` `/quick-design` `/review-all-gdds` `/propagate-design-change`
+| Item | Current | TODO |
+|------|---------|------|
+| All visuals | ColorRect placeholders | Pixel art pass |
+| SFX | Procedural sine-wave beeps | Real sound design |
+| Music | None | OST |
+| Boss sprite | 200x200 ColorRect | Pixel art |
 
-**Art & Assets**
-`/art-bible` `/asset-spec` `/asset-audit`
+---
 
-**UX & Interface Design**
-`/ux-design` `/ux-review`
+## Architecture Quick Reference
 
-**Architecture**
-`/create-architecture` `/architecture-decision` `/architecture-review` `/create-control-manifest`
+- **5 autoloads** (ADR-0001): `GameStateMachine → InputBus → ResourceRegistry → MetaState → SaveManager`
+- **10 Resource subtypes** (ADR-0008): WeaponData, AmmoData, EnemyData, MechPartData, ItemData, EffectData, TerminalLogData, StoryFragmentData, RegionData, NPCData
+- **52 input actions** (ADR-0009 + S5-008): closed set, YAML is source-of-truth
+- **BattleMathLib** (`src/math/`): pure GDScript static utility for damage math (canonical range [10, 480] per ADR-0011)
+- **State machine** has 8 states: title, exploration, battle, menu, terminal, codex, dialogue, pause
 
-**Stories & Sprints**
-`/create-epics` `/create-stories` `/dev-story` `/sprint-plan` `/sprint-status` `/story-readiness` `/story-done` `/estimate`
-
-**Reviews & Analysis**
-`/design-review` `/code-review` `/balance-check` `/content-audit` `/scope-check` `/perf-profile` `/tech-debt` `/gate-check` `/consistency-check` `/security-audit`
-
-**QA & Testing**
-`/qa-plan` `/smoke-check` `/soak-test` `/regression-suite` `/test-setup` `/test-helpers` `/test-evidence-review` `/test-flakiness` `/skill-test` `/skill-improve`
-
-**Production**
-`/milestone-review` `/retrospective` `/bug-report` `/bug-triage` `/reverse-document` `/playtest-report`
-
-**Release**
-`/release-checklist` `/launch-checklist` `/changelog` `/patch-notes` `/hotfix` `/day-one-patch`
-
-**Creative & Content**
-`/prototype` `/onboard` `/localize`
-
-**Team Orchestration** (coordinate multiple agents on a single feature)
-`/team-combat` `/team-narrative` `/team-ui` `/team-release` `/team-polish` `/team-audio` `/team-level` `/team-live-ops` `/team-qa`
-
-## Getting Started
-
-### Prerequisites
-
-- [Git](https://git-scm.com/)
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`npm install -g @anthropic-ai/claude-code`)
-- **Recommended**: [jq](https://jqlang.github.io/jq/) (for hook validation) and Python 3 (for JSON validation)
-
-All hooks fail gracefully if optional tools are missing — nothing breaks, you just lose validation.
-
-### Setup
-
-1. **Clone or use as template**:
-   ```bash
-   git clone https://github.com/Donchitos/Claude-Code-Game-Studios.git my-game
-   cd my-game
-   ```
-
-2. **Open Claude Code** and start a session:
-   ```bash
-   claude
-   ```
-
-3. **Run `/start`** — the system asks where you are (no idea, vague concept,
-   clear design, existing work) and guides you to the right workflow. No assumptions.
-
-   Or jump directly to a specific skill if you already know what you need:
-   - `/brainstorm` — explore game ideas from scratch
-   - `/setup-engine godot 4.6` — configure your engine if you already know
-   - `/project-stage-detect` — analyze an existing project
-
-## Upgrading
-
-Already using an older version of this template? See [UPGRADING.md](UPGRADING.md)
-for step-by-step migration instructions, a breakdown of what changed between
-versions, and which files are safe to overwrite vs. which need a manual merge.
+See `docs/architecture/architecture.md` for the full architecture document and
+`docs/architecture/ADR-*.md` for the 11 architecture decision records.
 
 ## Project Structure
 
 ```
-CLAUDE.md                           # Master configuration
-.claude/
-  settings.json                     # Hooks, permissions, safety rules
-  agents/                           # 49 agent definitions (markdown + YAML frontmatter)
-  skills/                           # 73 slash commands (subdirectory per skill)
-  hooks/                            # 12 hook scripts (bash, cross-platform)
-  rules/                            # 11 path-scoped coding standards
-  statusline.sh                     # Status line script (context%, model, stage, epic breadcrumb)
-  docs/
-    workflow-catalog.yaml           # 7-phase pipeline definition (read by /help)
-    templates/                      # 41 document templates
-src/                                # Game source code
-assets/                             # Art, audio, VFX, shaders, data files
-design/                             # GDDs, narrative docs, level designs
-docs/                               # Technical documentation and ADRs
-tests/                              # Test suites (unit, integration, performance, playtest)
-tools/                              # Build and pipeline tools
-prototypes/                         # Throwaway prototypes (isolated from src/)
-production/                         # Sprint plans, milestones, release tracking
+src/
+  autoload/      5 autoloads (game_state_machine, input_bus, ...)
+  resource/      10 Resource subtypes (weapon_data, ammo_data, ...)
+  scene/         Scene-tree nodes (player, terminal, door, breakable_wall, ...)
+  ui/            UI scenes (hud, main_menu, pause_menu, codex_ui, ...)
+  math/          BattleMathLib (pure functions)
+data/
+  weapons/       8 WeaponData .tres
+  ammo/          5 AmmoData .tres
+  enemies/       7 EnemyData .tres (1 boss + 6 normal)
+  fragments/     7 StoryFragmentData .tres
+  npcs/          3 NPCData + dialogue trees
+  mech/          2 MechPartData .tres
+tests/
+  integration/   35 GUT test scripts (fc1-fc36)
+  unit/          GDScript unit tests
+tools/
+  lint_*.py      11 Python lint tools (CI hard-fail)
+  build.sh       Release export pipeline
+  check_uid.py   .gd/.uid pair verification
+docs/
+  architecture/  ADRs + master architecture doc + traceability
+  engine-reference/  Godot 4.6 API snapshots
+production/
+  sprints/       Sprint plans + close reports (sprint-01 through sprint-05)
+  qa/evidence/   F5 verification logs
+  epics/         Foundation + Core epics
 ```
 
-## How It Works
+---
 
-### Agent Coordination
+## Recent Work (Sprint 5 + post-sprint F5 verification)
 
-Agents follow a structured delegation model:
+Sprint 5 produced a 9/9 Must-Have pass. A subsequent **full F5 walkthrough** by
+the user revealed 14 real runtime bugs that the GUT test suite + static lints
+did not catch. All 14 are now fixed. **4 new lints** prevent regression of 4
+of the 14 bug classes.
 
-1. **Vertical delegation** — directors delegate to leads, leads delegate to specialists
-2. **Horizontal consultation** — same-tier agents can consult each other but can't make binding cross-domain decisions
-3. **Conflict resolution** — disagreements escalate up to the shared parent (`creative-director` for design, `technical-director` for technical)
-4. **Change propagation** — cross-department changes are coordinated by `producer`
-5. **Domain boundaries** — agents don't modify files outside their domain without explicit delegation
+See `production/qa/evidence/post-sprint5-f5-verification.md` for the full bug
+list, lessons learned, and the 5 F5 sessions that surfaced them.
 
-### Collaborative, Not Autonomous
+### Bugs caught by F5 (14 total)
+- `Object.get()` 2-arg parser error (4.6 strictness)
+- Typed array invariance on Area2D results
+- Exploration-mode attack not emitted
+- Terminal UI not transitioning to state_terminal
+- Dead UI affordance ("ESC to close" with no handler)
+- Boss encounter always spawning Scavenger (not boss)
+- Duplicate `var bs` declaration
+- Boss attack 35 = impossible difficulty
+- fc25 test 2-arg `.get()` parser error
+- fc8 test undefined `_level_runtime`
+- FSM rejects `state_battle → state_dialogue` (blocking boss endings)
+- Ending dialogue auto-ends with 0 choices (0 frames visible)
+- 0-choice dialogue has no close handler
+- HUD `has_method()` checks var (always false, label never updates)
 
-This is **not** an auto-pilot system. Every agent follows a strict collaboration protocol:
-
-1. **Ask** — agents ask questions before proposing solutions
-2. **Present options** — agents show 2-4 options with pros/cons
-3. **You decide** — the user always makes the call
-4. **Draft** — agents show work before finalizing
-5. **Approve** — nothing gets written without your sign-off
-
-You stay in control. The agents provide structure and expertise, not autonomy.
-
-### Automated Safety
-
-**Hooks** run automatically on every session:
-
-| Hook | Trigger | What It Does |
-|------|---------|--------------|
-| `validate-commit.sh` | PreToolUse (Bash) | Checks for hardcoded values, TODO format, JSON validity, design doc sections — exits early if the command is not `git commit` |
-| `validate-push.sh` | PreToolUse (Bash) | Warns on pushes to protected branches — exits early if the command is not `git push` |
-| `validate-assets.sh` | PostToolUse (Write/Edit) | Validates naming conventions and JSON structure — exits early if the file is not in `assets/` |
-| `session-start.sh` | Session open | Shows current branch and recent commits for orientation |
-| `detect-gaps.sh` | Session open | Detects fresh projects (suggests `/start`) and missing design docs when code or prototypes exist |
-| `pre-compact.sh` | Before compaction | Preserves session progress notes |
-| `post-compact.sh` | After compaction | Reminds Claude to restore session state from `active.md` |
-| `notify.sh` | Notification event | Shows Windows toast notification via PowerShell |
-| `session-stop.sh` | Session close | Archives `active.md` to session log and records git activity |
-| `log-agent.sh` | Agent spawned | Audit trail start — logs subagent invocation |
-| `log-agent-stop.sh` | Agent stops | Audit trail stop — completes subagent record |
-| `validate-skill-change.sh` | PostToolUse (Write/Edit) | Advises running `/skill-test` after any `.claude/skills/` change |
-
-> **Note**: `validate-commit.sh`, `validate-assets.sh`, and `validate-skill-change.sh` fire on every Bash/Write tool call and exit immediately (exit 0) when the command or file path is not relevant. This is normal hook behavior — not a performance concern.
-
-**Permission rules** in `settings.json` auto-allow safe operations (git status, test runs) and block dangerous ones (force push, `rm -rf`, reading `.env` files).
-
-### Path-Scoped Rules
-
-Coding standards are automatically enforced based on file location:
-
-| Path | Enforces |
-|------|----------|
-| `src/gameplay/**` | Data-driven values, delta time usage, no UI references |
-| `src/core/**` | Zero allocations in hot paths, thread safety, API stability |
-| `src/ai/**` | Performance budgets, debuggability, data-driven parameters |
-| `src/networking/**` | Server-authoritative, versioned messages, security |
-| `src/ui/**` | No game state ownership, localization-ready, accessibility |
-| `design/gdd/**` | Required 8 sections, formula format, edge cases |
-| `tests/**` | Test naming, coverage requirements, fixture patterns |
-| `prototypes/**` | Relaxed standards, README required, hypothesis documented |
-
-## Design Philosophy
-
-This template is grounded in professional game development practices:
-
-- **MDA Framework** — Mechanics, Dynamics, Aesthetics analysis for game design
-- **Self-Determination Theory** — Autonomy, Competence, Relatedness for player motivation
-- **Flow State Design** — Challenge-skill balance for player engagement
-- **Bartle Player Types** — Audience targeting and validation
-- **Verification-Driven Development** — Tests first, then implementation
-
-## Customization
-
-This is a **template**, not a locked framework. Everything is meant to be customized:
-
-- **Add/remove agents** — delete agent files you don't need, add new ones for your domains
-- **Edit agent prompts** — tune agent behavior, add project-specific knowledge
-- **Modify skills** — adjust workflows to match your team's process
-- **Add rules** — create new path-scoped rules for your project's directory structure
-- **Tune hooks** — adjust validation strictness, add new checks
-- **Pick your engine** — use the Godot, Unity, or Unreal agent set (or none)
-- **Set review intensity** — `full` (all director gates), `lean` (phase gates only), or `solo` (none). Set during `/start` or edit `production/review-mode.txt`. Override per-run with `--review solo` on any skill.
-
-## Platform Support
-
-Primary development and testing on **Windows 10** with Git Bash. All hooks use POSIX-compatible patterns (`grep -E`, not `grep -P`) and include fallbacks for missing tools, so they should run on macOS and Linux. The `notify.sh` hook uses PowerShell for Windows toast notifications and is a no-op elsewhere — desktop notifications on macOS/Linux are not yet wired. Cross-platform testing is ongoing; please file issues for any platform-specific breakage.
-
-## Community
-
-- **Discussions** — [GitHub Discussions](https://github.com/Donchitos/Claude-Code-Game-Studios/discussions) for questions, ideas, and showcasing what you've built
-- **Issues** — [Bug reports and feature requests](https://github.com/Donchitos/Claude-Code-Game-Studios/issues)
+### Lints added
+1. `lint_object_get.py` — `Object.get()` 2-arg catch
+2. `lint_typed_array_inference.py` — typed array invariance
+3. `lint_has_method_var.py` — `has_method()` for var-named properties
+4. `lint_boss_immunity.py` — ADR-0011 boss immunity + damage bounds
 
 ---
 
-## Supporting This Project
+## Next Steps (Sprint 6 candidates)
 
-Claude Code Game Studios is free and open source. If it saves you time or helps you ship your game, consider supporting continued development:
-
-<p>
-  <a href="https://www.buymeacoffee.com/donchitos3"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee"></a>
-  &nbsp;
-  <a href="https://github.com/sponsors/Donchitos"><img src="https://img.shields.io/badge/GitHub%20Sponsors-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors"></a>
-</p>
-
-- **[Buy Me a Coffee](https://www.buymeacoffee.com/donchitos3)** — one-time support
-- **[GitHub Sponsors](https://github.com/sponsors/Donchitos)** — recurring support through GitHub
-
-Sponsorships help fund time spent maintaining skills, adding new agents, keeping up with Claude Code and engine API changes, and responding to community issues.
+- **Pixel art pass** — replace ColorRect placeholders with real sprites
+- **Real SFX + music** — replace procedural beeps
+- **Full F5 sweep per sprint** (added to sprint close template)
+- **Balance check** via `/balance-check` skill after any combat change
+- **Build end-to-end** on CI runner (Godot 4.6.1 + export templates)
+- **Steam page + marketing trailer**
+- **Tutorial overlay** for first-time players
+- **Chapter 2** (new biome, more enemies, more endings)
 
 ---
-
-*Built for Claude Code. Maintained and extended — contributions welcome via [GitHub Discussions](https://github.com/Donchitos/Claude-Code-Game-Studios/discussions).*
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT. See `LICENSE`.

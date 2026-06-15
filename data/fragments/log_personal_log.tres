@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_personal_log_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_personal_log"
+title = "PERSONAL LOG — V. K. MARLOW"
+body = "I sealed the cargo hold with a personal code. Not a military one. A birthday. My daughter's. She wasn't supposed to be on the Anvil's Promise — she was at the academy dormitory on Nexus-7. If the Rift took us out at the transfer point, she would have been evacuated. If she wasn't, she would have been in the hold. With the others. I sealed the door from the inside. The only way out is to cut the bolt. I am not willing to pay that price. If you find this, the access code is the birthday. Don't open it unless you mean it. The lower decks have been called 'the convoy' ever since. They are not the convoy. They are my daughter. If she is still there."
+author = "V. K. Marlow, chief engineer"
+date_in_world = "Cycle 421.03"
+unlock_fragment_id = &"fragment_marlows_daughter"
+importance = 4

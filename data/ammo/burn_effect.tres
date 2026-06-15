@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EffectData" load_steps=2 format=3 uid="uid://effect_burn_001"]
+
+[ext_resource type="Script" path="res://src/resource/effect_data.gd" id="1_effect"]
+
+[resource]
+script = ExtResource("1_effect")
+id = &"burn"
+display_name = "Burning"
+duration_turns = 3
+stat_modifiers = Dictionary({})
+damage_per_turn = 5
+on_apply_signal = &""
+on_remove_signal = &""
+on_tick_signal = &""

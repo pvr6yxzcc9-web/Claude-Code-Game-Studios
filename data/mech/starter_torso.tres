@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MechPartData" load_steps=2 format=3 uid="uid://mech_starter_torso_001"]
+
+[ext_resource type="Script" path="res://src/resource/mech_part_data.gd" id="1_part"]
+
+[resource]
+script = ExtResource("1_part")
+id = &"starter_torso"
+display_name = "Scrap Torso"
+part_slot = &"torso"
+hp_bonus = 20
+attack_bonus = 5
+defense_bonus = 10
+weapon_slots = Array[StringName]([&"slot1", &"slot2"])
+description = "Basic torso frame. +20 HP, +5 ATK, +10 DEF."

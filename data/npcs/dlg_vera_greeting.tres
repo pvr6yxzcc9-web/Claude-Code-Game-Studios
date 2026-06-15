@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_vera_greeting_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_vera_greeting"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "You look lost, hunter. I don't get many visitors out here — most of them don't come back from the lower decks. You buying, selling, or just passing through?",
+"choices": [
+{"label": "What are you selling?", "next": "shop"},
+{"label": "What happened down here?", "next": "lore"},
+{"label": "Just passing. Bye.", "next": "bye"}
+]
+},
+&"shop": {
+"text": "Scrap metal, mostly. Energy cells, jury-rigged weapons. Nothing that'll save your life, but maybe enough to extend it. Come back when you have creds.",
+"choices": [
+{"label": "Got any leads?", "next": "lore"},
+{"label": "Bye.", "next": "bye"}
+]
+},
+&"lore": {
+"text": "The convoy was family once, before the Rift. Now? Most of 'em are scrap. The engineer who locked the cargo bay — Marlow, her name was — she sealed something in there. Nobody knows what. Nobody's been dumb enough to crack it open.",
+"choices": [
+{"label": "What was in the convoy?", "next": "quest_offer"},
+{"label": "Thanks. Bye.", "next": "bye"}
+]
+},
+&"quest_offer": {
+"text": "Supplies. Old world cargo. Maybe weapons, maybe medicine, maybe something worse. If you're the curious type, the access code is in the engineer's journal — somewhere on this wreck. Bring me what you find, and I might have something to trade for it.",
+"choices": [
+{"label": "I'll look around.", "next": "bye_quest_accepted"},
+{"label": "Not my problem.", "next": "bye"}
+]
+},
+&"bye_quest_accepted": {
+"text": "Good. Don't die. Dead customers don't pay.",
+"choices": []
+},
+&"bye": {
+"text": "Watch your step out there.",
+"choices": []
+}
+}

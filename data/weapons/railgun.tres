@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_railgun_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"railgun"
+display_name = "Railgun"
+min_damage = 55
+max_damage = 75
+accuracy = 0.95
+ammo_slot = &"kinetic_slug"
+range = &"long"
+crit_chance = 0.25
+crit_multiplier = 3.0

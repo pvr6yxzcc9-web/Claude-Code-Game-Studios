@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_wreckage_inspection_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_wreckage_inspection"
+title = "SALVAGE INSPECTION 0031"
+body = "Cycle 401.18. The hull tore on the way down. We were in the cargo hold — couriers, not refugees, though the distinction is academic now. The Rift pulled the convoy apart. Forty-two of us sealed in. The flagship never came. The cargo — what we were carrying — is still where the convoy put it. We've been calling the lower decks 'the convoy' ever since. The name stuck. The cargo didn't move. We are not waiting for rescue. We are waiting to be remembered."
+author = "Courier 14, salvage roster"
+date_in_world = "Cycle 401.18"
+unlock_fragment_id = &"fragment_the_convoy"
+importance = 3

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://fixture_weapon_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"fixture_blaster_rifle"
+display_name = "Test Blaster Rifle"
+min_damage = 25
+max_damage = 35
+accuracy = 0.9
+ammo_slot = &"energy_cell"
+range = &"mid"
+crit_chance = 0.05
+crit_multiplier = 2.0

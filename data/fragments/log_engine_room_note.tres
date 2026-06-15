@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_engine_room_note_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_engine_room_note"
+title = "ENGINE ROOM NOTE"
+body = "The seal is mechanical. A heavy bolt, not electronics. The engine room was the last to lose power. I cut the main bus before the cold took the rest. The seal on the cargo hold is the only thing standing between the convoy and the void. Cutting the bolt means losing atmosphere on every level below. I will not cut it. The cargo can wait. The dead will keep. If you are reading this, the convoy has been gone longer than I expected. The salvage crews will not cut it. The drones will not cut it. You have to decide whether you are willing to pay that price. The cargo is people. They have been waiting to go home. Decide what that means to you."
+author = "Engine room, last log"
+date_in_world = "Cycle 421.06"
+unlock_fragment_id = &"fragment_the_seal"
+importance = 5

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://npc_vera_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"vera_merchant"
+display_name = "Vera the Salvage-Monger"
+faction = &"independent"
+dialogue_tree_id = &"dlg_vera_greeting"
+location = &"scrapyard_01"
+role = &"merchant"
+inventory_id = &""
+description = "Wiry woman with oil-stained fingers. Buys scrap, sells salvage. Knows more than she says."
+priority = 0

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MechPartData" load_steps=2 format=3 uid="uid://mech_plated_arm_001"]
+
+[ext_resource type="Script" path="res://src/resource/mech_part_data.gd" id="1_part"]
+
+[resource]
+script = ExtResource("1_part")
+id = &"plated_arm"
+display_name = "Plated Arm"
+part_slot = &"right_arm"
+hp_bonus = 10
+attack_bonus = 0
+defense_bonus = 8
+weapon_slots = Array[StringName]([&"slot2"])
+description = "Heavy right arm plating over a hydraulic frame. +10 HP, 0 ATK, +8 DEF. Tank build."

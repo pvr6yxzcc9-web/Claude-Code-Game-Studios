@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://level_chapter1_001"]
+
+[ext_resource type="Script" path="res://src/resource/level_data.gd" id="1_level"]
+
+[resource]
+script = ExtResource("1_level")
+id = &"chapter1_scrapyard"
+display_name = "Chapter 1 — The Drift Wreck"
+chapter_index = 1
+room_ids = Array[StringName]([&"c1_r1", &"c1_r2", &"c1_r3", &"c1_r4", &"c1_r5", &"c1_r6", &"c1_r7", &"c1_r8", &"c1_r9", &"c1_r10"])
+boss_id = &"boss_marrow_sentinel"
+encounter_rate = 0.5
+description = "Salvage ops inside an abandoned derelict. The Marrow Sentinel guards the cargo bay."

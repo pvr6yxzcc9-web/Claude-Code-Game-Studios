@@ -5,44 +5,66 @@
 
 ## Engine & Language
 
-- **Engine**: [TO BE CONFIGURED — run /setup-engine]
-- **Language**: [TO BE CONFIGURED]
-- **Rendering**: [TO BE CONFIGURED]
-- **Physics**: [TO BE CONFIGURED]
+- **Engine**: Godot 4.6
+- **Language**: GDScript (gameplay/UI scripting), C# (performance-critical systems), C++ via GDExtension (native only)
+- **Rendering**: Godot 4.6 2D renderer (Forward+ for any 3D test scenes)
+- **Physics**: Godot 4.6 2D physics (Jolt is the default 3D physics in 4.6; not used in this project)
 
 ## Input & Platform
 
 <!-- Written by /setup-engine. Read by /ux-design, /ux-review, /test-setup, /team-ui, and /dev-story -->
 <!-- to scope interaction specs, test helpers, and implementation to the correct input methods. -->
 
-- **Target Platforms**: [TO BE CONFIGURED — e.g., PC, Console, Mobile, Web]
-- **Input Methods**: [TO BE CONFIGURED — e.g., Keyboard/Mouse, Gamepad, Touch, Mixed]
-- **Primary Input**: [TO BE CONFIGURED — the dominant input for this game]
-- **Gamepad Support**: [TO BE CONFIGURED — Full / Partial / None]
-- **Touch Support**: [TO BE CONFIGURED — Full / Partial / None]
-- **Platform Notes**: [TO BE CONFIGURED — any platform-specific UX constraints]
+- **Target Platforms**: PC (Steam, Epic, itch.io)
+- **Input Methods**: Keyboard/Mouse (primary), Gamepad (optional)
+- **Primary Input**: Keyboard/Mouse
+- **Gamepad Support**: Partial (recommended; not blocking for ship)
+- **Touch Support**: None
+- **Platform Notes**: Single-window desktop game. UI must be fully navigable with keyboard. Optional gamepad navigation support for menu/UI screens. No hover-only interactions.
 
 ## Naming Conventions
 
-- **Classes**: [TO BE CONFIGURED]
-- **Variables**: [TO BE CONFIGURED]
-- **Signals/Events**: [TO BE CONFIGURED]
-- **Files**: [TO BE CONFIGURED]
-- **Scenes/Prefabs**: [TO BE CONFIGURED]
-- **Constants**: [TO BE CONFIGURED]
+Mixed-language project (GDScript + C#). Use GDScript conventions for `.gd` files and C# conventions for `.cs` files. The boundary is per-file — do not mix languages within a single file. When in doubt about which language a new system should use, ask the user and record the decision below.
+
+**GDScript (.gd files):**
+- Classes: PascalCase (e.g., `PlayerController`)
+- Variables/functions: snake_case (e.g., `move_speed`)
+- Signals: snake_case past tense (e.g., `health_changed`)
+- Files: snake_case matching class (e.g., `player_controller.gd`)
+- Scenes: PascalCase matching root node (e.g., `PlayerController.tscn`)
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_HEALTH`)
+
+**C# (.cs files):**
+- Classes: PascalCase (`PlayerController`) — must also be `partial`
+- Public properties/fields: PascalCase (`MoveSpeed`, `JumpVelocity`)
+- Private fields: `_camelCase` (`_currentHealth`, `_isGrounded`)
+- Methods: PascalCase (`TakeDamage()`, `GetCurrentHealth()`)
+- Signal delegates: PascalCase + `EventHandler` suffix (`HealthChangedEventHandler`)
+- Files: PascalCase matching class (`PlayerController.cs`)
+- Scenes: PascalCase matching root node (`PlayerController.tscn`)
+- Constants: PascalCase (`MaxHealth`, `DefaultMoveSpeed`)
+
+**Language assignment rule for this project:**
+- Use **GDScript** by default for: gameplay scripts, UI scripts, scene controllers, prototype code
+- Use **C#** for: performance-critical systems (combat math, procedural generation, large data sets), and where stronger IDE tooling (Rider/VS) helps
+- Use **GDExtension (C++)** for: only when a bottleneck cannot be solved in C#
 
 ## Performance Budgets
 
-- **Target Framerate**: [TO BE CONFIGURED]
-- **Frame Budget**: [TO BE CONFIGURED]
-- **Draw Calls**: [TO BE CONFIGURED]
-- **Memory Ceiling**: [TO BE CONFIGURED]
+- **Target Framerate**: 60 FPS
+- **Frame Budget**: 16.6 ms
+- **Draw Calls**: ~200 per scene (well under Godot 2D's practical limit)
+- **Memory Ceiling**: 500 MB (desktop target is comfortable; do not exceed 1 GB)
 
 ## Testing
 
-- **Framework**: [TO BE CONFIGURED]
-- **Minimum Coverage**: [TO BE CONFIGURED]
-- **Required Tests**: Balance formulas, gameplay systems, networking (if applicable)
+- **Framework**: GUT (Godot Unit Test) for GDScript; NUnit for C#
+- **Minimum Coverage**: 70% for combat math, weapon/ammo formulas, build/equipment systems
+- **Required Tests**:
+  - Balance formulas (damage, crit, ammo effects)
+  - Combat systems (turn order, status effects, manual/auto mode logic)
+  - Map/encounter generation (if any)
+  - Save/load integrity
 
 ## Forbidden Patterns
 
@@ -51,8 +73,8 @@
 
 ## Allowed Libraries / Addons
 
-<!-- Add approved third-party dependencies here -->
-- [None configured yet — add as dependencies are approved]
+<!-- Add approved third-party dependencies here. Do NOT add speculatively. -->
+- GUT (Godot Unit Test, https://github.com/bitwes/Gut) — testing framework for GDScript
 
 ## Architecture Decisions Log
 
@@ -65,12 +87,13 @@
 <!-- Read by /code-review, /architecture-decision, /architecture-review, and team skills -->
 <!-- to know which specialist to spawn for engine-specific validation. -->
 
-- **Primary**: [TO BE CONFIGURED — run /setup-engine]
-- **Language/Code Specialist**: [TO BE CONFIGURED]
-- **Shader Specialist**: [TO BE CONFIGURED]
-- **UI Specialist**: [TO BE CONFIGURED]
-- **Additional Specialists**: [TO BE CONFIGURED]
-- **Routing Notes**: [TO BE CONFIGURED]
+- **Primary**: godot-specialist
+- **GDScript Specialist**: godot-gdscript-specialist (.gd files — gameplay/UI scripts)
+- **C# Specialist**: godot-csharp-specialist (.cs files — performance-critical systems)
+- **Shader Specialist**: godot-shader-specialist (.gdshader files, VisualShader resources)
+- **UI Specialist**: godot-specialist (no dedicated UI specialist — primary covers all UI)
+- **Additional Specialists**: godot-gdextension-specialist (GDExtension / native C++ bindings only)
+- **Routing Notes**: Invoke primary for cross-language architecture decisions and which systems belong in which language. Invoke GDScript specialist for .gd files. Invoke C# specialist for .cs files and .csproj management. Prefer signals over direct cross-language method calls at the boundary.
 
 ### File Extension Routing
 
@@ -79,9 +102,12 @@
 
 | File Extension / Type | Specialist to Spawn |
 |-----------------------|---------------------|
-| Game code (primary language) | [TO BE CONFIGURED] |
-| Shader / material files | [TO BE CONFIGURED] |
-| UI / screen files | [TO BE CONFIGURED] |
-| Scene / prefab / level files | [TO BE CONFIGURED] |
-| Native extension / plugin files | [TO BE CONFIGURED] |
-| General architecture review | Primary |
+| Game code (.gd files) | godot-gdscript-specialist |
+| Game code (.cs files) | godot-csharp-specialist |
+| Cross-language boundary decisions | godot-specialist |
+| Shader / material files (.gdshader, VisualShader) | godot-shader-specialist |
+| UI / screen files (Control nodes, CanvasLayer) | godot-specialist |
+| Scene / prefab / level files (.tscn, .tres) | godot-specialist |
+| Project config (.csproj, NuGet) | godot-csharp-specialist |
+| Native extension / plugin files (.gdextension, C++) | godot-gdextension-specialist |
+| General architecture review | godot-specialist |

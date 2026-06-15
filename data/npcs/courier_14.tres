@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://npc_courier_14_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"courier_14"
+display_name = "Courier 14"
+faction = &"independent"
+dialogue_tree_id = &"dlg_courier_14"
+location = &"scrapyard_06"
+role = &"ambient"
+inventory_id = &""
+description = "A wiry figure, hollow-eyed, in a uniform that doesn't fit the current decade. Speaks like a courier manifest, not a person."
+priority = 0

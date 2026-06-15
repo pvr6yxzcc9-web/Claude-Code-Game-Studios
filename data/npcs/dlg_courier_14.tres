@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_courier_14_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_courier_14"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "Forty-two of us. We weren't refugees. We were carrying something. They sealed the hold and called it cargo. I was courier 14. The manifest is in the upper decks. The manifest says nothing about the cargo because the convoy didn't want to know what it was.",
+"choices": [
+{"label": "What was the cargo?", "next": "cargo_eve"},
+{"label": "What happened to the convoy?", "next": "rift"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"cargo_eve": {
+"text": "If you have to ask, you haven't been in the lower decks. The cargo doesn't need a manifest. The cargo is the manifest. Forty-two of us. Sealed in.",
+"choices": [
+{"label": "What happened to the convoy?", "next": "rift"},
+{"label": "Goodbye.", "next": "bye"}
+]
+},
+&"rift": {
+"text": "The Rift took us at the transfer point. The flagship never came. The captain sealed the hold before the cold took him. The drones went autonomous. The convoy went silent. We've been here since.",
+"choices": [
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"bye": {
+"text": "Manifest is in the upper decks. If you find it, you'll know more than I do. Courier 14, out.",
+"choices": []
+}
+}

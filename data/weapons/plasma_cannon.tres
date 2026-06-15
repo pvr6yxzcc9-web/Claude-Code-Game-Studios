@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_plasma_cannon_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"plasma_cannon"
+display_name = "Plasma Cannon"
+min_damage = 40
+max_damage = 60
+accuracy = 0.7
+ammo_slot = &"plasma_cell"
+range = &"mid"
+crit_chance = 0.10
+crit_multiplier = 2.5

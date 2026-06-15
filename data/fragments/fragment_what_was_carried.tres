@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_what_was_carried_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_what_was_carried"
+title = "What Was Carried"
+body = "The cargo manifest for the Anvil's Promise run was sealed at the convoy's command level. The forty-two couriers each carried a sealed case. The cases were not opened during the transfer. The captain's log of what was inside them is filed in the convoy's flagship — which never arrived. The salvage crews have theories. The drones have guesses. The lower decks, where the cargo was stored, have only the seal and the silence."
+unlock_condition = &"boss_victory"
+related_fragment_ids = Array[StringName]([&"fragment_the_seal", &"fragment_the_truth"])
+lore_layer = 5

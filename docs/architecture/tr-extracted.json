@@ -1,0 +1,1242 @@
+[
+  {
+    "id": "TR-resource-data-001",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Define 9 custom Resource subclasses (WeaponData, AmmoData, EnemyData, MechPartData, ItemData, EffectData, DropEntry, TerminalLogData, StoryFragmentData, RegionData) as GDScript class_name files, with @export fields and _init() assertions enforcing schema invariants and id prefix rules.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-002",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Provide a ResourceRegistry autoload that scans res://data/**/*.tres on boot, validates id uniqueness across all types, detects circular references in upgrade_path, and exposes a get(id: StringName) -> Resource lookup.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-003",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Enforce runtime immutability of loaded Resource instances via _set() guard that throws ImmutableResourceError on any @export field write; allow only readonly access through .get() / .duplicate(false).",
+    "domain": "Resource",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-resource-data-004",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Implement MetaState autoload holding Dictionary[StringName, bool] for discovered and unlocked flags, with mark_discovered / mark_unlocked / is_discovered / is_unlocked APIs and entity_discovered signal emission.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-005",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Support cross-language field access from C# via Resource base class and .Get(\"field_name\").AsInt32() / .AsSingle() / .AsString() / .AsStringName() / .AsGodotArray() patterns for typed arrays.",
+    "domain": "Resource",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-resource-data-006",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Implement Resource.Load<T> fallback pattern that returns a known fallback Resource (e.g., enm_unknown with max_hp=30, attack=20) on MissingResourceError so battle does not crash on missing .tres files.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-007",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Define find_resource_by_id(id: StringName) -> Resource API on the resource registry for SaveLoad round-trip when serialized .tres references must be resolved at load time.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-008",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Validate EffectData.target_stat is a member of the closed enum (NONE / CRIT_CHANCE / ACCURACY / DAMAGE_MULT / DAMAGE_TAKEN / MOVE_SPEED) at load time and reject unknown values with InvalidEffectError.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-009",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Enforce schema invariants in _init() (min_damage 1-200, accuracy 0.05-1.0, max_hp 10-500, drop_rate 0.0-1.0, duration_turns >= 0, etc.) with named error types (OutOfRangeError, InvalidIDError, InvalidPrefixError) for boot-time configuration validation.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-010",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Provide placeholder texture fallback (res://ui/placeholder_icon.png, placeholder_enemy.png, placeholder_region.png) for null icon/sprite/background fields, with startup warning log listing affected resource ids.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-011",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Use StringName (not String) for all Resource id fields and the registry's lookup keys to support interned-pointer-equality comparisons and GDScript hot-path performance.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-012",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Preserve weapon/ammo reference equality in InventoryState and BattleState (do not deep-copy .tres); verify that holding a reference to WeaponData A and switching to B does not mutate A's @export fields.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-013",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Track lost-loot via BattleState.lost_loot: Dictionary[StringName, int] when inventory is full, emit BattleLostLoot signal, and surface lost quantities in post-battle UI (not silently dropped).",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-resource-data-014",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Support TypedArray[EffectData] / TypedArray[AmmoData.Type] / TypedArray[MechPartData] in Resource @export fields and document the C# iteration pattern using .AsGodotArray() + .As<Resource>() casts.",
+    "domain": "Resource",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-resource-data-015",
+    "system": "resource-data",
+    "gdd": "design/gdd/resource-data.md",
+    "requirement": "Reserve a Godot project version pin (4.6.x) checked at startup; CI lints and warns (not fails) on older versions, and the immutability _set() guard is regression-tested before any 4.7+ upgrade.",
+    "domain": "BuildTool",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-player-input-001",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Define exactly 47 actions in the project-level Godot InputMap resource (4 debug actions stripped in release builds for 43 total), with binding values sourced from design/registry/input-bindings.yaml.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-002",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Implement InputBus autoload (registered AFTER GameStateMachine in Project > Autoload) re-emitting three signals per actionable input: action_pressed(action: StringName), action_released(action: StringName), action_held(action: StringName, duration: float).",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-003",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Maintain per-action _press_start_times: Dictionary[StringName, float] in InputBus using Time.get_ticks_msec() / 1000.0; emit action_held every frame while Input.is_action_pressed is true with strictly increasing duration.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-004",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Enforce StringName type for all action name references in code (e.g., &\"weapon_slot_1\"), never String literals, in hot paths (_input, _physics_process); CI lints for any quoted action-name string.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-005",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Subscribe InputBus signals on _enter_tree and unsubscribe on _exit_tree of each state node; or via explicit subscribe_to_input_bus(bus) / unsubscribe_from_input_bus(bus) API for pooled states; use weak-ref Callable connections to prevent stale-handler crashes.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-006",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Pause-press during dashing halts dash via get_tree().paused = true; resume from paused frame on un-pause; timer-based cooldowns (dash_cooldown_ms = 600) respect the paused tree state.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-007",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "On the same-frame state-transition (E2 scenario), InputBus processes events in scene-tree order: _enter_tree subscribers are connected before InputBus._process(delta) re-dispatches, so a press during transition reaches the new state within 1 frame.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-008",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Support SDL3 gamepad backend device hot-swap (4.5+ behavior in Godot 4.6); the InputMap re-resolves binding to the new device ID transparently with no InputBus changes required.",
+    "domain": "Input",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-player-input-009",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Detect focus loss via Notification.WM_WINDOW_FOCUS_OUT and trigger GameStateMachine.push(PAUSE); on WM_WINDOW_FOCUS_IN, un-pause. All input_pressed events during focus loss are discarded (no replay queue).",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-010",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Surface a state badge (top-left HUD) showing the current top-of-stack state (EXPLORATION / BATTLE / MENU / TERMINAL / CODEX / PAUSED), with adjacent MANUAL/AUTO sub-indicator in BATTLE, always visible during fullscreen overlays.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-011",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Route SPACE / ENTER / GAMEPAD-A through viewport.gui_focus_owner first; if a focused Control has focus_mode = FOCUS_ALL, the state-level handler bails and the input is consumed by the focused element.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-012",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Hold-to-skip threshold of 1.5s ± 0.05s for menu_confirm and play_log actions; subscribe to action_held signal duration comparison rather than polling Input.is_action_pressed.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-013",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Expose a settable clock: Callable field on InputBus for dependency-injected mock clock in tests, wired to Time.get_ticks_msec / 1000.0 in production; supports deterministic AC-3c, AC-16, AC-17, AC-20, AC-21.",
+    "domain": "Test",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-014",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Maintain refusal-fatigue escalation via Dictionary[StringName, int] _refusal_count_session; on the 4th identical refusal within 60s, suppress the audio cue (level transitions: 1-2 default, 3 longer no-audio, 4-5 dimmed, 6+ flicker only).",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-player-input-015",
+    "system": "player-input",
+    "gdd": "design/gdd/player-input.md",
+    "requirement": "Snapshot held_actions on state transition and replay them to the new state on the first _process tick of the new state (E10 preserved-held semantics), then clear the snapshot.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-001",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Define a 7-state closed enum (TITLE / EXPLORATION / BATTLE / MENU / TERMINAL / CODEX / PAUSE) as StringName constants (e.g., &\"state_battle\"); reject any unknown state name with UnknownStateError.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-002",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Implement an explicit LIFO state stack (not a dict/hash) with push(state) / pop() / replace(state) operations; expose top_of_stack: StringName as the sole read-only current-state query interface.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-003",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Enforce an ALLOWED_TRANSITIONS: Dictionary[StringName, Array[StringName]] table in code (mirroring the GDD); reject illegal transitions (e.g., BATTLE -> PAUSE, push(TERMINAL) from BATTLE) with IllegalTransitionError, log to WARN, do not crash.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-004",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Make every transition_to(state) atomic within a single 16.6ms frame: unsubscribe old state from InputBus, queue_free old node (skip for PAUSE overlay), add_child new node, subscribe new state to InputBus, update HUD badge, emit state_changed signal — total budget per F1 table.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-005",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Enforce Autoload registration order: GameStateMachine must be listed BEFORE InputBus in Project > Autoload; emit AutoloadOrderError + warn-per-second if detected at startup but still allow game to run (not fail).",
+    "domain": "BuildTool",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-006",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Cap state stack at MAX_STACK_DEPTH = 3 (e.g., EXPLORATION + PAUSE + CODEX would be rejected); reject 4th push with StackOverflowError, no modification of the stack; minimum depth is 1 (always at least one state).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-007",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "On push(PAUSE), set get_tree().paused = true to freeze all _process / _physics_process in lower-stack states; on pop, set false. Both mechanisms (paused + stack) are required — neither alone is sufficient.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-008",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Emit signal state_changed(old_top: StringName, new_top: StringName) on every transition; consumers needing the full stack query state_stack separately. Payload must be StringName-typed for both fields.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-009",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Provide get_state_snapshot() -> Dictionary and load_snapshot(snap: Dictionary) -> void methods for SaveLoad integration; on stale-state (e.g., CODEX node ID no longer valid), raise SnapshotRestoreError and fall back to replace(EXPLORATION).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-010",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Implement explicit subscribe_to_input_bus(bus) and unsubscribe_from_input_bus(bus) methods on each state node (replacing implicit _enter_tree/_exit_tree magic) for pooled-state lifetimes per the player-input E9 contract.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-011",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Register GameStateMachine as /root/GameStateMachine autoload; do not provide a static .instance accessor (single source of truth via Godot's autoload system, no dual-source).",
+    "domain": "BuildTool",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-012",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Detect WM_WINDOW_FOCUS_OUT and trigger push(PAUSE) automatically when FOCUS_LOSS_AUTO_PAUSE=true; detect WM_WINDOW_FOCUS_IN to pop. Discard all input_pressed events that occurred during focus loss (no buffer/replay).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-game-state-machine-013",
+    "system": "game-state-machine",
+    "gdd": "design/gdd/game-state-machine.md",
+    "requirement": "Throw SameStateError on transition_to(current_top) to prevent silent no-ops that could mask bugs; do not allow push/transition to TITLE from BATTLE in same frame as a death (death replace(TITLE) wins, pause is dropped).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-001",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Define 6 CameraRig resources (RIG_EXPLORATION_FOLLOW, RIG_BATTLE_OVERHEAD, RIG_TERMINAL_CLOSEUP, RIG_CODEX_WIDE, RIG_VICTORY, RIG_DEFEAT) as a closed set; only one rig is current_rig with others enabled=false to prevent multiple Camera2D overlap.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-002",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Implement STATE_TO_RIG_MAP lookup and listen to GameStateMachine.state_changed signal to auto-set the default rig per state; battle system overrides via direct set_rig(VICTORY/DEFEAT) call (C-R5 exception).",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-003",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Define RIG_TRANSITION_MAP for 5 transition effects (INSTANT, FADE_BLACK 0.4s, ZOOM 0.6s, FLASH_WHITE 0.2s, SHAKE_AND_FADE 0.6s) keyed by (from_rig, to_rig) tuple; use Tween with ease_in_out_sine for ZOOM transitions.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-004",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Implement screen shake with sliding 2-second window accumulation budget of 30px max; per-shake magnitudes (4px hit, 6px player-hit, 10px boss, 12px death) and durations (100/150/250/600ms) per F1 table; newest shake is scaled down if budget exceeded.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-005",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Exploration follow camera uses lerp_factor = 0.10 with deadzone_px = 24 (one tile) in _process; cam_pos = lerp(cam_pos, target_pos, lerp_factor) only when player is outside the deadzone radius.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-006",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Implement transition lock (TRANSITION_LOCK_DURATION_MS = 600) that ignores new set_rig calls within 600ms of a previous transition start, preventing zoom jitter from rapid Codex toggling.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-007",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Render all HUD/UI on a separate CanvasLayer (rendering layer 10) so they are unaffected by camera zoom; CanvasLayer applies 0.5x amplitude shake offset when the camera shakes, to prevent UI/world tearing.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-008",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "On window resize (e.g., 1280x800 -> 1920x1080), recompute Camera2D.zoom and viewport center to preserve visual scale ratio; current rig does not change during resize.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-009",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Auto-pull camera to fit oversized boss battlefields down to minimum 0.8x zoom so all combatants stay on-screen; clamp zoom between 0.5x (max pull-out) and 2.0x (max push-in, NEAREST filter safe limit).",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-010",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "DEFEAT rig applies 3-5 degree roll + grayscale reduction + 12px shake as a composite 'frozen' effect, locking the follow target to the last known player position; target is set to null after the first frame (no further tracking).",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-011",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Apply shake priority over zoom when both trigger in the same frame: shake finishes first, then zoom transition begins. Camera rig is finalized as the only active Camera2D; additional cameras must be enabled=false to avoid Godot's last-enabled-wins ambiguity.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-camera-012",
+    "system": "camera",
+    "gdd": "design/gdd/camera.md",
+    "requirement": "Expose request_shake(intensity: int, duration_ms: int) API on the camera system; battle system calls it on hit / boss impact / death, with intensity in pixels (2-12 range) and duration 50-300ms.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-001",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Define 8 physics layers (LAYER_WORLD / LAYER_PLAYER / LAYER_ENEMY / LAYER_BULLET_PLAYER / LAYER_BULLET_ENEMY / LAYER_INTERACTABLE / LAYER_ENCOUNTER / LAYER_DAMAGE_AREA) as a closed set with bit-mask indices 0-7; cap at 32 layers total, reject any new layer attempt.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-002",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Author COLLISION_MATRIX as a Dictionary[Layer, Dictionary[Layer, bool]] resource mirroring the GDD table; provide CI linter that checks actual Area2D/CollisionShape2D/CharacterBody2D layer+mask values against this table and fails boot on mismatch (CollisionMatrixMismatch error).",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-003",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Implement CollisionManager autoload (/root/CollisionManager) as the sole authority for routing Area2D/body_entered/exited signals; expose named signals (entity_near_interactable, player_entered_encounter_tile, bullet_hit, damage_area_tick) and suppress direct Area2D.get_overlapping_bodies() calls.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-004",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Enforce friendly-fire off: BULLET_PLAYER collision_mask excludes PLAYER, BULLET_ENEMY collision_mask excludes ENEMY (C-R4). AOE friendly filter is OFF for MVP — all layers in DAMAGE_AREA overlap receive damage ticks.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-005",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Use RectangleShape2D as the default collider (24x24 for player, 24x24 for enemies) and CircleShape2D only for AOE DAMAGE_AREA visuals; implement safe_margin = 4px on CharacterBody2D to recover from invalid positions (e.g., player stuck in wall).",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-006",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Apply state-collision-profile toggles on GameStateMachine.state_changed: EXPLORATION enables WORLD/PLAYER/INTERACTABLE/ENCOUNTER/DAMAGE_AREA, disables BULLET_PLAYER/BULLET_ENEMY/ENEMY (battle); BATTLE enables PLAYER/ENEMY/BULLET_* /DAMAGE_AREA, disables WORLD/INTERACTABLE/ENCOUNTER.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-007",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Implement DAMAGE_AREA tick: emit damage_area_tick(entity, area, damage_per_tick) every damage_tick_interval (default 0.5s); the subscriber (battle system) applies damage; tick uses first-tick-on-entry rule (full interval still applies if entity enters late in cycle).",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-008",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Configure ENCOUNTER tile as trigger (area_entered fires once) with cooldown flag: set monitoring = false on trigger, restore on player exit. ENCOUNTER layer monitoring is disabled globally during BATTLE state to prevent double-trigger when entering 2 adjacent tiles in 1 frame.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-009",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Enforce continuous_cd (Continuous Collision Detection) on fast-moving bullets to prevent tunneling; verify 100% hit rate at 5000 px/s on 24x24 enemy colliders, vs <=95% without CCD.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-010",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Check is_instance_valid(target) before emitting bullet_hit / damage_area_tick signals; silently drop events whose targets have been queue_freed, preventing NullReferenceException on stale weak references.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-011",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "Apply min_prompt_display_ms = 200ms debounce on 'press E to interact' prompt; when 2 INTERACTABLE areas overlap in one frame, display the nearest entity (distance check) and suppress the farther one.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-collision-012",
+    "system": "collision",
+    "gdd": "design/gdd/collision.md",
+    "requirement": "On BATTLE -> EXPLORATION transition, queue_free any residual BULLET_PLAYER/BULLET_ENEMY nodes to prevent them flying out into the exploration map when the layer monitoring turns back on.",
+    "domain": "Physics",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-001",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Define a fixed 4-phase turn structure (PHASE_PLAYER_INPUT -> PHASE_PLAYER_ACTION -> PHASE_ENEMY_INPUT -> PHASE_ENEMY_ACTION) as a closed set; reject any new phase and ensure each phase transition happens within a single frame.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-002",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Map 1/2/3 weapon-slot input to immediate attack (no confirm step) in PHASE_PLAYER_INPUT; pressing 1/2/3 selects the slot AND consumes the turn by transitioning to PHASE_PLAYER_ACTION.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-003",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Make ammo-switch (Q/E) a free action that does NOT consume the turn; the player remains in PHASE_PLAYER_INPUT after switching, ready to attack.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-004",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Implement mode toggle (A key) that switches MANUAL/AUTO without interrupting the current turn, queue, or animation; if the player has already selected an action in PHASE_PLAYER_INPUT before the toggle, that action still executes.",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-005",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Implement auto-AI decision in <=50ms with priority order: HP <= 30% AND has repair_kit -> use_item; predicted_damage_to_player >= player_hp -> defend; else highest final_damage weapon+ammo; weakness match (+1 priority). AI never picks flee.",
+    "domain": "AI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-006",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Compute final_damage = int(base_damage * ammo_mult * crit_mult * weakness_mult * defense_mult), applying minimum-damage rule (max(1, computed)) when the product truncates to 0.",
+    "domain": "Core",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-007",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "On BATTLE_END_VICTORY, emit signal battle_ended(\"victory\", rewards: Dictionary{xp:int, credits:int, drops:Array[ItemData]}); do NOT directly modify player inventory — let WeaponSystem/InventoryState consume rewards.",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-008",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "On battle end, call GameStateMachine.transition_to(EXPLORATION); call Camera.set_rig(RIG_VICTORY) or set_rig(RIG_DEFEAT) before the state transition; on defeat, GameStateMachine will replace(TITLE) per its own flow.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-009",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Implement defend as a one-shot buff: player_defending = true -> next incoming hit damage * 0.5, then defending = false. Stacking defend across turns is allowed (re-marked each turn).",
+    "domain": "Core",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-010",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "When player HP reaches 0 in PHASE_ENEMY_ACTION, immediately transition to BATTLE_END_DEFEAT (skip remaining phases); when enemy HP <= 0 in PHASE_PLAYER_ACTION, transition to BATTLE_END_VICTORY (skip ENEMY_INPUT/ACTION).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-011",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Resolve hit chance via randf() <= weapon.accuracy using a seeded RandomNumberGenerator; test code injects the seed for deterministic AC verification.",
+    "domain": "Core",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-012",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Disable flee_battle action when EnemyData.boss == true (flee action emits refused feedback 'cannot flee' and consumes the turn with no effect); non-boss flee uses randf() <= 0.5 to determine success/failure.",
+    "domain": "Core",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-013",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Push battle_state: Dictionary to HUD each frame, containing player_hp, mech_parts[4], current_weapon, current_ammo, ammo_count, mode, phase, enemy_hp, enemy_parts[4], turn_count, etc. — read-only by HUD.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-battle-core-loop-014",
+    "system": "battle-core-loop",
+    "gdd": "design/gdd/battle-core-loop.md",
+    "requirement": "Provide get_battle_state_snapshot() -> Dictionary and restore_battle_state(snap: Dictionary) -> void for SaveLoad integration; per #21 save-load E2, battles are NOT saved mid-fight (only in IDLE or after victory).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-001",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Maintain weapon_slots: Array[WeaponData, 3] (fixed size 3 for MVP, slot 0/1/2 mapped to keys 1/2/3); InventoryState holds the array and a backpack: Array[WeaponData] (max 20) plus ammo_inventory: Dictionary[StringName, int] and current_ammo: AmmoData.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-002",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Reference, do not duplicate, WeaponData.tres when storing in slots/backpack (per resource-data C-R1 + C-R4); no deep copy of .tres on pickup or equip.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-003",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Apply ammo stack cap = AmmoData.stack_size (99 for normal/plasma/tracker) on pickup: effective_qty = min(ammo_inventory[ammo_type] + qty, 99) - ammo_inventory[ammo_type]; overflow goes to BattleState.lost_loot.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-004",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Implement pickup-decision popup with 4 options (Equip / Store in backpack / Discard / Cancel) and a 0.5s timeout defaulting to 'store in backpack'; pickup popup must only appear in BATTLE_END_VICTORY or EXPLORATION state, NOT in BATTLE (per AC no-pickup-during-battle).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-005",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Validate ammo compatibility against WeaponData.compatible_ammo_types (or default_ammo); reject cycle_ammo to incompatible ammo with refused feedback 'weapon incompatible with this ammo' and no current_ammo change.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-006",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Make weapon discard irreversible: removed weapons enter DISCARDED state with no recycle/undo mechanism; replaced equipped weapons return to backpack (or trigger 'must discard' UI if full).",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-007",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Emit signal weapon_pickup_offered(weapon: WeaponData) and ammo_pickup_offered(ammo: AmmoData, qty: int) when level/encounter triggers a pickup; HUD listens and shows the popup; HUD does not auto-equip.",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-008",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Emit signal new_weapon_discovered(weapon_id: StringName) on first-time obtain; Codex listens to mark weapon as 'unlocked full description' and increment X/12 discovered count.",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-009",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Provide get_inventory_snapshot() -> Dictionary and restore_inventory(snap: Dictionary) -> void for SaveLoad integration; serialized fields include weapon_slots (3 ids), backpack (list of ids), ammo_inventory (qty per ammo type id), current_ammo (id).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-010",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Build damage preview = int(weapon.base_damage * ammo.damage_mult) computed in real-time when current_ammo changes; HUD displays this preview alongside the ammo icon (per #2 player-input F1 latency budget <= 16.5ms).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-011",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "On save load, if any weapon_slots id cannot be resolved via resource-data's find_resource_by_id, set that slot to null and surface a 'lost weapon [X]' HUD notification (per resource-data C-R7 + save-load E8).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-weapon-ammo-012",
+    "system": "weapon-ammo",
+    "gdd": "design/gdd/weapon-ammo.md",
+    "requirement": "Serialize multi-pickup via a queue: when 2 weapons drop in the same frame (e.g., double-enemy death), the popup is shown sequentially one-at-a-time (not stacked) to avoid UI overlap (per E12).",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-001",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Use Godot 4.6 TileMap node (32x32 px base unit) for all room geometry; no procedural generation in MVP — all rooms are hand-authored .tscn / TileMap resources in res://levels/.",
+    "domain": "Engine",
+    "engine_risk": "HIGH"
+  },
+  {
+    "id": "TR-level-dungeon-002",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Cap room size at 25x15 tiles (~800x480 px = one screen); connect rooms via Door / TransitionZone Area2D nodes (LAYER_INTERACTABLE); reject rooms larger than one screen in MVP.",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-003",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Validate Pillar 1 reward density: each room must include at least one of 5 reward types (A weapon/ammo, B terminal log, C pickup, D hidden area, E chapter clue); MVP chapter 1 = 10 rooms, 16 rewards, density 1.6.",
+    "domain": "BuildTool",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-004",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Place ENCOUNTER tiles as invisible Area2D (per collision LAYER_ENCOUNTER) — no visual representation in editor or runtime; player must walk to discover them; this is what makes the encounter system 'dark' (per random-encounter C-R1).",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-005",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Define Door node with 4 lock types (NORMAL / WEAPON_LOCKED / AMMO_LOCKED / ITEM_LOCKED / STORY_LOCKED) checking player inventory via resource-data find APIs; permanent unlock on success (no re-lock on reload).",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-006",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Track room state per Room node: LOCKED / ENTERED / EXPLORING / COMBAT / RETURNING / COMPLETED / CLEARED / HIDDEN / HIDDEN_DISCOVERED (post-discovery); track is_completed: bool when player exits via Door/TransitionZone.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-007",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Maintain visited_tiles: Array[Vector2i] per chapter, updated each frame as player moves; map system marks tiles as visited (grey) or unrevealed (black) for minimap; coordinate with camera RIG_EXPLORATION_FOLLOW for follow target.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-008",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "On encounter trigger, snapshot player_pos and freeze the level scene; on BATTLE_END_VICTORY/DEFEAT/FLED, restore player to the snapshot position (per collision E2 + random-encounter C-R4).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-009",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Provide get_room_snapshot() -> Dictionary and restore_room(snap: Dictionary) -> void for SaveLoad integration; serialized fields include current_room_id (StringName), player_pos (Vector2i), visited_rooms (Array[StringName]).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-010",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Push room_info: Dictionary to HUD on room entry, containing display_name, is_completed, hidden_status, completion_pct; HUD shows room name with 1.5s fade-in + 0.5s fade-out (per #2 UI naming pattern).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-011",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "Render hidden areas via either destructible walls (5-hit break with specific weapon + ammo) or invisible doors (E-key prompt when in proximity); the proximity prompt uses entity_near_interactable from collision manager.",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-level-dungeon-012",
+    "system": "level-dungeon",
+    "gdd": "design/gdd/level-dungeon.md",
+    "requirement": "On chapter completion, trigger chapter summary screen via GameStateMachine.transition_to to a CHAPTER_X+1 / title state; provide completion_pct = rooms_completed / total_rooms and reward_pct = rewards_found / total_rewards to HUD.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-001",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Define EncounterTable resource per chapter as Array[{tile_pos: Vector2i, enemy_data: EnemyData, weight: float}]; sum of weights per chapter must be 1.0; used for both tile placement and weighted enemy selection.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-002",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Subscribe to CollisionManager.entity_entered_encounter_tile (or area_entered on LAYER_ENCOUNTER) and emit signal encounter_triggered(enemy_data: EnemyData) on first entry to a tile; cooldown the tile immediately on trigger.",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-003",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "On encounter trigger, call GameStateMachine.transition_to(BATTLE, payload={enemy_data: EnemyData}) and never bypass the state machine to call Battle directly; payload is passed to the battle init scene.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-004",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Implement per-tile cooldown flag: set monitoring = false on the ENCOUNTER Area2D on trigger, restore monitoring = true when player exits the tile's body; cooldown_reset_delay_s = 0.2 to prevent pixel-exploit re-trigger.",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-005",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Disable the entire LAYER_ENCOUNTER globally when state transitions to BATTLE (per collision F3 + state_collision_profile) so that a player standing on 2 adjacent ENCOUNTER tiles triggers only 1 battle (combat-storm protection).",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-006",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Resolve enemy selection from EncounterTable via weighted random pick: for chapter 1 default 88% grunt / 12% elite / 0% boss; chapter 2 78% / 19% / 3%; chapter 3 64% / 32% / 4%.",
+    "domain": "Core",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-007",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Use a seeded RandomNumberGenerator shared across the encounter system and battle system for reproducible test results; Monte Carlo with 1000 trials must yield the encounter distribution within binomial CI.",
+    "domain": "Test",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-008",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Push encounter_count: int (per-tile-unique, not cumulative) and encounter_total: int to HUD on trigger; HUD displays 'X / Y' for the chapter; tile that is re-triggered after cooldown reset does NOT increment X (per HUD GDD Rec #1).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-009",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "On defeat (BATTLE_END_DEFEAT) and TITLE restart, encounter tile cooldowns reset to allow re-triggering; on BATTLE_END_VICTORY/FLED returning to EXPLORATION, tile cooldown resets only after player exits the tile (per C-R3).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-010",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Configure boss-encounter tile with monitoring = false after first trigger (BOSS_TILE_RETRIGGER = false); boss rooms have only 1 ENCOUNTER tile per chapter to prevent multi-boss loop.",
+    "domain": "Engine",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-011",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Provide get_encounter_count_snapshot() -> Dictionary and restore_encounter_count(snap: Dictionary) for SaveLoad integration; serialized field is encounter_count_chapter_N per chapter (per save-load schema v1.0).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-random-encounter-012",
+    "system": "random-encounter",
+    "gdd": "design/gdd/random-encounter.md",
+    "requirement": "Trigger camera FADE_BLACK 0.4s transition on encounter_triggered; on BATTLE -> EXPLORATION, trigger reverse FADE_BLACK to fade back in over 0.4s (per camera RIG_TRANSITION_MAP).",
+    "domain": "Render",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-001",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Define TerminalLogData resource fields: id (StringName, log_ prefix), display_name, region_id, audio_clip (AudioStream, required), duration_seconds, transcript (>= 20 chars), unlocks_fragments: Array[StoryFragmentData], prerequisite_logs: Array[TerminalLogData].",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-002",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Define StoryFragmentData resource fields: id (StringName, frag_ prefix), display_name, body_text (>= 50 chars, required), unlock_sources: Array[StringName] (referencing log ids), chapter: int.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-003",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Add NPCData resource as the 10th subtype under resource-data (currently 9 subtypes; npc-terminal C-R5 references NPCData but resource-data schema does not list it yet — must be added as cross-doc reconciliation).",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-004",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Trigger GameStateMachine.push(TERMINAL, payload={log_id: StringName}) when player interacts with a Terminal Area2D (LAYER_INTERACTABLE); the TERMINAL state freezes the underlying EXPLORATION state without queue_free.",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-005",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Emit signal story_fragment_unlocked(fragment: StoryFragmentData) on first full read; the StoryMap (VS) and Codex (VS) systems consume this signal; MetaState.mark_unlocked(fragment.id) is also called for persistence.",
+    "domain": "Event",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-006",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Track per-terminal READ state in a Dictionary[StringName, bool] log_read_state; on re-open of a READ terminal, show content but do NOT re-emit story_fragment_unlocked (per C-R4 1-unlock-per-fragment).",
+    "domain": "State",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-007",
+    "system": "npc-terminal",
+    "gdd": "design/gmd/npc-terminal.md",
+    "requirement": "Play audio_clip via AudioStreamPlayer node (Godot 4.6 audio bus) in a 60s default duration; show transcript text character-by-character (or word-by-word) synced to audio time; show 0-100% progress bar.",
+    "domain": "Audio",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-008",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "On ESC skip during audio playback, immediately stop the AudioStreamPlayer, close the terminal UI, and emit story_fragment_unlocked if not yet unlocked (per E4 skip = player decision).",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-009",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "On audio_clip file missing (.ogg not found), fall back to text-only display with a warning log; never crash the game (per E2 resource self-heal). On unlocks_fragments reference missing, log FragmentMissingError but continue playback.",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-010",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Provide get_fragments_snapshot() -> Dictionary and restore_fragments(snap: Dictionary) for SaveLoad integration; serialized fields are unlocked_fragments: Array[StringName] and read_logs: Array[StringName].",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-011",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "Allow shared fragments (multiple Terminals unlock the same fragment): triggering ANY of the terminals unlocks the fragment for all (per C-R6 candidate, addressing Rec #2 cross-doc reconciliation).",
+    "domain": "Resource",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-npc-terminal-012",
+    "system": "npc-terminal",
+    "gdd": "design/gdd/npc-terminal.md",
+    "requirement": "On player death during TERMINAL state, GameStateMachine.replace(TITLE) calls AudioManager.stop_all() (per ADR responsibility split, Rec #6); npc-terminal must NOT directly stop audio on death — state machine owns the cleanup.",
+    "domain": "Audio",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-001",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Mount all 14 HUD elements on a single CanvasLayer node with layer = 10, higher than the game world and below modal dialogs; CanvasLayer applies 0.5x shake offset when camera shake is active.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-002",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render state badge (top-left, 24,24) with current state text (EXPLORATION / BATTLE / MENU / TERMINAL / CODEX / PAUSED); adjacent MANUAL/AUTO sub-indicator only in BATTLE; always visible (visible=true) during all overlays EXCEPT chapter summary, cutscenes, save/load modal, quit dialog.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-003",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Subscribe to GameStateMachine.state_changed signal; update the state badge within 1 frame of transition; subscribe to battle_core.battle_state updates per-frame for HP / weapons / mode / phase.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-004",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render HP bar with smooth lerp (factor = 0.20) on _process; show 4 mech parts (HEAD / CHEST / ARMS / LEGS) as sub-bars; show enemy 4 parts only when EnemyData.boss == true (BOSS variant only).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-005",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render weapon slots 0/1/2 (right-bottom, 1100,600) with active-slot pulse animation (0.5 Hz, +/-10% scale); subscribe to weapon-ammo state changes for slot updates and pickup-popup display.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-006",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Display floating damage number with damage_number.position = start + Vector2(0,-50) * ease_out_quad(t / 0.5s) and opacity = 1.0 - (t/0.5s) for 0.5s; color = yellow for crit, red for weakness hit; suppress number on 0-damage hits (per E10).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-007",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render pickup popup with 4 buttons (Equip / Store in backpack / Discard / Cancel) and a 0.5s timeout; serial display queue (per weapon-ammo E12) for multi-pickup; popup must NOT show in BATTLE state.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-008",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render terminal content box (text + 0-100% audio progress bar) on push(TERMINAL); render 'truth fragment unlocked [X]' popup on story_fragment_unlocked signal; show encounter_count 'X / Y' on encounter return.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-009",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Use art-bible HUD font and color palette (deep-space neon); reserve 2 font weights (regular + bold); support at least one font-size setting persisted to save (hud_settings.font_size).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-010",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Cap total HUD render time to <=4ms per frame (14 elements + shake offset), well within the 16.6ms 60 FPS budget; multi-popup (3 stacked) must still complete in <=5ms (per F1).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-011",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "On window resize (1280x800 -> 1920x1080), reposition all 14 elements proportionally; warn-and-clamp to 0.8x on resolutions below 800x600 (per #4 AC-12 + E10 small-window warning).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-012",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Provide get_hud_settings() -> Dictionary and restore_hud_settings(snap: Dictionary) for SaveLoad integration; HUD must restore all 14 elements (HP, weapon slots, encounter count, fragment count, etc.) on load to match saved state.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-013",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Display chapter summary screen (full-screen modal) on chapter completion with completion_pct, weapons library, story progress; suppress state badge during this modal (per E9 exception to always-visible rule).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-hud-014",
+    "system": "hud",
+    "gdd": "design/gdd/hud.md",
+    "requirement": "Render 'press E to interact' prompt 24px below the focused element (or below HUD mode indicator in Battle) when CollisionManager.entity_near_interactable fires; use 24px standard offset from collision system F4 prompt rules.",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-001",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Serialize save data as JSON (not binary) to user://save_N.json with save_version: int field (v1.0); file size ~1-2 KB per save; includes chapter_id, room_id, player_pos, state_stack, mech parts, weapon_slots, ammo_inventory, current_ammo, encounter_count, unlocked_fragments, read_logs, hud_settings.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-002",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Implement async save (FileAccess.open + flush, no await) in SaveManager._process so the main loop is not blocked; total save time ~10-15ms per F3, runs as a background tick.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-003",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Trigger autosave at safe points only: enter_new_chapter, enter_new_room, battle_victory; reject F5 manual save during BATTLE with 'cannot save during battle' UI prompt; do NOT save mid-battle (per C-R3 + game concept).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-004",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Maintain 1 autosave slot (always overwritten) + 3 manual slots (F5 with slot selection); manual slots are independent and not overwritten by autosave; manual slot 0/1/2 each map to user://save_0.json / save_1.json / save_2.json.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-005",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "On load, validate JSON parse and schema; on parse failure raise SaveCorruptError and silently fall back to TITLE new-game (no crash, per C-R5 self-heal); on save_version mismatch, run upgrade_path(snap) to map old fields to new schema.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-006",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Resolve all Resource references in weapon_slots via resource-data find_resource_by_id(id) on load; set unresolved slot to null and surface a 'lost weapon [X]' HUD notification (per resource-data C-R7 + save-load E8 cross-doc interface).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-007",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "On FileAccess write error (disk full / permission denied), emit SaveError signal, surface HUD red 'save failed' toast, preserve in-memory state; do NOT silently swallow the error (per C-R7).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-008",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Implement crash-safe recovery: if the most recent save is partially written (e.g., crash during flush), load falls back to the previous autosave; if no autosave exists, fall back to TITLE new game (per E6 crash safety).",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-009",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Define get_state_snapshot() and load_snapshot(snap) contract for ALL serializable systems (state-machine, battle-core, weapon-ammo, level-dungeon, random-encounter, npc-terminal, mech, HUD); SaveManager aggregates these into the root save object.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-010",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Display 1.5s HUD toast on save success ('autosaved' or 'saved to slot X') and 'save failed' red toast on error; full-screen fade-to-black 500ms with progress bar on load to mask ~32ms load time (per F4).",
+    "domain": "UI",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-011",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "F5 + F9 in the same frame execute serially (not parallel) to avoid IO conflicts (per E5); F5 is disabled in BATTLE; F9 is available from TITLE only (continue game) and from menu (VS).",
+    "domain": "Input",
+    "engine_risk": "LOW"
+  },
+  {
+    "id": "TR-save-load-012",
+    "system": "save-load",
+    "gdd": "design/gdd/save-load.md",
+    "requirement": "Autosave count formula = #15 rooms_per_chapter + sum(#16 encounters_per_room) + 1 (chapter_complete); for chapter 1 this is 10 + 25 + 1 = 36 autosaves per chapter.",
+    "domain": "SaveLoad",
+    "engine_risk": "LOW"
+  }
+]

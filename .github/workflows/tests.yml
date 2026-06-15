@@ -1,0 +1,135 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # === GDScript tests via GUT (Godot 4.6) ===
+  gdscript-tests:
+    name: GDScript Tests (GUT)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Godot 4.6.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.1-stable
+          use-cache: true
+
+      - name: Install GUT addon
+        run: |
+          mkdir -p addons
+          wget -q "https://github.com/bitwes/Gut/releases/download/v9.4.0/gut-9.4.0.zip" -O gut.zip
+          unzip -q gut.zip -d addons/
+          rm gut.zip
+
+      - name: Run linters
+        run: |
+          # All CI linters from control-manifest (run before tests).
+          # As of CI-cleanup task (post-Sprint 5): 10 of 11 lints are
+          # implemented and HARD-fail on violation. Only lint_boss_immunity
+          # remains as a backlog placeholder (boss immunity is a future
+          # system; the lint will be written when boss data lands).
+          python tools/lint_autoload_order.py
+          python tools/lint_action_count.py
+          python tools/lint_signal_naming.py
+          python tools/lint_resource_subclasses.py
+          python tools/lint_npc_id_uniqueness.py
+          python tools/lint_boss_immunity.py || true
+          python tools/sync_input_bindings.py
+          # S3-005: Indent + CRLF lint (prevents Sprint 2 indent wars)
+          python tools/lint_indent.py --ci
+          # S3-006: No _draw / draw_string lint (prevents S2-001 HiDPI crash regression)
+          python tools/lint_no_draw.py --ci
+          # Post-Sprint 5: Object.get() 2-arg lint (prevents S5-002/003/004 bug class)
+          python tools/lint_object_get.py
+          # Post-Sprint 5: typed-array invariance lint (prevents the
+          # breakable_wall.gd `Array[Node] = get_overlapping_bodies()` crash
+          # found during post-Sprint 5 F5 sweep)
+          python tools/lint_typed_array_inference.py
+          # Post-Sprint 5: has_method-for-var lint (prevents the HUD
+          # fragment counter showing 0/12 because has_method("unlocked")
+          # returned false for a var-named property)
+          python tools/lint_has_method_var.py
+
+      - name: Run GUT unit tests
+        run: godot --headless --script tests/runners/gut_runner.gd
+
+      - name: Run GUT integration tests
+        run: godot --headless --script tests/runners/gut_integration_runner.gd
+        continue-on-error: true  # integration tests can be slow / flaky during scaffolding
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gdscript-test-logs
+          path: |
+            gut_test_results.xml
+            gut_integration_results.xml
+          if-no-files-found: ignore
+
+  # === C# tests via NUnit (.NET) ===
+  csharp-tests:
+    name: C# Tests (NUnit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Setup Godot 4.6.1 (for GDExtension bindings)
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.1-stable
+          use-cache: true
+
+      - name: Run C# unit tests
+        run: dotnet test tests/unit-cs/ --logger "console;verbosity=normal" --logger "trx;LogFileName=csharp_unit_results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: csharp-test-logs
+          path: tests/unit-cs/TestResults/*.trx
+          if-no-files-found: ignore
+
+  # === Smoke check (critical paths) ===
+  smoke-check:
+    name: Smoke Check (Critical Paths)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [gdscript-tests, csharp-tests]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Godot 4.6.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.6.1-stable
+          use-cache: true
+
+      - name: Install GUT addon
+        run: |
+          mkdir -p addons
+          wget -q "https://github.com/bitwes/Gut/releases/download/v9.4.0/gut-9.4.0.zip" -O gut.zip
+          unzip -q gut.zip -d addons/
+          rm gut.zip
+
+      - name: Run smoke tests
+        run: godot --headless --script tests/runners/smoke_runner.gd

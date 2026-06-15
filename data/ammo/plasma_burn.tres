@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AmmoData" load_steps=3 format=3 uid="uid://ammo_plasma_burn_001"]
+
+[ext_resource type="Script" path="res://src/resource/ammo_data.gd" id="1_ammo"]
+[ext_resource type="Script" path="res://src/resource/effect_data.gd" id="2_effect"]
+[ext_resource type="Resource" path="res://data/ammo/burn_effect.tres" id="3_burn"]
+
+[resource]
+script = ExtResource("1_ammo")
+id = &"plasma_burn"
+display_name = "Plasma Burn Cell"
+damage_mult = 1.4
+effect = ExtResource("3_burn")
+stack_size = 60

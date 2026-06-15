@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ending_A_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ending_A"
+start_node_id = &"ending"
+nodes = {
+&"ending": {
+"text": "You have opened the cargo bay. The convoy was carrying forty-two of us. Marlow's daughter. The engineer who locked the door. The families. You are standing in the convoy now. The convoy is what it was carrying. You are the convoy. There is nothing left to deliver. There is only the door you opened, and the people who walked through it. You have remembered them. That is enough.",
+"choices": []
+}
+}

@@ -1,0 +1,33 @@
+# Per ADR-0001 — autoload order file (consumed by /create-project skill).
+# This is the canonical order. Bootstrap MUST load these in this exact sequence.
+
+[autoload]
+
+GameStateMachine="*res://src/autoload/game_state_machine.gd"
+InputBus="*res://src/autoload/input_bus.gd"
+ResourceRegistry="*res://src/autoload/resource_registry.gd"
+MetaState="*res://src/autoload/meta_state.gd"
+SaveManager="*res://src/autoload/save_manager.gd"
+WeaponLoadout="*res://src/autoload/weapon_loadout.gd"
+Inventory="*res://src/autoload/inventory.gd"
+MechLoadout="*res://src/autoload/mech_loadout.gd"
+TerminalController="*res://src/autoload/terminal_controller.gd"
+DialogueManager="*res://src/autoload/dialogue_manager.gd"
+ResourceIntegrity="*res://src/autoload/resource integrity.gd"
+SFXPlayer="*res://src/autoload/sfx_player.gd"
+MusicPlayer="*res://src/autoload/music_player.gd"
+EndingController="*res://src/autoload/ending_controller.gd"
+TutorialManager="*res://src/autoload/tutorial_manager.gd"
+DeathScreen="*res://src/ui/death_screen.gd"
+
+[application]
+
+config/name="Railhunter (钢轨猎人)"
+config/description="A turn-based 2D pixel sci-fi RPG. Ride mechs, explore deep-space ruins, discover the truth one fragment at a time."
+run/main_scene="res://src/main.tscn"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0

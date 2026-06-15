@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_shotgun_spread_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"shotgun_spread"
+display_name = "Shotgun (Spread)"
+min_damage = 15
+max_damage = 25
+accuracy = 0.6
+ammo_slot = &"kinetic_slug"
+range = &"close"
+crit_chance = 0.05
+crit_multiplier = 1.5

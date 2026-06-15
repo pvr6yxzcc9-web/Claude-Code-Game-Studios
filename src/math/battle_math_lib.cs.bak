@@ -1,0 +1,85 @@
+using System;
+
+namespace Railhunter.Math
+{
+    /// <summary>
+    /// Battle math library — per ADR-0011 damage bounds + battle-core-loop GDD.
+    /// Static utility class; pure functions only; no state.
+    /// </summary>
+    public static class BattleMathLib
+    {
+        // Per ADR-0011: damage MUST be in [10, 480]
+        public const int MinDamage = 10;
+        public const int MaxDamage = 480;
+
+        // Per ADR-0011: bosses are immune to one-shot
+        public const int BossOneShotImmuneThreshold = 50; // % of boss max HP
+
+        /// <summary>
+        /// Clamp raw damage to the [Min, Max] window per ADR-0011.
+        /// </summary>
+        public static int ClampDamage(int raw)
+        {
+            if (raw < MinDamage) return MinDamage;
+            if (raw > MaxDamage) return MaxDamage;
+            return raw;
+        }
+
+        /// <summary>
+        /// Roll a uniform integer in [lo, hi] inclusive.
+        /// </summary>
+        public static int RollRange(int lo, int hi)
+        {
+            if (lo > hi) (lo, hi) = (hi, lo);
+            return (int)Math.Round(UnityEngine.Random.Range(lo, hi));
+        }
+
+        /// <summary>
+        /// Compute base damage from weapon (min, max), ammo multiplier, and crit.
+        /// </summary>
+        public static int ComputeBaseDamage(int weaponMin, int weaponMax, float ammoMult, bool isCrit, float critMult)
+        {
+            if (weaponMax < weaponMin) (weaponMin, weaponMax) = (weaponMax, weaponMin);
+            int raw = RollRange(weaponMin, weaponMax);
+            float scaled = raw * ammoMult;
+            if (isCrit) scaled *= critMult;
+            int result = (int)Math.Round(scaled);
+            return ClampDamage(result);
+        }
+
+        /// <summary>
+        /// Apply hit-chance accuracy roll. Returns true if hit lands.
+        /// </summary>
+        public static bool RollAccuracy(float accuracy)
+        {
+            if (accuracy < 0f) accuracy = 0f;
+            if (accuracy > 1f) accuracy = 1f;
+            return UnityEngine.Random.value <= accuracy;
+        }
+
+        /// <summary>
+        /// Apply boss one-shot immunity per ADR-0011.
+        /// If incoming damage would kill a boss in one hit AND the boss is immune,
+        /// cap damage to the threshold percentage of boss max HP.
+        /// </summary>
+        public static int ApplyBossImmunity(int incomingDamage, int bossMaxHp, bool bossImmune)
+        {
+            if (!bossImmune) return incomingDamage;
+            if (incomingDamage < bossMaxHp) return incomingDamage; // not a one-shot
+            int cap = (int)Math.Round(bossMaxHp * BossOneShotImmuneThreshold / 100.0);
+            return Math.Min(incomingDamage, cap);
+        }
+
+        /// <summary>
+        /// Compute net damage after defense mitigation.
+        /// Defense reduces damage by up to 75% but never below 1.
+        /// </summary>
+        public static int ApplyDefense(int incomingDamage, int defense)
+        {
+            if (defense < 0) defense = 0;
+            double reduction = Math.Min(defense / 100.0, 0.75);
+            int mitigated = (int)Math.Round(incomingDamage * (1.0 - reduction));
+            return Math.Max(1, mitigated);
+        }
+    }
+}

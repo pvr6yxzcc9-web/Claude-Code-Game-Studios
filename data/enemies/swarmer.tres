@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_swarmer_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"swarmer"
+display_name = "Swarmer"
+max_hp = 20
+attack = 10
+accuracy = 0.70
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"splash", &"shotgun"])
+resistances = Array[StringName]([])

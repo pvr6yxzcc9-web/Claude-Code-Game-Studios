@@ -1,0 +1,86 @@
+version=4.6
+# Per ADR-0009: 47-action InputMap closed set. Mirrored to design/registry/input-bindings.yaml.
+# This file is the source of truth at runtime. The YAML is the design register.
+
+# ===== EXPLORATION (8 directions — D-pad + diagonals) =====
+move_up:
+  {type: key, code: KEY_W}
+  {type: key, code: KEY_UP}
+move_down:
+  {type: key, code: KEY_S}
+  {type: key, code: KEY_DOWN}
+move_left:
+  {type: key, code: KEY_A}
+  {type: key, code: KEY_LEFT}
+move_right:
+  {type: key, code: KEY_D}
+  {type: key, code: KEY_RIGHT}
+move_up_left:
+  {type: key, code: KEY_NONE}  # synthesized from up+left held
+move_up_right:
+  {type: key, code: KEY_NONE}
+move_down_left:
+  {type: key, code: KEY_NONE}
+move_down_right:
+  {type: key, code: KEY_NONE}
+
+# ===== BATTLE — manual mode (per battle-core-loop.md) =====
+battle_attack_slot1:
+  {type: key, code: KEY_1}
+battle_attack_slot2:
+  {type: key, code: KEY_2}
+battle_attack_slot3:
+  {type: key, code: KEY_3}
+battle_auto_mode:
+  {type: key, code: KEY_A}
+battle_pause:
+  {type: key, code: KEY_ESCAPE}
+battle_flee:
+  {type: key, code: KEY_F}
+battle_defend:
+  {type: key, code: KEY_SPACE}
+
+# ===== MENU (3 menu items + accept/cancel) =====
+menu_open:
+  {type: key, code: KEY_ESCAPE}
+menu_select:
+  {type: key, code: KEY_ENTER}
+menu_cancel:
+  {type: key, code: KEY_ESCAPE}
+menu_up:
+  {type: key, code: KEY_UP}
+menu_down:
+  {type: key, code: KEY_DOWN}
+
+# ===== INVENTORY (3 weapon slots, 3 ammo slots, 9 item slots) =====
+inv_select_weapon1: {type: key, code: KEY_1}
+inv_select_weapon2: {type: key, code: KEY_2}
+inv_select_weapon3: {type: key, code: KEY_3}
+inv_select_ammo1: {type: key, code: KEY_Q}
+inv_select_ammo2: {type: key, code: KEY_E}
+inv_select_ammo3: {type: key, code: KEY_R}
+inv_use_item1: {type: key, code: KEY_F1}
+inv_use_item2: {type: key, code: KEY_F2}
+inv_use_item3: {type: key, code: KEY_F3}
+
+# ===== HUD =====
+hud_open_map: {type: key, code: KEY_M}
+hud_open_codex: {type: key, code: KEY_C}
+hud_open_settings: {type: key, code: KEY_O}
+
+# ===== INTERACTION =====
+interact: {type: key, code: KEY_E}
+examine: {type: key, code: KEY_X}
+
+# ===== SYSTEM =====
+pause: {type: key, code: KEY_ESCAPE}
+quit: {type: key, code: KEY_F4}
+screenshot: {type: key, code: KEY_F12}
+fullscreen: {type: key, code: KEY_F11}
+
+# ===== DEBUG (stripped in release per control-manifest) =====
+debug_toggle_godmode: {type: key, code: KEY_G}
+debug_warp_to_chapter: {type: key, code: KEY_T}
+debug_give_all_items: {type: key, code: KEY_L}
+debug_toggle_collision: {type: key, code: KEY_B}
+debug_kill_all_enemies: {type: key, code: KEY_K}

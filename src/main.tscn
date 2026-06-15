@@ -1,0 +1,94 @@
+[gd_scene load_steps=10 format=3 uid="uid://railhunter_main_001"]
+
+[ext_resource type="Script" path="res://src/scene/player_controller.gd" id="1_player"]
+[ext_resource type="Script" path="res://src/battle/battle_scene.gd" id="2_battle"]
+[ext_resource type="Script" path="res://src/ui/hud.gd" id="3_hud"]
+[ext_resource type="Script" path="res://src/ui/camera_follow.gd" id="4_camera"]
+[ext_resource type="Script" path="res://src/scene/level_runtime.gd" id="5_level"]
+[ext_resource type="Script" path="res://src/ui/save_ui.gd" id="6_saveui"]
+[ext_resource type="Script" path="res://src/ui/codex_ui.gd" id="7_codexui"]
+[ext_resource type="Script" path="res://src/ui/terminal_ui.gd" id="8_terminalui"]
+[ext_resource type="Script" path="res://src/ui/dialogue_ui.gd" id="9_dialoui"]
+[ext_resource type="Script" path="res://src/ui/main_menu.gd" id="10_mainmenu"]
+[ext_resource type="Script" path="res://src/ui/pause_menu.gd" id="11_pausemenu"]
+
+[sub_resource type="RectangleShape2D" id="PlayerRect"]
+size = Vector2(16, 16)
+
+[node name="Main" type="Node"]
+script = ExtResource("5_level")
+level_id = &"chapter1_scrapyard"
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(200, 360)
+script = ExtResource("1_player")
+
+[node name="Camera" type="Camera2D" parent="Player"]
+script = ExtResource("4_camera")
+
+[node name="Sprite" type="ColorRect" parent="Player"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.4, 0.8, 1.0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("PlayerRect")
+
+[node name="BattleScene" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 0
+visible = false
+script = ExtResource("2_battle")
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("3_hud")
+
+[node name="SaveUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("6_saveui")
+
+[node name="CodexUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("7_codexui")
+
+[node name="TerminalUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("8_terminalui")
+
+[node name="DialogueUI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("9_dialoui")
+
+[node name="MainMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 0
+visible = false
+script = ExtResource("10_mainmenu")
+
+[node name="PauseMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 0
+visible = false
+script = ExtResource("11_pausemenu")

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_drone_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"drone"
+display_name = "Scout Drone"
+max_hp = 30
+attack = 15
+accuracy = 0.90
+boss = false
+boss_immune_to_one_shot = true

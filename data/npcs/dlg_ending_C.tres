@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ending_C_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ending_C"
+start_node_id = &"ending"
+nodes = {
+&"ending": {
+"text": "The Marrow Sentinel falls. The lower decks fall silent. You find a name etched into the bulkhead near the cargo bay — V. K. Marlow — and nothing else. No logs. No fragments. No family. The convoy is gone. The cargo is gone. You are the only thing left in this wreck, and you do not know what you came here for. You have won. You have won nothing.",
+"choices": []
+}
+}

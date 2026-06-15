@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_sniper_rifle_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"sniper_rifle"
+display_name = "Rail Sniper"
+min_damage = 40
+max_damage = 80
+accuracy = 0.95
+ammo_slot = &"rail_rounds"
+range = &"far"
+crit_chance = 0.25
+crit_multiplier = 3.0

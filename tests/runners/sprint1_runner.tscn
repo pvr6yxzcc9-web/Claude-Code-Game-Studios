@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://railhunter_sprint1_runner_01"]
+
+[ext_resource type="Script" path="res://tests/runners/sprint1_runner.gd" id="1_runner"]
+
+[node name="Sprint1Runner" type="Node"]
+script = ExtResource("1_runner")

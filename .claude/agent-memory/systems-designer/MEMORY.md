@@ -1,0 +1,3 @@
+- [User role](user_role.md) — solo indie game developer using Godot 4.6, comfortable with technical detail
+- [Project: Railhunter](project_railhunter.md) — turn-based mech RPG, 3-5 hour scope, four pillars including "Discovery > Numbers"
+- [Feedback: shows-work-pattern](feedback_shows_work.md) — for adversarial reviews, lead with concrete boundary-value analysis before abstract critiques

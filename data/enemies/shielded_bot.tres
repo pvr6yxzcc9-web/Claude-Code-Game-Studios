@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_shielded_bot_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"shielded_bot"
+display_name = "Shielded Bot"
+max_hp = 100
+attack = 22
+accuracy = 0.75
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"emp", &"pierce"])
+resistances = Array[StringName]([&"kinetic"])

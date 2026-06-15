@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_drone_op_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_drone_op"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "If you're here for Vera, she's down the hall. If you're here for me, I'm twice the price and half the patience. What do you need.",
+"choices": [
+{"label": "What do you sell?", "next": "sell"},
+{"label": "Why are the drones guarding the lower decks?", "next": "drones"},
+{"label": "Goodbye.", "next": "bye"}
+]
+},
+&"sell": {
+"text": "Refurbished drone parts. Sensors, servos, the occasional plasma coil. None of it will get you into the lower decks. Vera's the one with the code, and she doesn't sell it.",
+"choices": [
+{"label": "Why are the drones guarding the lower decks?", "next": "drones"},
+{"label": "I'll come back.", "next": "bye"}
+]
+},
+&"drones": {
+"text": "I don't ask. The drones were convoy security. They went autonomous when the convoy went silent. They're guarding something. I don't want to know what.",
+"choices": [
+{"label": "What do you sell?", "next": "sell"},
+{"label": "Goodbye.", "next": "bye"}
+]
+},
+&"bye": {
+"text": "Don't touch the drones. Don't touch the lower decks. Touch the upper decks all you want. Out.",
+"choices": []
+}
+}

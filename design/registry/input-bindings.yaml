@@ -1,0 +1,436 @@
+# Input Bindings Registry
+#
+# PURPOSE: Single source of truth for the 47-action input map.
+# This file is the implementation-side counterpart to design/gdd/player-input.md
+# Section G1 (Action Bindings). The GDD holds the design intent; this file
+# holds the actual binding values that get loaded into Godot's InputMap.
+#
+# RULES:
+#   - Exactly 47 actions. AC-1 linter enforces this.
+#   - Action names use snake_case (matches StringName usage in code).
+#   - Each action must have at least one keyboard binding AND at least one
+#     gamepad binding UNLESS the action is in the "keyboard-only" or
+#     "gamepad-only" domain (declared in the GDD).
+#   - All action names are LOCKED — renaming requires a deprecation cycle
+#     per player-input.md C-R1.
+#
+# WRITTEN BY: /design-system (Phase 5 — after Player Input GDD is approved)
+#             /architecture-decision (if architecture changes binding policy)
+# READ BY:    /architecture-decision (when designing the InputBus ADR)
+#             /consistency-check (verifies count, naming, domain coverage)
+#
+# FORMAT: YAML. Action names are YAML keys; bindings are nested.
+#   - Each binding is: { type: keyboard|gamepad|mouse, value: <event> }
+#   - keyboard: value is a Key enum name (e.g., KEY_W) or character (e.g., W)
+#   - gamepad:  value is an SDL3 button/axis name (e.g., GAMEPAD_BUTTON_A)
+#   - mouse:    value is MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, etc.
+
+version: 1
+last_updated: "2026-06-12"
+source_gdd: design/gdd/player-input.md
+total_actions: 47
+
+# Deadzone for analog gamepad inputs (left stick, right stick, triggers).
+# Godot 4.6 uses SDL3 — deadzone is in normalized 0.0-1.0 range.
+analog_deadzone: 0.20
+
+# ─── EXPLORATION (8 actions) ────────────────────────────────────────────────
+
+move_up:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: W }
+    - { type: keyboard, value: UP }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_UP }
+    - { type: gamepad, value: GAMEPAD_AXIS_LEFT_Y, sign: negative }
+
+move_down:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: S }
+    - { type: keyboard, value: DOWN }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_DOWN }
+    - { type: gamepad, value: GAMEPAD_AXIS_LEFT_Y, sign: positive }
+
+move_left:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: A }
+    - { type: keyboard, value: LEFT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_LEFT }
+    - { type: gamepad, value: GAMEPAD_AXIS_LEFT_X, sign: negative }
+
+move_right:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: D }
+    - { type: keyboard, value: RIGHT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_RIGHT }
+    - { type: gamepad, value: GAMEPAD_AXIS_LEFT_X, sign: positive }
+
+interact:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: E }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_A }
+
+dash:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: SHIFT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_B }
+
+open_codex:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: TAB }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_Y }
+
+open_minimap:
+  domain: exploration
+  keyboard:
+    - { type: keyboard, value: M }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_BACK }  # Select/View
+
+# ─── BATTLE — COMBAT (12 actions) ───────────────────────────────────────────
+
+attack_primary:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: J }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_A }
+
+attack_secondary:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: K }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_X }
+
+use_item:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: I }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_Y }
+
+defend:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: L }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_B }
+
+skip_turn:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: SPACE }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_A }  # Same as attack_primary; battle resolves
+
+target_next:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: RIGHT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_RIGHT }
+
+target_prev:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: LEFT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_LEFT }
+
+cycle_weapons:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: Q }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_UP }
+
+confirm_target:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: ENTER }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_A }
+
+cancel_target:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: ESC }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_B }
+
+flee_battle:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: SHIFT, modifiers: [ESC] }  # Shift+Esc
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_BACK }  # hold 1.5s
+
+pause_battle:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: ESC }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_START }
+
+# ─── BATTLE — BUILD (4 actions) ─────────────────────────────────────────────
+# Note: 1/2/3 weapon slots are KEYBOARD-ONLY. Gamepad uses D-pad up/down
+# for cycle_weapons (defined above). Per GDD Section C, gamepad does not
+# cover 1/2/3.
+
+weapon_slot_1:
+  domain: battle_build
+  keyboard:
+    - { type: keyboard, value: 1 }
+  gamepad: []  # keyboard-only by design
+
+weapon_slot_2:
+  domain: battle_build
+  keyboard:
+    - { type: keyboard, value: 2 }
+  gamepad: []
+
+weapon_slot_3:
+  domain: battle_build
+  keyboard:
+    - { type: keyboard, value: 3 }
+  gamepad: []
+
+cycle_ammo:
+  domain: battle_build
+  keyboard:
+    - { type: keyboard, value: R }
+  gamepad: []  # keyboard-only by design
+
+# ─── BATTLE — MODE (2 actions) ──────────────────────────────────────────────
+
+toggle_mode:
+  domain: battle_mode
+  keyboard:
+    - { type: keyboard, value: T }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_BACK }  # Select on gamepad
+  notes: "Toggles MANUAL <-> AUTO. Same key/button does different things depending on context (Select on gamepad: mode in Battle, minimap in Exploration)."
+
+toggle_auto_attack:
+  domain: battle_mode
+  keyboard:
+    - { type: keyboard, value: BACKSLASH }
+  gamepad: []  # keyboard-only by design
+
+# ─── MENU / UI (8 actions) ──────────────────────────────────────────────────
+
+menu_up:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: UP }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_UP }
+
+menu_down:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: DOWN }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_DOWN }
+
+menu_left:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: LEFT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_LEFT }
+
+menu_right:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: RIGHT }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_DPAD_RIGHT }
+
+menu_confirm:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: ENTER }
+    - { type: keyboard, value: SPACE }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_A }
+
+menu_cancel:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: ESC }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_B }
+
+menu_tab_next:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: TAB }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_RIGHT_SHOULDER }
+
+menu_tab_prev:
+  domain: menu_ui
+  keyboard:
+    - { type: keyboard, value: TAB, modifiers: [SHIFT] }  # Shift+Tab
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_LEFT_SHOULDER }
+
+# ─── TERMINAL / CODEX (4 actions) ───────────────────────────────────────────
+# Note: Terminal and Codex are KEYBOARD-ONLY. Gamepad does not cover these.
+
+play_log:
+  domain: terminal_codex
+  keyboard:
+    - { type: keyboard, value: SPACE }
+  gamepad: []
+
+skip_log:
+  domain: terminal_codex
+  keyboard:
+    - { type: keyboard, value: SPACE, modifiers: [] }  # hold 1.5s = skip
+  gamepad: []
+
+codex_filter:
+  domain: terminal_codex
+  keyboard:
+    - { type: keyboard, value: F }
+  gamepad: []
+
+codex_close:
+  domain: terminal_codex
+  keyboard:
+    - { type: keyboard, value: ESC }
+  gamepad: []
+
+# ─── SYSTEM (5 actions) ─────────────────────────────────────────────────────
+
+pause:
+  domain: system
+  keyboard:
+    - { type: keyboard, value: ESC }
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_START }
+
+quick_save:
+  domain: system
+  keyboard:
+    - { type: keyboard, value: F5 }
+  gamepad: []  # keyboard-only for MVP
+
+quick_load:
+  domain: system
+  keyboard:
+    - { type: keyboard, value: F9 }
+  gamepad: []  # keyboard-only for MVP
+
+screenshot:
+  domain: system
+  keyboard:
+    - { type: keyboard, value: F12 }
+  gamepad: []
+
+quit_to_title:
+  domain: system
+  keyboard:
+    - { type: keyboard, value: Q, modifiers: [CTRL] }  # Ctrl+Q
+  gamepad:
+    - { type: gamepad, value: GAMEPAD_BUTTON_START, hold_seconds: 2.0 }
+
+# ─── DEBUG (4 actions, dev build only) ──────────────────────────────────────
+# These are stripped from release builds via #if DEBUG compile flag.
+
+debug_toggle_god:
+  domain: debug
+  keyboard:
+    - { type: keyboard, value: F1 }
+  gamepad: []
+  debug_only: true
+
+debug_warp:
+  domain: debug
+  keyboard:
+    - { type: keyboard, value: F2 }
+  gamepad: []
+  debug_only: true
+
+debug_fill_codex:
+  domain: debug
+  keyboard:
+    - { type: keyboard, value: F3 }
+  gamepad: []
+  debug_only: true
+
+debug_damage:
+  domain: debug
+  keyboard:
+    - { type: keyboard, value: F4 }
+  gamepad: []
+  debug_only: true
+
+# ─── S5-008 ADDITIONS (Sprint 4 added these to project.godot but they ───
+# were never back-declared here; lint now catches the gap and these ───
+# records restore consistency per ADR-0009).
+battle_attack_slot1:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: "1" }
+  gamepad: []
+  note: 1-key attack in battle (Sprint 2 PR-2a; always_dispatch)
+
+battle_attack_slot2:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: "2" }
+  gamepad: []
+  note: 2-key attack in battle (Sprint 2 PR-2a; always_dispatch)
+
+battle_attack_slot3:
+  domain: battle_combat
+  keyboard:
+    - { type: keyboard, value: "3" }
+  gamepad: []
+  note: 3-key attack in battle (Sprint 2 PR-2a; always_dispatch)
+
+codex:
+  domain: terminal_codex
+  keyboard:
+    - { type: keyboard, value: C }
+  gamepad: []
+  note: Open/close codex in exploration (Sprint 3 S3-004; C key)
+
+mech_cycle:
+  domain: battle_build
+  keyboard:
+    - { type: keyboard, value: Q }
+  gamepad: []
+  note: Cycle equipped mech part (Sprint 4 S4-002; Q key)
+
+# ─── SUMMARY ────────────────────────────────────────────────────────────────
+# Domain counts (verify against AC-1 = 47 + S5-008 backfill = 52 total):
+#   exploration:     8 (move_up, move_down, move_left, move_right, interact, dash, open_codex, open_minimap)
+#   battle_combat:  15 (attack_primary, attack_secondary, use_item, defend, skip_turn, target_next, target_prev, cycle_weapons, confirm_target, cancel_target, flee_battle, pause_battle, battle_attack_slot1, battle_attack_slot2, battle_attack_slot3)
+#   battle_build:    5 (weapon_slot_1, weapon_slot_2, weapon_slot_3, cycle_ammo, mech_cycle)
+#   battle_mode:     2 (toggle_mode, toggle_auto_attack)
+#   menu_ui:         8 (menu_up, menu_down, menu_left, menu_right, menu_confirm, menu_cancel, menu_tab_next, menu_tab_prev)
+#   terminal_codex:  5 (play_log, skip_log, codex_filter, codex_close, codex)
+#   system:          5 (pause, quick_save, quick_load, screenshot, quit_to_title)
+#   debug:           4 (debug_toggle_god, debug_warp, debug_fill_codex, debug_damage)
+#   ─────────────
+#   TOTAL:          52 ✓ (47 ADR-0009 spec + 5 S5-008 backfill)
+
+# Cross-reference: matches design/gdd/player-input.md Section G1.

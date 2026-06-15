@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AmmoData" load_steps=2 format=3 uid="uid://ammo_emp_charge_001"]
+
+[ext_resource type="Script" path="res://src/resource/ammo_data.gd" id="1_ammo"]
+
+[resource]
+script = ExtResource("1_ammo")
+id = &"emp_charge"
+display_name = "EMP Charge"
+damage_mult = 0.6
+stack_size = 30

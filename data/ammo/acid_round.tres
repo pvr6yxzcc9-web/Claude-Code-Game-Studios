@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AmmoData" load_steps=2 format=3 uid="uid://ammo_acid_round_001"]
+
+[ext_resource type="Script" path="res://src/resource/ammo_data.gd" id="1_ammo"]
+
+[resource]
+script = ExtResource("1_ammo")
+id = &"acid_round"
+display_name = "Acid Round"
+damage_mult = 1.3
+stack_size = 50

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=2 format=3 uid="uid://weapon_mine_layer_001"]
+
+[ext_resource type="Script" path="res://src/resource/weapon_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+id = &"mine_layer"
+display_name = "Mine Layer"
+min_damage = 30
+max_damage = 45
+accuracy = 0.85
+ammo_slot = &"any"
+range = &"mid"
+crit_chance = 0.05
+crit_multiplier = 2.0

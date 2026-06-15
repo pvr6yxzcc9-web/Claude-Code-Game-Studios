@@ -37,7 +37,8 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: ""
+last_updated: "2026-06-12"
+revision: "Player Input GDD — added 8 input constants + 3 input formulas"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -140,6 +141,394 @@ formulas: []
 # Required fields: name, status, source, referenced_by, value, unit, added
 
 constants: []
+
+# ─── REGISTERED FROM: design/gdd/resource-data.md (2026-06-12) ─────────────
+# Resource 子类型（schema 定义，不是实例）。当某个 .tres 实例在多个 GDD
+# 出现时（例如 "laser_mk1" 武器同时在战斗 / 图鉴 / 存档），把那个实例作为
+# entity 注册到 entities: 段。本 GDD 只注册 schema 级常量与公式。
+
+  - name: weapon_damage_min_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 20
+    unit: damage
+    added: 2026-06-12
+    revised: ""
+
+  - name: weapon_damage_max_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 50
+    unit: damage
+    added: 2026-06-12
+    revised: ""
+
+  - name: enemy_hp_grunt_production_target
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 30
+    unit: hp
+    added: 2026-06-12
+    revised: ""
+    notes: "生产推荐：普通敌人 30–50 HP。Proto 用 200 玩家反馈太硬。"
+
+  - name: enemy_hp_elite_production_target
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 100
+    unit: hp
+    added: 2026-06-12
+    revised: ""
+    notes: "生产推荐：精英敌人 80–120 HP。"
+
+  - name: enemy_attack_grunt_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 25
+    unit: damage
+    added: 2026-06-12
+    revised: ""
+    notes: "Proto 验证值。玩家 HP 200 ÷ 25 = 8 击倒。"
+
+  - name: crit_chance_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 0.05
+    unit: probability
+    added: 2026-06-12
+    revised: ""
+
+  - name: crit_multiplier_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 2.0
+    unit: multiplier
+    added: 2026-06-12
+    revised: ""
+
+  - name: mech_part_max_hp_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 100
+    unit: hp
+    added: 2026-06-12
+    revised: ""
+    notes: "4 部位各 100 = 总 400。"
+
+  - name: ammo_stack_size_default
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 99
+    unit: stack
+    added: 2026-06-12
+    revised: ""
+
+  # ── REGISTERED 2026-06-12 REVISION: tight damage range + Pillar 4 types ──
+  - name: weapon_damage_max_allowed
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 200
+    unit: damage
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Tightened from 999 to 200 to prevent 1-shot boss kills. See Formulas.damage_ceiling_analysis."
+
+  - name: weapon_damage_min_floor
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 1
+    unit: damage
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Minimum damage rule: any successful hit deals at least 1 damage."
+
+  - name: weapon_accuracy_floor
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 0.05
+    unit: probability
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Floor on weapon accuracy to prevent 0% never-hits weapons."
+
+  - name: ammo_damage_mult_range
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: "0.5-2.0"
+    unit: multiplier
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Tightened from 0.1-3.0 to 0.5-2.0 to prevent 0-damage hits."
+
+  - name: crit_multiplier_range
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: "1.0-3.0"
+    unit: multiplier
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Tightened from 1.0-5.0 to 1.0-3.0."
+
+  - name: enemy_hp_boss_max
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 500
+    unit: hp
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "BOSS max HP. Tuned to be reachable in 3-5 turns at max build (195 dmg/hit)."
+
+  - name: id_prefix_required
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: "wpn_/ammo_/enm_/part_/itm_/eff_/log_/frag_/reg_"
+    unit: string
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Enforced in _init() per Core Rule #7. Three new prefixes (log/frag/reg) added in revision for Pillar 4 types."
+
+  - name: resource_subtype_count
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 9
+    unit: subtypes
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Original 6 (Weapon/Ammo/Enemy/MechPart/Item/Effect) + 3 new (TerminalLog/StoryFragment/Region) added in Pillar 4 revision."
+
+  - name: downstream_system_count
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    value: 13
+    unit: systems
+    added: 2026-06-12
+    revised: "2026-06-12"
+    notes: "Was 10 before revision. Added: NPC/Terminal Logs, Story Map, Region/Level data."
+
+  # ── REGISTERED 2026-06-12: Player Input GDD constants ──
+  # 8 constants from design/gdd/player-input.md Tuning Knobs (Section G).
+  # These are referenced by any GDD that depends on Player Input
+  # (Battle, Weapon, Level, etc.) — they MUST agree with the values in
+  # player-input.md. Conflicting values will fail /consistency-check.
+
+  - name: input_action_count
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 47
+    unit: actions
+    added: 2026-06-12
+    revised: ""
+    notes: "Closed set of 47 input actions (C-R1). AC-1 linter enforces this count."
+
+  - name: input_target_frame_ms
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 16.6
+    unit: ms
+    added: 2026-06-12
+    revised: ""
+    notes: "60 FPS frame budget. F1 latency formula constraint. From technical-preferences.md."
+
+  - name: input_to_handler_us_max
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 500
+    unit: microseconds
+    added: 2026-06-12
+    revised: ""
+    notes: "Profiling trigger (F1). Above this, architecture is too chatty."
+
+  - name: input_refused_hint_duration
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 0.30
+    unit: seconds
+    added: 2026-06-12
+    revised: ""
+    notes: "F2 default t_hint. Safe range 0.15-0.50."
+
+  - name: input_refused_audio_duration
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 0.10
+    unit: seconds
+    added: 2026-06-12
+    revised: ""
+    notes: "F2 t_audio. Fixed 100ms 'input_refused' cue length."
+
+  - name: dash_duration_frames
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 8
+    unit: frames
+    added: 2026-06-12
+    revised: ""
+    notes: "F3 dash active window. 8 frames @ 60 FPS = 133ms. Safe range 6-12."
+
+  - name: dash_iframes
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 6
+    unit: frames
+    added: 2026-06-12
+    revised: ""
+    notes: "F3 i-frame count. 75% of dash_duration_frames. Safe range 4-10."
+
+  - name: dash_cooldown_ms
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    value: 600
+    unit: ms
+    added: 2026-06-12
+    revised: ""
+    notes: "F3 dash cooldown. Safe range 400-1000."
+
+
+# ─── FORMULAS (registered by resource-data.md) ───────────────────────────────
+# 本 GDD 不"定义"完整公式（公式在战斗 / 伤害 GDD），但注册输入变量范围。
+
+formulas:
+
+  - name: weapon_damage_range
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    variables:
+      - min_damage
+      - max_damage
+    output_range: [1, 999]
+    expression: "randi_range(min_damage, max_damage)"
+    notes: "随机整数。Proto: min == max；生产建议 max = min × 1.1–1.2。"
+    added: 2026-06-12
+    revised: ""
+
+  - name: hit_chance
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    variables:
+      - accuracy
+    output_range: [0.0, 1.0]
+    expression: "randf() <= accuracy"
+    notes: "randf() <= accuracy → 命中。"
+    added: 2026-06-12
+    revised: ""
+
+  - name: drop_chance
+    status: active
+    source: design/gdd/resource-data.md
+    referenced_by:
+      - design/gdd/resource-data.md
+    variables:
+      - drop_rate
+    output_range: [0.0, 1.0]
+    expression: "randf() <= drop_rate"
+    notes: "每次敌人死亡 = 一次独立 roll。"
+    added: 2026-06-12
+    revised: ""
+
+  # ── REGISTERED 2026-06-12: Player Input formulas ──
+  # 3 formulas from design/gdd/player-input.md Formulas section (F1/F2/F3).
+  # These are timing/feedback formulas, NOT damage formulas. Combat math
+  # formulas are owned by battle-core-loop.md and damage-calc.md (when written).
+
+  - name: input_latency_budget
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    variables:
+      - input_to_handler_us
+      - handler_to_visual_ms
+      - target_frame_ms
+    output_range: [0.0, 16.6]
+    expression: "min(input_to_handler_us / 1000 + handler_to_visual_ms, target_frame_ms)"
+    notes: "F1. Total input-to-visual latency. p99 must be <= 16.5ms (AC-8)."
+    added: 2026-06-12
+    revised: ""
+
+  - name: input_refused_feedback_duration
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    variables:
+      - t_hint
+      - t_audio
+    output_range: [0.0, 0.50]
+    expression: "t_hint = clamp(0.30, 0.15, 0.50); t_audio = 0.10"
+    notes: "F2. AC-9 verifies hint visibility 0.25-0.35s."
+    added: 2026-06-12
+    revised: ""
+
+  - name: dash_iframe_curve
+    status: active
+    source: design/gdd/player-input.md
+    referenced_by:
+      - design/gdd/player-input.md
+    variables:
+      - dash_duration_frames
+      - dash_iframes
+      - dash_cooldown_ms
+    output_range: [0, 600]
+    expression: "dash_iframes / dash_duration_frames = 0.75; total cycle = (dash_duration_frames + dash_cooldown_ms / 16.6)"
+    notes: "F3. AC-10 verifies 8 active frames, 6 i-frames, 600ms cooldown."
+    added: 2026-06-12
+    revised: ""
 
 # Example:
 #
