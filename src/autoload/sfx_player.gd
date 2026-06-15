@@ -22,6 +22,11 @@ func _ready() -> void:
     _load_streams()
     print("[SFXPlayer] ready (loaded %d SFX files)" % _streams.size())
 
+# S6-018: public API for AudioManager to set volume on this bus.
+func set_volume_db(db: float) -> void:
+    if _player != null:
+        _player.volume_db = db
+
 func _load_streams() -> void:
     for name in [&"attack_blaster", &"attack_railgun", &"attack_plasma", &"hit_enemy", &"ui_click"]:
         var path: String = String(_SFX_DIR) + String(name) + ".wav"

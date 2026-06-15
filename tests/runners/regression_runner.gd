@@ -55,6 +55,14 @@ const TEST_FILES: Array[String] = [
     "res://tests/integration/fc48_l10n_coverage_test.gd",
     "res://tests/integration/fc49_build_pipeline_test.gd",
     "res://tests/integration/fc50_build_artifacts_test.gd",
+    "res://tests/integration/fc51_audio_settings_test.gd",
+    "res://tests/integration/fc52_npc_anim_test.gd",
+    "res://tests/integration/fc53_particle_fx_test.gd",
+    "res://tests/integration/fc54_chapter2_test.gd",
+    "res://tests/integration/fc55_ending_d_test.gd",
+    "res://tests/integration/fc56_ch2_full_test.gd",
+    "res://tests/integration/fc57_replay_test.gd",
+    "res://tests/integration/fc58_speedrun_test.gd",
     "res://tests/integration/sprint1_10_room_traversal_test.gd",
 ]
 

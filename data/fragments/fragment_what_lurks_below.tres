@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_what_lurks_below_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_what_lurks_below"
+display_name = "What Lurks Below"
+text = "A scratched note in a corridor: 'The warden sealed herself in. Says the lower decks are too cold. Says the cold moves. Don't go down.'"
+related_fragment_ids = Array[StringName]([])

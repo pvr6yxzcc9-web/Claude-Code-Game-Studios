@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://scavenger_leader_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/scavenger_leader.png" id="2_portrait"]
+
+[resource]
+portrait = ExtResource("2_portrait")
+script = ExtResource("1_npc")
+id = &"scavenger_leader"
+display_name = "Scavenger Leader Torvin"
+faction = &"frozen_reactor"
+dialogue_tree_id = &"dlg_scavenger_leader"
+location = &"frozen_reactor"
+role = &"merchant"
+inventory_id = &""
+description = "A pragmatic leader in a bandana and armored vest, runs a small crew of salvagers. Speaks bluntly."
+priority = 3

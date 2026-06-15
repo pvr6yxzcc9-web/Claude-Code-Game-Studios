@@ -21,6 +21,7 @@ const _TRACK_PATHS: Dictionary[StringName, String] = {
     &"title": "res://assets/audio/music/title.wav",
     &"exploration": "res://assets/audio/music/exploration.wav",
     &"battle": "res://assets/audio/music/battle.wav",
+    &"frozen_reactor": "res://assets/audio/music/frozen_reactor.wav",  # S6-102
 }
 
 # Volume (0.0 - 1.0). Music is quieter than SFX so it doesn't fatigue.
@@ -38,6 +39,11 @@ func _ready() -> void:
     add_child(_player)
     _load_streams()
     print("[MusicPlayer] ready (loaded %d track(s))" % _streams.size())
+
+# S6-018: public API for AudioManager to set volume on this bus.
+func set_volume_db(db: float) -> void:
+    if _player != null:
+        _player.volume_db = db
     # Wire to GameStateMachine state changes
     var sm: Node = get_node_or_null("/root/GameStateMachine")
     if sm != null and sm.has_signal("state_changed"):
@@ -64,7 +70,13 @@ func is_enabled() -> bool:
 func _track_for_state(state: StringName) -> StringName:
     match String(state):
         "state_title": return &"title"
-        "state_exploration": return &"exploration"
+        "state_exploration":
+            # S6-102: chapter-aware BGM. Ch2 uses frozen_reactor track.
+            var runtime: Node = get_tree().get_root().find_child("Main", true, false)
+            if runtime != null and runtime.has_method("get_chapter_index"):
+                if int(runtime.get_chapter_index()) == 2:
+                    return &"frozen_reactor"
+            return &"exploration"
         "state_battle": return &"battle"
         # All other states keep current track — no mid-dialogue/terminal
         # music swells for now.

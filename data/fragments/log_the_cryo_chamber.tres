@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_the_cryo_chamber_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_the_cryo_chamber"
+title = "DAMAGED LOG // CHAMBER DOORWAY"
+body = "Chamber temp: -196C. Optimal for indefinite preservation. But the child wakes sometimes. Hears the warden. Hears the warden humming."
+author = "Salvage Archive"
+date_in_world = "Year 3"
+unlock_fragment_id = &"fragment_the_cryo_chamber"
+importance = 3

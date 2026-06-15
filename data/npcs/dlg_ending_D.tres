@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ending_D_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ending_D"
+start_node_id = &"ending"
+nodes = {
+&"ending": {
+"text": "The Marrow Sentinel falls. You stand in a corridor of unmarked doors. You never read a single log. You never decoded a fragment. The story was always here, scratched into the walls, but you walked past every one. You have won. You have no idea what you won. The convoy is gone. Your questions are gone. You are alone, ignorant, and unharmed. The worst kind of ending: the kind you could have prevented by reading a single terminal.",
+"choices": []
+}
+}

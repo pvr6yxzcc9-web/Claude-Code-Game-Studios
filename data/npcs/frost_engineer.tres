@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://frost_engineer_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/frost_engineer.png" id="2_portrait"]
+
+[resource]
+portrait = ExtResource("2_portrait")
+script = ExtResource("1_npc")
+id = &"frost_engineer"
+display_name = "Frost Engineer Rhea"
+faction = &"frozen_reactor"
+dialogue_tree_id = &"dlg_frost_engineer"
+location = &"frozen_reactor"
+role = &"lore_keeper"
+inventory_id = &""
+description = "A salvage engineer in a heavy frost suit, maintaining the cryo-chamber. Speaks slowly, methodically."
+priority = 4

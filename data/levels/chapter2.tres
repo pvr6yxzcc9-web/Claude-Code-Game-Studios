@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://level_chapter2_001"]
+
+[ext_resource type="Script" path="res://src/resource/level_data.gd" id="1_level"]
+
+[resource]
+script = ExtResource("1_level")
+id = &"chapter2_frozen_reactor"
+display_name = "Chapter 2 — The Frozen Reactor"
+chapter_index = 2
+room_ids = Array[StringName]([&"c2_r1", &"c2_r2", &"c2_r3", &"c2_r4", &"c2_r5", &"c2_r6", &"c2_r7", &"c2_r8", &"c2_r9", &"c2_r10"])
+boss_id = &"boss_ice_warden"
+encounter_rate = 0.4
+description = "The abandoned cryo-reactor. The convoy is asleep. The warden keeps them cold. The road is gone. You are the only one who came."

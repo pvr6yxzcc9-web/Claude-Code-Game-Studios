@@ -191,6 +191,14 @@ func on_player_attack(slot: int) -> void:
 	_flash_enemy()
 	_spawn_damage_popup(raw_damage, is_crit)
 	_shake_camera(2.0 if is_crit else 1.0, 0.10 if is_crit else 0.06)
+	# S6-101: muzzle flash at player position + hit sparks at enemy position
+	var pfx: Node = get_node_or_null("/root/ParticleFx")
+	if pfx != null:
+		var player: Node = get_tree().get_root().find_child("Player", true, false)
+		if player != null:
+			pfx.spawn_muzzle_flash(player.global_position)
+		if _enemy_visual != null:
+			pfx.spawn_hit_spark(_enemy_visual.global_position)
 	var sfx: Node = get_node_or_null("/root/SFXPlayer")
 	if sfx != null and sfx.has_method("play_attack"):
 		# S6-010: pass weapon id so SFXPlayer can pick the right .wav
@@ -251,6 +259,12 @@ func _resolve_battle(victory: bool, dmg_dealt: int, dmg_taken: int) -> void:
 			meta.mark_unlocked(&"fragment_what_was_carried")
 			meta.mark_unlocked(&"fragment_the_truth")
 			meta.mark_unlocked(&"fragment_engineer_last_stand")
+		# S6-105: stop speedrun timer on boss victory. Records final
+		# time + updates best-time per chapter if faster.
+		var st: Node = get_node_or_null("/root/SpeedrunTimer")
+		if st != null and st.is_running():
+			var elapsed: int = st.stop_run()
+			print("[BattleScene] boss defeated in %d ms (best? %s)" % [elapsed, st.was_last_run_best()])
 		var ec: Node = get_node_or_null("/root/EndingController")
 		if ec != null and ec.has_method("play_ending"):
 			var err2: int = ec.play_ending()

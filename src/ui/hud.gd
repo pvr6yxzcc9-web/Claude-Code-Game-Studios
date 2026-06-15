@@ -32,6 +32,9 @@ var _hp_fill: ColorRect
 var _hp_border: ColorRect
 var _hp_text: Label
 var _mode_text: Label
+# S6-105: speedrun timer
+var _timer_text: Label
+var _timer_bg: ColorRect
 
 # S6-008: sprite overlays for HUD elements. Text-only HUD is functional
 # but reads like a debug build; sprites make it look like a game.
@@ -158,6 +161,20 @@ func _ready() -> void:
     _mode_text.add_theme_font_size_override("font_size", 14)
     _mode_text.visible = false
     add_child(_mode_text)
+    # S6-105: speedrun timer (top-center)
+    _timer_bg = ColorRect.new()
+    _timer_bg.color = Color(0, 0, 0, 0.6)
+    _timer_bg.position = Vector2(560, 8)
+    _timer_bg.size = Vector2(160, 24)
+    _timer_bg.visible = false
+    add_child(_timer_bg)
+    _timer_text = Label.new()
+    _timer_text.position = Vector2(566, 12)
+    _timer_text.add_theme_font_size_override("font_size", 16)
+    _timer_text.add_theme_color_override("font_color", Color(1, 1, 0.5, 1))
+    _timer_text.text = "00:00.000"
+    _timer_text.visible = false
+    add_child(_timer_text)
     # S4-002: mech part status row, 3 columns (T=torso, L=arm, R=arm).
     # Active slot (after Q cycle) is highlighted yellow; inactive is dim gray.
     var mech_y: float = 712.0
@@ -350,6 +367,19 @@ func _refresh() -> void:
         _mode_text.visible = true
     else:
         _mode_text.visible = false
+    # S6-105: speedrun timer
+    var st: Node = get_node_or_null("/root/SpeedrunTimer")
+    if st != null and _timer_text != null:
+        if st.is_running() or st.get_elapsed_ms() > 0:
+            var ms: int = st.get_elapsed_ms()
+            _timer_text.text = st.format_time(ms)
+            _timer_text.visible = true
+            if _timer_bg != null:
+                _timer_bg.visible = true
+        else:
+            _timer_text.visible = false
+            if _timer_bg != null:
+                _timer_bg.visible = false
 
 func _slot_name(weapon_id: StringName) -> String:
     if weapon_id == &"":

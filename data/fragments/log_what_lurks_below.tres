@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_what_lurks_below_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_what_lurks_below"
+title = "SCRATCHED NOTE // CORRIDOR 12"
+body = "The warden sealed herself in. Says the lower decks are too cold. Says the cold moves. Don't go down."
+author = "Salvage Crew 4"
+date_in_world = "Year 2"
+unlock_fragment_id = &"fragment_what_lurks_below"
+importance = 3

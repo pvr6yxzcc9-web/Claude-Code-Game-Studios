@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_what_the_warden_knew_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_what_the_warden_knew"
+display_name = "What the Warden Knew"
+text = "A warning, etched into metal: 'The warden knows the convoy isn't coming back. Has known for years. Why does she still keep the cold?'"
+related_fragment_ids = Array[StringName]([])

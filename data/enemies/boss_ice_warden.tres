@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://boss_ice_warden_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"boss_ice_warden"
+display_name = "Ice Warden"
+max_hp = 250
+attack = 22
+accuracy = 0.80
+boss = true
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"burn", &"plasma_rounds"])
+resistances = Array[StringName]([&"basic_cell"])

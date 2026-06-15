@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://frost_drone_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/frost_drone.png" id="2_portrait"]
+
+[resource]
+portrait = ExtResource("2_portrait")
+script = ExtResource("1_npc")
+id = &"frost_drone"
+display_name = "Salvage Drone 7"
+faction = &"frozen_reactor"
+dialogue_tree_id = &"dlg_frost_drone"
+location = &"frozen_reactor"
+role = &"merchant"
+inventory_id = &""
+description = "A maintenance drone with a single glowing eye. Speaks in clipped, machine-like phrases."
+priority = 2

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://ice_drone_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ice_drone"
+display_name = "Ice Drone"
+max_hp = 25
+attack = 8
+accuracy = 0.90
+boss = false
+boss_immune_to_one_shot = false
+weaknesses = Array[StringName]([&"plasma_rounds"])
+resistances = Array[StringName]()

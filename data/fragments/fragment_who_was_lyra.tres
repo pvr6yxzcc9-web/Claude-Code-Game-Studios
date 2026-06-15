@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_who_was_lyra_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_who_was_lyra"
+display_name = "Who Was Lyra"
+text = "A child's drawing on a corridor wall. Three stick figures in a box. A sun outside. The word 'home.'"
+related_fragment_ids = Array[StringName]([])

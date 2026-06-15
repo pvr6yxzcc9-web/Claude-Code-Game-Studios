@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://ice_hermit_001"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ice_hermit.png" id="2_portrait"]
+
+[resource]
+portrait = ExtResource("2_portrait")
+script = ExtResource("1_npc")
+id = &"ice_hermit"
+display_name = "Old Hermit Vex"
+faction = &"frozen_reactor"
+dialogue_tree_id = &"dlg_ice_hermit"
+location = &"frozen_reactor"
+role = &"ambient"
+inventory_id = &""
+description = "A wizened figure in frost-blue robes. Speaks in riddles, sometimes lucid. Lives in the upper corridors."
+priority = 2

@@ -46,6 +46,28 @@ func _enable_polling() -> void:
 
 var _polling_enabled: bool = false
 
+# S6-102: switch to a different level (chapter transition). Reloads
+# the level data, clears the room, and rebuilds from room 0.
+func change_chapter(new_level_id: StringName) -> void:
+	level_id = new_level_id
+	var reg: Node = get_node("/root/ResourceRegistry")
+	level_data = reg.get_resource(level_id) if reg != null else null
+	if level_data == null:
+		push_error("LevelRuntime: level %s not found" % level_id)
+		return
+	current_room_index = 0
+	build_room(0)
+	print("[LevelRuntime] changed to chapter %d (%s)" % [
+		int(level_data.get("chapter_index")) if level_data != null else 0, level_id])
+
+# S6-102: helper to get current chapter index, defaults to 1
+func get_chapter_index() -> int:
+	if level_data == null:
+		return 1
+	if "chapter_index" in level_data:
+		return int(level_data.chapter_index)
+	return 1
+
 func build_room(room_index: int) -> void:
 	print("[LevelRuntime] build_room(%d) called" % room_index)
 	current_room_index = room_index
@@ -158,11 +180,53 @@ func build_room(room_index: int) -> void:
 		_spawn_terminal(Vector2(950, 360), &"log_wreckage_inspection")
 	if room_index == 8:
 		_spawn_terminal(Vector2(950, 360), &"log_personal_log")
+	# S6-102: Chapter 2 content. Only applies when chapter_index == 2.
+	# C2 rooms have different NPCs (frost themed), terminals, and a
+	# breakable wall in room 7 that unlocks the secret terminal.
+	var is_ch2: bool = (get_chapter_index() == 2)
+	if is_ch2:
+		# C2-Room 0: frost engineer (lore)
+		if room_index == 0:
+			_spawn_npc(Vector2(300, 360), &"frost_engineer")
+		# C2-Room 2: ice hermit (ambient)
+		if room_index == 2:
+			_spawn_npc(Vector2(300, 360), &"ice_hermit")
+			_spawn_terminal(Vector2(950, 360), &"log_who_remains")
+		# C2-Room 3: scavenger leader (merchant) + 1 encounter
+		if room_index == 3:
+			_spawn_npc(Vector2(950, 360), &"scavenger_leader")
+			_spawn_encounter(Vector2(400, 400), &"frostling")
+		# C2-Room 4: salvage drone (merchant) + 1 terminal
+		if room_index == 4:
+			_spawn_npc(Vector2(300, 360), &"frost_drone")
+			_spawn_terminal(Vector2(950, 360), &"log_whats_in_the_crates")
+		# C2-Room 5: 1 encounter
+		if room_index == 5:
+			_spawn_encounter(Vector2(900, 400), &"shard_bot")
+		# C2-Room 6: 1 encounter
+		if room_index == 6:
+			_spawn_encounter(Vector2(900, 400), &"glacier")
+		# C2-Room 7: breakable wall (S4-008 equivalent) + 1 terminal
+		if room_index == 7:
+			_spawn_breakable_wall(Vector2(1100, 360), 4)  # harder to break
+			_spawn_terminal(Vector2(950, 360), &"log_what_lurks_below")
+		# C2-Room 8: 1 encounter (mini-boss-tier)
+		if room_index == 8:
+			_spawn_encounter(Vector2(900, 400), &"crystal_sentinel")
+		# C2-Room 9: BOSS (Ice Warden)
+		if room_index == 9:
+			_spawn_encounter(Vector2(640, 360), &"boss_ice_warden")
 	# Reposition player (use a fresh center spawn for first room; left/right edge otherwise)
 	var player: Node = get_tree().get_root().find_child("Player", true, false)
 	if player != null:
 		if room_index == 0:
 			player.global_position = Vector2(640, 360)  # room 0: center spawn
+			# S6-105: start speedrun timer on chapter entry (room 0).
+			# Re-start each time the player enters a fresh chapter.
+			var st: Node = get_node_or_null("/root/SpeedrunTimer")
+			if st != null and not st.is_running():
+				var chap_id: StringName = &"chapter1_scrapyard" if get_chapter_index() == 1 else &"chapter2_frozen_reactor"
+				st.start_run(chap_id)
 		elif door_dir == "right":
 			player.global_position = Vector2(1180, 360)  # came from right door (now on left side of new room)
 		else:
@@ -441,9 +505,19 @@ const _FLOOR_ROWS: int = 12
 const _FLOOR_DAMAGE_CHANCE: float = 0.08  # 8% of tiles damaged
 
 func _build_tiled_floor() -> void:
-	var floor_main: Texture2D = load("res://assets/tilesets/floor_main.png") as Texture2D
-	var floor_damaged: Texture2D = load("res://assets/tilesets/floor_damaged.png") as Texture2D
-	var floor_warning: Texture2D = load("res://assets/tilesets/floor_warning.png") as Texture2D
+	# S6-102: chapter-aware tile set. Ch1 = navy/orange, Ch2 = ice blue.
+	var tile_dir: String = "res://assets/tilesets/"
+	if level_data != null and "chapter_index" in level_data and int(level_data.chapter_index) == 2:
+		tile_dir = "res://assets/tilesets/ch2/"
+	var floor_main: Texture2D = load(tile_dir + "floor_main.png") as Texture2D
+	if floor_main == null:
+		floor_main = load("res://assets/tilesets/floor_main.png") as Texture2D
+	var floor_damaged: Texture2D = load(tile_dir + "floor_damaged.png") as Texture2D
+	if floor_damaged == null:
+		floor_damaged = load("res://assets/tilesets/floor_damaged.png") as Texture2D
+	var floor_warning: Texture2D = null
+	if int(level_data.get("chapter_index") if level_data != null else 1) == 1:
+		floor_warning = load("res://assets/tilesets/floor_warning.png") as Texture2D
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = hash("level_runtime_floor") ^ current_room_index
 	for row in _FLOOR_ROWS:
@@ -465,8 +539,15 @@ func _build_tiled_floor() -> void:
 # in build_room above) still drive physics. These sprites are positioned
 # to match the collision extents so the visual and physical walls align.
 func _build_wall_visuals() -> void:
-	var wall_tex: Texture2D = load("res://assets/tilesets/wall_industrial.png") as Texture2D
-	var wall_dmg: Texture2D = load("res://assets/tilesets/wall_damaged.png") as Texture2D
+	# S6-102: chapter-aware wall tiles
+	var wall_path: String = "wall_industrial.png" if int(level_data.get("chapter_index") if level_data != null else 1) == 1 else "wall_ice.png"
+	var wall_dmg_path: String = "wall_damaged.png" if int(level_data.get("chapter_index") if level_data != null else 1) == 1 else "wall_ice_damaged.png"
+	var wall_tex: Texture2D = load("res://assets/tilesets/" + wall_path) as Texture2D
+	if wall_tex == null:
+		wall_tex = load("res://assets/tilesets/wall_industrial.png") as Texture2D
+	var wall_dmg: Texture2D = load("res://assets/tilesets/" + wall_dmg_path) as Texture2D
+	if wall_dmg == null:
+		wall_dmg = load("res://assets/tilesets/wall_damaged.png") as Texture2D
 	if wall_tex == null:
 		return  # texture missing — fall back to invisible walls (still collidable)
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()

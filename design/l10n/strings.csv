@@ -41,6 +41,10 @@ ui.pause.confirm_subtitle,Unsaved progress will be lost.,未保存的进度会�
 ui.pause.confirm_yes,[YES],[确定]
 ui.pause.confirm_no,[NO],[取消]
 ui.pause.footer,↑/↓ + ENTER  |  Esc to resume,↑/↓ + 回车  |  Esc 继续
+ui.pause.settings_title,SETTINGS,设置
+ui.pause.master_volume,Master Volume:,主音量:
+ui.pause.mute,Mute [M]:,静音 [M]:
+ui.pause.settings_footer,←/→ adjust  |  M toggle mute  |  Esc back,←/→ 调整  |  M 切换静音  |  Esc 返回
 ui.death.title,REACTOR OFFLINE,反应堆离线
 ui.death.subtitle,The convoy has gone dark. Stand by for reactivation.,车队已失联。等待重新激活。
 ui.death.retry,RETRY,重试
