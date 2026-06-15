@@ -31,12 +31,14 @@ var _footer_label: Label
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# S6-019: localize menu items via Localization autoload
+	var loc: Node = get_node_or_null("/root/Localization")
 	_menu_items = [
-		{"label": "RESUME", "action": "resume"},
-		{"label": "SAVE", "action": "save"},
-		{"label": "LOAD", "action": "load"},
-		{"label": "SETTINGS (TBD)", "action": "settings"},
-		{"label": "QUIT TO TITLE", "action": "quit_to_title"},
+		{"label": loc.t(&"ui.pause.resume") if loc != null else "RESUME", "action": "resume"},
+		{"label": loc.t(&"ui.pause.save") if loc != null else "SAVE", "action": "save"},
+		{"label": loc.t(&"ui.pause.load") if loc != null else "LOAD", "action": "load"},
+		{"label": loc.t(&"ui.pause.settings") if loc != null else "SETTINGS (TBD)", "action": "settings"},
+		{"label": loc.t(&"ui.pause.quit_to_title") if loc != null else "QUIT TO TITLE", "action": "quit_to_title"},
 	]
 	# Backdrop: a dark PANEL only behind the menu items, NOT the full screen.
 	# (Earlier we used FULL_RECT which made the entire viewport darken — wrong.)
@@ -81,34 +83,34 @@ func _ready() -> void:
 	_confirm_bg.add_theme_stylebox_override("panel", stylebox)
 	add_child(_confirm_bg)
 	_confirm_title = Label.new()
-	_confirm_title.text = "QUIT TO TITLE?"
+	_confirm_title.text = loc.t(&"ui.pause.confirm_title") if loc != null else "QUIT TO TITLE?"
 	_confirm_title.add_theme_font_size_override("font_size", 22)
 	_confirm_title.add_theme_color_override("font_color", Color.WHITE)
 	_confirm_title.position = _confirm_bg.position + Vector2(20, 15)
 	_confirm_title.z_index = 201
 	add_child(_confirm_title)
 	_confirm_subtitle = Label.new()
-	_confirm_subtitle.text = "Unsaved progress will be lost."
+	_confirm_subtitle.text = loc.t(&"ui.pause.confirm_subtitle") if loc != null else "Unsaved progress will be lost."
 	_confirm_subtitle.add_theme_font_size_override("font_size", 14)
 	_confirm_subtitle.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8, 1))
 	_confirm_subtitle.position = _confirm_bg.position + Vector2(20, 45)
 	_confirm_subtitle.z_index = 201
 	add_child(_confirm_subtitle)
 	_confirm_yes = Label.new()
-	_confirm_yes.text = "[YES]"
+	_confirm_yes.text = loc.t(&"ui.pause.confirm_yes") if loc != null else "[YES]"
 	_confirm_yes.add_theme_font_size_override("font_size", 18)
 	_confirm_yes.position = _confirm_bg.position + Vector2(60, 100)
 	_confirm_yes.z_index = 201
 	add_child(_confirm_yes)
 	_confirm_no = Label.new()
-	_confirm_no.text = "[NO]"
+	_confirm_no.text = loc.t(&"ui.pause.confirm_no") if loc != null else "[NO]"
 	_confirm_no.add_theme_font_size_override("font_size", 18)
 	_confirm_no.position = _confirm_bg.position + Vector2(220, 100)
 	_confirm_no.z_index = 201
 	add_child(_confirm_no)
 	# Footer
 	_footer_label = Label.new()
-	_footer_label.text = "↑/↓ + ENTER  |  Esc to resume"
+	_footer_label.text = loc.t(&"ui.pause.footer") if loc != null else "↑/↓ + ENTER  |  Esc to resume"
 	_footer_label.add_theme_font_size_override("font_size", 12)
 	_footer_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 1))
 	_footer_label.position = Vector2((1280.0 - 280.0) / 2.0, 700.0)

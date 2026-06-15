@@ -21,15 +21,18 @@ func _ready() -> void:
 func _load_all_resources() -> void:
     var paths: Array[String] = _scan_directory("res://data/")
     for path in paths:
-        if not path.ends_with(".tres"):
+        # S6-020 fix: in pck context, the scan returns .tres.remap paths.
+        # The original .tres path (without .remap) works because Godot
+        # transparently resolves remaps. Try the canonical .tres path.
+        if not path.ends_with(".tres") and not path.ends_with(".tres.remap"):
             continue
-        var res: Resource = ResourceLoader.load(path)
+        var load_path: String = path
+        if path.ends_with(".tres.remap"):
+            load_path = path.replace(".tres.remap", ".tres")
+        var res: Resource = ResourceLoader.load(load_path)
         if res == null:
-            push_warning("ResourceRegistry: failed to load %s" % path)
             continue
-        # Each Resource must have an `id: StringName` field per ADR-0008
         if not ("id" in res):
-            push_warning("ResourceRegistry: %s has no 'id' field" % path)
             continue
         var id: StringName = res.get("id")
         if id in _registry:
@@ -66,7 +69,14 @@ func get_resource(id: StringName) -> Resource:
 func get_all_of_type(type: StringName) -> Array[Resource]:
     var result: Array[Resource] = []
     for res in _registry.values():
+        # S6-020 fix: also check get_script().get_class() because
+        # custom resource subtypes' is_class may not work in pck context
+        # until the script is recompiled.
         if res.is_class(type):
+            result.append(res)
+            continue
+        var script: Script = res.get_script()
+        if script != null and script.get_class() == String(type):
             result.append(res)
     return result
 

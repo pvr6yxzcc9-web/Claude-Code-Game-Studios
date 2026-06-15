@@ -142,3 +142,7 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+
+# === Godot export temp data (per-platform assembly dirs) ===
+data_Railhunter_*/
+

@@ -45,7 +45,8 @@ func _ready() -> void:
     bot.size = Vector2(PANEL_W, 2)
     add_child(bot)
     _title_label = Label.new()
-    _title_label.text = "SAVE / LOAD"
+    var loc: Node = get_node_or_null("/root/Localization")
+    _title_label.text = loc.t(&"ui.save.title") if loc != null else "SAVE / LOAD"
     _title_label.add_theme_font_size_override("font_size", 20)
     _title_label.add_theme_color_override("font_color", Color(0.5, 1.0, 0.5, 1))
     _title_label.position = Vector2(PANEL_X + 20, PANEL_Y + 35)
@@ -128,7 +129,10 @@ func _refresh() -> void:
     _highlight.position.y = PANEL_Y + SLOT_ROW_Y_OFFSET + selected_slot * SLOT_ROW_SPACING
     for i in SLOT_COUNT:
         var exists: bool = FileAccess.file_exists(save._slot_to_path(i))
-        var label_text: String = "%s  [%s]" % [SLOT_LABELS[i], "saved" if exists else "empty"]
+        var loc2: Node = get_node_or_null("/root/Localization")
+        var status_key: StringName = &"ui.save.saved" if exists else &"ui.save.empty_slot"
+        var status_str: String = loc2.tr(status_key) if loc2 != null else ("saved" if exists else "empty")
+        var label_text: String = "%s  [%s]" % [SLOT_LABELS[i], status_str]
         _slot_labels[i].text = label_text
         if i == selected_slot:
             _slot_labels[i].add_theme_color_override("font_color", Color(1, 1, 0.5, 1))

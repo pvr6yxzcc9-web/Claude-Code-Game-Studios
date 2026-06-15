@@ -38,7 +38,8 @@ func _ready() -> void:
 	add_child(_bg)
 	# Title
 	_title_label = Label.new()
-	_title_label.text = "IN BATTLE"
+	var loc: Node = get_node_or_null("/root/Localization")
+	_title_label.text = loc.t(&"ui.battle.title") if loc != null else "IN BATTLE"
 	_title_label.position = Vector2(540, 200)
 	_title_label.add_theme_font_size_override("font_size", 48)
 	_title_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3, 1))
@@ -69,13 +70,13 @@ func _ready() -> void:
 	add_child(_player_hp_label)
 	# Instructions
 	_instr1 = Label.new()
-	_instr1.text = "Press 1/2/3 to attack"
+	_instr1.text = loc.t(&"ui.battle.instr_attack") if loc != null else "Press 1/2/3 to attack"
 	_instr1.position = Vector2(380, 500)
 	_instr1.add_theme_font_size_override("font_size", 20)
 	_instr1.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1))
 	add_child(_instr1)
 	_instr2 = Label.new()
-	_instr2.text = "Press Esc to flee"
+	_instr2.text = loc.t(&"ui.battle.instr_flee") if loc != null else "Press Esc to flee"
 	_instr2.position = Vector2(360, 540)
 	_instr2.add_theme_font_size_override("font_size", 20)
 	_instr2.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1))
@@ -150,8 +151,12 @@ func _enter_battle() -> void:
 func _refresh() -> void:
 	if _enemy != null:
 		_enemy_name.text = String(_enemy.get("display_name"))
-		_enemy_hp_label.text = "HP: %d" % _enemy_hp
-	_player_hp_label.text = "Player HP: %d" % _player_hp
+		var loc: Node = get_node_or_null("/root/Localization")
+		var enemy_fmt: String = loc.t(&"ui.battle.enemy_hp") if loc != null else "HP: %d"
+		_enemy_hp_label.text = enemy_fmt % _enemy_hp
+	var loc2: Node = get_node_or_null("/root/Localization")
+	var player_fmt: String = loc2.t(&"ui.battle.player_hp") if loc2 != null else "Player HP: %d"
+	_player_hp_label.text = player_fmt % _player_hp
 
 func on_player_attack(slot: int) -> void:
 	if not in_battle:
@@ -284,7 +289,15 @@ func _spawn_damage_popup(damage: int, is_crit: bool) -> void:
 	if _enemy_visual == null:
 		return
 	var popup: Label = Label.new()
-	popup.text = ("CRIT " if is_crit else "") + str(damage)
+	var loc: Node = get_node_or_null("/root/Localization")
+	var crit_prefix: String = (loc.t(&"ui.battle.crit_popup") if loc != null else "CRIT %d")
+	# Only use the prefix for crits; non-crit is just the number
+	if is_crit:
+		# crit_popup is "CRIT %d" in English — split off the number for the popup
+		var prefix_only: String = "CRIT " if loc == null else loc.t(&"ui.battle.crit_prefix")
+		popup.text = prefix_only + str(damage)
+	else:
+		popup.text = str(damage)
 	popup.add_theme_font_size_override("font_size", 28 if is_crit else 22)
 	var color: Color = Color(1, 0.85, 0.2) if is_crit else Color(1, 1, 1)
 	popup.add_theme_color_override("font_color", color)

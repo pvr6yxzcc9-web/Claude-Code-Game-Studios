@@ -22,7 +22,19 @@ extends Node
 const HINT_DURATION_PER_STEP: float = 10.0
 const TOTAL_STEPS: int = 6
 
-const HINTS: Array[String] = [
+# S6-017: tutorial step keys (resolved via Localization.trf() at runtime).
+# Adding a new step = add a row to strings.csv + bump TOTAL_STEPS.
+const HINT_KEYS: Array[StringName] = [
+	&"ui.tutorial.step_1",
+	&"ui.tutorial.step_2",
+	&"ui.tutorial.step_3",
+	&"ui.tutorial.step_4",
+	&"ui.tutorial.step_5",
+	&"ui.tutorial.step_6",
+]
+
+# Legacy fallback (used only if Localization autoload not present)
+const HINTS_FALLBACK: Array[String] = [
 	"WASD or arrow keys to move",
 	"Press E near NPCs or terminals to interact",
 	"In battle, press 1/2/3 to attack with that slot's weapon",
@@ -69,9 +81,10 @@ func _show_current() -> void:
 		return
 	if not _active:
 		return
-	var text: String = HINTS[_current_step]
+	var text: String = _get_hint_text(_current_step)
+	var suffix: String = _get_esc_suffix()
 	if hud != null and hud.has_method("show_hint"):
-		hud.show_hint(text + " (ESC to skip)", HINT_DURATION_PER_STEP)
+		hud.show_hint(text + suffix, HINT_DURATION_PER_STEP)
 	hint_shown.emit(text, _current_step + 1, TOTAL_STEPS)
 	# Auto-advance to next step
 	if _timer != null and _timer.timeout.is_connected(_advance):
@@ -115,3 +128,21 @@ func is_active() -> bool:
 
 func get_current_step() -> int:
 	return _current_step
+
+# S6-017: resolve a step's text via Localization, with hardcoded fallback.
+func _get_hint_text(step: int) -> String:
+	var loc: Node = _get_loc_or_null()
+	if loc != null and step >= 0 and step < HINT_KEYS.size():
+		return loc.tr(HINT_KEYS[step])
+	if step >= 0 and step < HINTS_FALLBACK.size():
+		return HINTS_FALLBACK[step]
+	return ""
+
+func _get_loc_or_null() -> Node:
+	return get_node_or_null("/root/Localization")
+
+func _get_esc_suffix() -> String:
+	var loc: Node = _get_loc_or_null()
+	if loc != null:
+		return loc.t(&"ui.tutorial.esc_to_skip")
+	return " (ESC to skip)"

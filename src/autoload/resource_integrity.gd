@@ -12,8 +12,14 @@ signal integrity_check_failed(reasons: Array)
 
 const EXPECTED_SUBTYPES: Array[String] = [
     "WeaponData", "AmmoData", "EnemyData", "MechPartData",
-    "ItemData", "EffectData", "TerminalLogData", "StoryFragmentData",
-    "RegionData", "NPCData",
+    "EffectData", "TerminalLogData", "StoryFragmentData",
+    "NPCData",
+]
+# Subtypes declared in src/resource/ but not yet populated with .tres data.
+# These are forward-declared for future use and should NOT cause integrity
+# failures when no resources of that type exist yet.
+const OPTIONAL_SUBTYPES: Array[String] = [
+    "ItemData", "RegionData",
 ]
 
 func _ready() -> void:
@@ -33,7 +39,14 @@ func run_check() -> void:
     for st in EXPECTED_SUBTYPES:
         var found_one: bool = false
         for r in loaded:
-            if r.is_class(st) or r.get_script().get_class() == st:
+            # S6-020 fix: in pck context, is_class() may not work for
+            # custom resource subtypes until the script is recompiled.
+            # Check both is_class and the script's get_class().
+            if r.is_class(st):
+                found_one = true
+                break
+            var rscript: Script = r.get_script()
+            if rscript != null and (rscript.get_class() == st or rscript.get_global_name() == st):
                 found_one = true
                 break
         if not found_one:

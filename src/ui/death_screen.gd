@@ -43,7 +43,8 @@ func _build_ui() -> void:
 
 	# Death title (lore-flavored)
 	_title_label = Label.new()
-	_title_label.text = "REACTOR OFFLINE"
+	var loc: Node = get_node_or_null("/root/Localization")
+	_title_label.text = loc.t(&"ui.death.title") if loc != null else "REACTOR OFFLINE"
 	_title_label.add_theme_font_size_override("font_size", 64)
 	_title_label.add_theme_color_override("font_color", _TEXT_COLOR)
 	_title_label.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -56,7 +57,7 @@ func _build_ui() -> void:
 
 	# Subtitle
 	var subtitle: Label = Label.new()
-	subtitle.text = "The convoy has gone dark. Stand by for reactivation."
+	subtitle.text = loc.t(&"ui.death.subtitle") if loc != null else "The convoy has gone dark. Stand by for reactivation."
 	subtitle.add_theme_font_size_override("font_size", 18)
 	subtitle.add_theme_color_override("font_color", Color(0.7, 0.5, 0.5, 1))
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -66,8 +67,8 @@ func _build_ui() -> void:
 	add_child(subtitle)
 
 	# Retry button (default focus)
-	_retry_button = _make_button("> RETRY <", Vector2(640 - 100, 400), 200, 60)
-	_quit_button = _make_button("  QUIT TO TITLE  ", Vector2(640 - 100, 480), 200, 60)
+	_retry_button = _make_button("> " + (loc.t(&"ui.death.retry") if loc != null else "RETRY") + " <", Vector2(640 - 100, 400), 200, 60)
+	_quit_button = _make_button("  " + (loc.t(&"ui.death.quit") if loc != null else "QUIT TO TITLE") + "  ", Vector2(640 - 100, 480), 200, 60)
 	_buttons = [_retry_button, _quit_button]
 	_update_focus()
 

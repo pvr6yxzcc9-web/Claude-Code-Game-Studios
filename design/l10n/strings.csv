@@ -1,0 +1,72 @@
+key,en,zh
+ui.main_menu.title,RAILHUNTER,钢轨猎人
+ui.main_menu.subtitle,Steel Rail Hunter,银河边缘机甲猎人
+ui.main_menu.new_game,NEW GAME,新游戏
+ui.main_menu.load_game,LOAD GAME,读取存档
+ui.main_menu.settings,SETTINGS,设置
+ui.main_menu.quit,QUIT,退出
+ui.main_menu.footer,v1.0.0-rc1  -  ↑/↓ + ENTER,按 ↑/↓ 选择 + 回车
+ui.hud.state.title,TITLE,标题
+ui.hud.state.exploring,EXPLORING,探索
+ui.hud.state.in_battle,IN BATTLE,战斗中
+ui.hud.state.paused,PAUSED,暂停
+ui.hud.state.dialogue,DIALOGUE,对话
+ui.hud.state.terminal,TERMINAL,终端
+ui.hud.state.codex,CODEX,图鉴
+ui.hud.state.save_load,SAVE/LOAD,存档/读档
+ui.hud.state.game_over,GAME OVER,战斗失败
+ui.hud.fragments,FRAGMENTS: %d/%d,碎片：%d/%d
+ui.hud.hp,HP %d / %d,生命 %d / %d
+ui.hud.player_hp,Player HP: %d,生命：%d
+ui.hud.weapon_slot_empty,EMPTY,空
+ui.hud.mode_label,MODE: [%s]  (M to toggle),模式：[%s]（按 M 切换）
+ui.hud.mode_manual,MANUAL,手动
+ui.hud.mode_auto,AUTO,自动
+ui.hud.fragment_icon_alt,Fragment,碎片
+ui.battle.title,IN BATTLE,战斗中
+ui.battle.instr_attack,Press 1/2/3 to attack,按 1/2/3 攻击
+ui.battle.instr_flee,Press Esc to flee,按 Esc 逃跑
+ui.battle.enemy_hp,HP: %d,生命：%d
+ui.battle.player_hp,Player HP: %d,生命：%d
+ui.battle.crit_popup,CRIT %d,暴击 %d
+ui.battle.crit_prefix,CRIT ,暴击
+ui.pause.title,PAUSED,已暂停
+ui.pause.resume,RESUME,继续
+ui.pause.save,SAVE,存档
+ui.pause.load,LOAD,读档
+ui.pause.settings,SETTINGS,设置
+ui.pause.quit_to_title,QUIT TO TITLE,返回标题
+ui.pause.confirm_title,QUIT TO TITLE?,返回标题？
+ui.pause.confirm_subtitle,Unsaved progress will be lost.,未保存的进度会丢失。
+ui.pause.confirm_yes,[YES],[确定]
+ui.pause.confirm_no,[NO],[取消]
+ui.pause.footer,↑/↓ + ENTER  |  Esc to resume,↑/↓ + 回车  |  Esc 继续
+ui.death.title,REACTOR OFFLINE,反应堆离线
+ui.death.subtitle,The convoy has gone dark. Stand by for reactivation.,车队已失联。等待重新激活。
+ui.death.retry,RETRY,重试
+ui.death.quit,QUIT,退出
+ui.terminal.title,TERMINAL,终端
+ui.terminal.footer,E or Esc to close,按 E 或 Esc 关闭
+ui.codex.title,CODEX,图鉴
+ui.codex.empty,No fragments found yet.,尚未发现任何碎片。
+ui.codex.footer,C or Esc to close,按 C 或 Esc 关闭
+ui.dialogue.continue,Press E to continue...,按 E 继续...
+ui.dialogue.empty,The conversation ends here.,对话结束。
+ui.dialogue.choices_prompt,Make a choice:,请选择：
+ui.save.title,SAVE / LOAD,存档/读档
+ui.save.empty,No saved games found.,未发现存档。
+ui.save.saved,saved,已存档
+ui.save.empty_slot,empty,空
+ui.save.footer,Tab to close,按 Tab 关闭
+ui.tutorial.step_1,WASD or arrow keys to move,WASD 或方向键移动
+ui.tutorial.step_2,Press E near NPCs or terminals to interact,靠近 NPC 或终端后按 E 互动
+ui.tutorial.step_3,In battle, press 1/2/3 to attack with that slot's weapon,战斗中按 1/2/3 用对应槽位武器攻击
+ui.tutorial.step_4,C opens the Codex (story fragments) | M toggles auto-mode,按 C 打开图鉴（剧情碎片）| 按 M 切换自动模式
+ui.tutorial.step_5,Q cycles your equipped mech part (Torso/Legs/Arms),按 Q 切换机甲部件（躯干/腿/手臂）
+ui.tutorial.step_6,Explore terminals to find fragments before beating the boss,击败 BOSS 前探索终端收集碎片
+ui.tutorial.esc_to_skip, (ESC to skip),（按 ESC 跳过）
+ui.prompt.interact,[E],[E]
+ui.terminal.marker_label,TERMINAL,终端
+ui.npc.marker_label,NPC,NPC
+ui.breakable.marker_label,?,?
+ui.hint.player_pos,Player at (%d, %d),玩家位于 (%d, %d)

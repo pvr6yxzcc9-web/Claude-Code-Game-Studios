@@ -43,7 +43,8 @@ func _ready() -> void:
     add_child(_title_label)
     # Footer
     _footer_label = Label.new()
-    _footer_label.text = "[ESC] to close"
+    var loc: Node = get_node_or_null("/root/Localization")
+    _footer_label.text = loc.t(&"ui.terminal.footer") if loc != null else "[ESC] to close"
     _footer_label.add_theme_font_size_override("font_size", 14)
     _footer_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
     _footer_label.position = _bg.position + Vector2(20, _bg.size.y - 30)

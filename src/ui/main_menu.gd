@@ -13,30 +13,41 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	size = Vector2(1280, 720)
 	set_anchors_preset(Control.PRESET_TOP_LEFT)
-	# Background
-	var bg: ColorRect = ColorRect.new()
-	bg.color = Color(0.04, 0.06, 0.10, 1)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
+	# S6-016: replace flat ColorRect background with title screen art
+	# (starfield + nebula + dwarf planet + derelict silhouette + horizon).
+	# Falls back to ColorRect if the PNG is missing.
+	if ResourceLoader.exists("res://assets/sprites/title/title_bg.png"):
+		var bg_tex: TextureRect = TextureRect.new()
+		bg_tex.texture = load("res://assets/sprites/title/title_bg.png")
+		bg_tex.set_anchors_preset(Control.PRESET_FULL_RECT)
+		bg_tex.stretch_mode = TextureRect.STRETCH_SCALE
+		add_child(bg_tex)
+	else:
+		var bg: ColorRect = ColorRect.new()
+		bg.color = Color(0.04, 0.06, 0.10, 1)
+		bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+		add_child(bg)
+	# S6-017: title + menu use Localization autoload (English fallback)
+	var loc: Node = get_node_or_null("/root/Localization")
 	# Title
 	_title_label = Label.new()
-	_title_label.text = "RAILHUNTER"
+	_title_label.text = loc.t(&"ui.main_menu.title") if loc != null else "RAILHUNTER"
 	_title_label.add_theme_font_size_override("font_size", 48)
 	_title_label.add_theme_color_override("font_color", Color(0.95, 0.95, 1.0))
 	_title_label.position = Vector2(400, 180)
 	add_child(_title_label)
 	var subtitle: Label = Label.new()
-	subtitle.text = "钢轨猎人"
+	subtitle.text = loc.t(&"ui.main_menu.subtitle") if loc != null else "Steel Rail Hunter"
 	subtitle.add_theme_font_size_override("font_size", 28)
 	subtitle.add_theme_color_override("font_color", Color(0.7, 0.7, 0.85, 0.9))
 	subtitle.position = Vector2(590, 220)
 	add_child(subtitle)
 	# Menu items
 	_menu_items = [
-		{"label": "NEW GAME", "action": "new_game"},
-		{"label": "LOAD GAME", "action": "load_game"},
-		{"label": "SETTINGS (TBD)", "action": "settings"},
-		{"label": "QUIT", "action": "quit"},
+		{"label": loc.t(&"ui.main_menu.new_game") if loc != null else "NEW GAME", "action": "new_game"},
+		{"label": loc.t(&"ui.main_menu.load_game") if loc != null else "LOAD GAME", "action": "load_game"},
+		{"label": loc.t(&"ui.main_menu.settings") if loc != null else "SETTINGS (TBD)", "action": "settings"},
+		{"label": loc.t(&"ui.main_menu.quit") if loc != null else "QUIT", "action": "quit"},
 	]
 	var menu_x: float = 560
 	var menu_y: float = 396
@@ -55,7 +66,7 @@ func _ready() -> void:
 		_on_state_changed(&"", sm.top_of_stack)
 	# Footer
 	var footer: Label = Label.new()
-	footer.text = "v0.1.0 (build 2026-06-14)  -  ↑/↓ + ENTER"
+	footer.text = loc.t(&"ui.main_menu.footer") if loc != null else "v1.0.0-rc1  -  ↑/↓ + ENTER"
 	footer.add_theme_font_size_override("font_size", 12)
 	footer.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 1))
 	footer.position = Vector2(10, 700)

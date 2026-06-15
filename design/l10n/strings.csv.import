@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dmqfx15qoj466"
+
+[deps]
+
+files=["res://design/l10n/strings.en.translation", "res://design/l10n/strings.zh.translation"]
+
+source_file="res://design/l10n/strings.csv"
+dest_files=["res://design/l10n/strings.en.translation", "res://design/l10n/strings.zh.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

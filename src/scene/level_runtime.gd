@@ -261,17 +261,34 @@ func _spawn_npc(pos: Vector2, npc_id: StringName) -> void:
 	rect.size = Vector2(48, 48)
 	shape.shape = rect
 	npc_ctrl.add_child(shape)
-	# Visual: yellow square for NPC
-	var visual: ColorRect = ColorRect.new()
-	visual.position = Vector2(-24, -24)
-	visual.size = Vector2(48, 48)
-	visual.color = Color(0.9, 0.8, 0.2, 0.8)
-	npc_wrapper.add_child(visual)
-	# Marker label
-	var label: Label = Label.new()
-	label.text = "NPC"
-	label.position = Vector2(-12, -50)
-	npc_wrapper.add_child(label)
+	# S6-015: visual is now the NPC's portrait (64x64 sprite) if available.
+	# Fall back to a yellow ColorRect (legacy) if portrait is missing.
+	var reg: Node = get_node("/root/ResourceRegistry")
+	var npc_data_res: Resource = reg.get_resource(npc_id)
+	if npc_data_res != null and "portrait" in npc_data_res and npc_data_res.portrait != null:
+		var portrait_sprite: Sprite2D = Sprite2D.new()
+		portrait_sprite.texture = npc_data_res.portrait
+		portrait_sprite.position = Vector2(-32, -32)
+		portrait_sprite.centered = true
+		npc_wrapper.add_child(portrait_sprite)
+		# Interaction prompt "E" above head
+		var prompt: Label = Label.new()
+		prompt.text = _tr(&"ui.prompt.interact", "[E]")
+		prompt.position = Vector2(-12, -52)
+		prompt.add_theme_font_size_override("font_size", 12)
+		prompt.add_theme_color_override("font_color", Color(1, 1, 0.5, 1))
+		npc_wrapper.add_child(prompt)
+	else:
+		# Fallback: yellow square + label (legacy)
+		var visual: ColorRect = ColorRect.new()
+		visual.position = Vector2(-24, -24)
+		visual.size = Vector2(48, 48)
+		visual.color = Color(0.9, 0.8, 0.2, 0.8)
+		npc_wrapper.add_child(visual)
+		var label: Label = Label.new()
+		label.text = _tr(&"ui.npc.marker_label", "NPC")
+		label.position = Vector2(-12, -50)
+		npc_wrapper.add_child(label)
 	npc_wrapper.set_meta("npc_id", npc_id)
 	_npcs.append(npc_wrapper)
 
@@ -294,7 +311,7 @@ func _spawn_breakable_wall(pos: Vector2, hp: int) -> void:
 	# together when the wall breaks.
 	for marker_offset in [Vector2(-20, -180), Vector2(20, -180)]:
 		var marker: Label = Label.new()
-		marker.text = "?"
+		marker.text = _tr(&"ui.breakable.marker_label", "?")
 		marker.add_theme_font_size_override("font_size", 24)
 		marker.add_theme_color_override("font_color", Color(1.0, 0.95, 0.4, 1))
 		marker.position = marker_offset
@@ -325,7 +342,7 @@ func _spawn_terminal(pos: Vector2, log_id: StringName) -> void:
 	visual.color = Color(0.2, 0.7, 0.9, 0.8)
 	term_wrapper.add_child(visual)
 	var label: Label = Label.new()
-	label.text = "TERMINAL"
+	label.text = _tr(&"ui.terminal.marker_label", "TERMINAL")
 	label.position = Vector2(-30, -50)
 	term_wrapper.add_child(label)
 	# Wire up: body_entered opens the log via TerminalController
@@ -385,6 +402,14 @@ func _process(_delta: float) -> void:
 			var sm: Node = get_node("/root/GameStateMachine")
 			sm.transition_to(&"state_battle")
 			return
+
+# S6-019: small wrapper around Localization.tr() with English fallback.
+# Use this anywhere you'd write a hardcoded UI string in level_runtime.
+func _tr(key: StringName, fallback: String) -> String:
+	var loc: Node = get_node_or_null("/root/Localization")
+	if loc != null:
+		return loc.tr(key)
+	return fallback
 
 func _on_encounter_body_entered(body: Node, enc: Node2D) -> void:
 	if not body is PlayerController:

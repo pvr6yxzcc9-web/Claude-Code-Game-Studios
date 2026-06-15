@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="NPCData" load_steps=2 format=3 uid="uid://npc_vera_001"]
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_vera_001"]
 
 [ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/vera_merchant.png" id="2_portrait"]
 
 [resource]
 script = ExtResource("1_npc")
 id = &"vera_merchant"
 display_name = "Vera the Salvage-Monger"
+portrait = ExtResource("2_portrait")
 faction = &"independent"
 dialogue_tree_id = &"dlg_vera_greeting"
 location = &"scrapyard_01"

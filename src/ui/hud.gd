@@ -204,43 +204,45 @@ func _on_state_changed(_old: StringName, new: StringName) -> void:
     _refresh()
 
 func _refresh_state(state: StringName) -> void:
+    # S6-017: state badge labels are localized
+    var loc: Node = get_node_or_null("/root/Localization")
     match String(state):
         "state_title":
-            _state_label = "TITLE"
+            _state_label = loc.t(&"ui.hud.state.title") if loc != null else "TITLE"
             _state_color = Color(0.5, 0.5, 0.5, 1)
             _state_bg.color = Color(0, 0, 0, 0.6)
         "state_exploration":
-            _state_label = "EXPLORING"
+            _state_label = loc.t(&"ui.hud.state.exploring") if loc != null else "EXPLORING"
             _state_color = Color(0.3, 0.8, 1.0, 1)
             _state_bg.color = Color(0, 0, 0, 0.6)
         "state_battle":
-            _state_label = "IN BATTLE"
+            _state_label = loc.t(&"ui.hud.state.in_battle") if loc != null else "IN BATTLE"
             _state_color = Color(1.0, 0.3, 0.3, 1)
             _state_bg.color = Color(0, 0, 0, 0.6)
         "state_menu", "state_pause":
-            _state_label = "PAUSED"
+            _state_label = loc.t(&"ui.hud.state.paused") if loc != null else "PAUSED"
             _state_color = Color(0.9, 0.9, 0.3, 1)
             _state_bg.color = Color(0.3, 0.3, 0, 0.85)
         "state_dialogue":
-            _state_label = "DIALOGUE"
+            _state_label = loc.t(&"ui.hud.state.dialogue") if loc != null else "DIALOGUE"
             _state_color = Color(0.6, 0.4, 0.9, 1)
         "state_terminal":
-            _state_label = "TERMINAL"
+            _state_label = loc.t(&"ui.hud.state.terminal") if loc != null else "TERMINAL"
             _state_color = Color(0.3, 0.9, 0.6, 1)
         "state_codex":
-            _state_label = "CODEX"
+            _state_label = loc.t(&"ui.hud.state.codex") if loc != null else "CODEX"
             _state_color = Color(0.4, 0.7, 0.9, 1)
         "state_save_load":
-            _state_label = "SAVE/LOAD"
+            _state_label = loc.t(&"ui.hud.state.save_load") if loc != null else "SAVE/LOAD"
             _state_color = Color(0.7, 0.7, 0.7, 1)
         "state_game_over":
-            _state_label = "GAME OVER"
+            _state_label = loc.t(&"ui.hud.state.game_over") if loc != null else "GAME OVER"
             _state_color = Color(0.9, 0.1, 0.1, 1)
         _:
             _state_label = String(state).to_upper()
             _state_color = Color(0.7, 0.7, 0.7, 1)
     if String(state) == "state_battle":
-        _mode_label = "MANUAL"
+        _mode_label = loc.t(&"ui.hud.mode_manual") if loc != null else "MANUAL"
     else:
         _mode_label = ""
 
@@ -269,7 +271,9 @@ func _refresh_fragments(_meta: Node) -> void:
     _fragment_count = live_size
     _fragment_total = 12
     if _frag_text != null:
-        _frag_text.text = "FRAGMENTS: %d/%d" % [_fragment_count, _fragment_total]
+        var loc: Node = get_node_or_null("/root/Localization")
+        var fmt: String = loc.t(&"ui.hud.fragments") if loc != null else "FRAGMENTS: %d/%d"
+        _frag_text.text = fmt % [_fragment_count, _fragment_total]
 
 # S2-005: live-update fragment counter when a fragment is unlocked mid-play
 # (terminal open, dialogue choice). mark_unlocked() in MetaState is the only
@@ -302,7 +306,9 @@ func set_hp(current: int, max_hp: int) -> void:
 func _refresh() -> void:
     _state_text.text = _state_label
     _state_text.add_theme_color_override("font_color", _state_color)
-    _frag_text.text = "FRAGMENTS: %d/%d" % [_fragment_count, _fragment_total]
+    var loc3: Node = get_node_or_null("/root/Localization")
+    var frag_fmt: String = loc3.t(&"ui.hud.fragments") if loc3 != null else "FRAGMENTS: %d/%d"
+    _frag_text.text = frag_fmt % [_fragment_count, _fragment_total]
     # Weapon slots
     var loadout: Node = get_node_or_null("/root/WeaponLoadout")
     if loadout != null:
@@ -331,11 +337,16 @@ func _refresh() -> void:
         hp_color = Color(0.8, 0.2, 0.2)
     _hp_fill.color = hp_color
     _hp_fill.size.x = bar_w * ratio
-    _hp_text.text = "HP %d / %d" % [player_hp, player_hp_max]
+    var loc4: Node = get_node_or_null("/root/Localization")
+    var hp_fmt: String = loc4.t(&"ui.hud.hp") if loc4 != null else "HP %d / %d"
+    _hp_text.text = hp_fmt % [player_hp, player_hp_max]
     # Mode indicator
     if _mode_label != "":
-        _mode_text.text = "MODE: [%s]  (M to toggle)" % _mode_label
-        _mode_text.add_theme_color_override("font_color", Color(0.3, 0.8, 1.0) if _mode_label == "MANUAL" else Color(1.0, 0.6, 0.3))
+        var loc5: Node = get_node_or_null("/root/Localization")
+        var mode_fmt: String = loc5.t(&"ui.hud.mode_label") if loc5 != null else "MODE: [%s]  (M to toggle)"
+        _mode_text.text = mode_fmt % _mode_label
+        var is_manual: bool = _mode_label == loc5.t(&"ui.hud.mode_manual") if loc5 != null else _mode_label == "MANUAL"
+        _mode_text.add_theme_color_override("font_color", Color(0.3, 0.8, 1.0) if is_manual else Color(1.0, 0.6, 0.3))
         _mode_text.visible = true
     else:
         _mode_text.visible = false
