@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_ch3_hive_larva_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ch3_hive_larva"
+display_name = "蜂巢幼虫 (Hive Larva)"
+max_hp = 50
+attack = 12
+accuracy = 0.95
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"fire"])
+resistances = Array[StringName]([&"ice"])

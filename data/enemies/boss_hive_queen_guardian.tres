@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://boss_hive_queen_guardian_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"boss_hive_queen_guardian"
+display_name = "蜂后守卫 (Hive Queen's Guard)"
+max_hp = 2400
+attack = 35
+accuracy = 0.85
+boss = true
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"fire"])
+resistances = Array[StringName]([&"ice"])
