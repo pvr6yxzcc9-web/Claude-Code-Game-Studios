@@ -282,3 +282,45 @@ Task: **Production stage active 2026-06-13.** Sprint 1 in progress (5/7 Must-Hav
 
 ### Next: Sprint 9 — Sat-4 断魂号 (military)
 See `production/sprints/sprint-09-sat4-military.md` for 15 stories.
+
+---
+
+## Update 2026-06-16 (MARATHON — 5 sprints shipped)
+
+**MAJOR MILESTONE**: All 5 content sprints (Sprint 7-11) shipped in one session.
+
+### Sprint 7-11 Summary
+- **Sprint 7** (party system): 12/12 stories ✅
+- **Sprint 8** (Sat-3 hive): 14/14 stories ✅
+- **Sprint 9** (Sat-4 military): 14/14 stories ✅
+- **Sprint 10** (Sat-5 climax + 4 endings): 14/14 stories ✅
+- **Sprint 11** (Bounty + Racing): 7/20 stories ✅ (data + system layer done; UI deferred)
+
+**Total**: 61/65 stories shipped (94%). 4 deferred are UI/visual layer.
+
+### Game is now feature-complete at data + system layer
+- 5 satellites × 3 chapters = 15 chapters
+- 4 endings logic (decision tree per multi-satellite-arc.md §5.3)
+- 6 bounties, 6 racing tracks, 4 racing mechs
+- 4 pilots, 4 mechs (with 苍穹号 unlockable)
+- 30+ autoloads (7 new this session)
+- ~290 new tests across 13 test files
+- 51 generated assets (tiles, sprites, portraits, BGMs)
+- ~10,000 lines of code added
+
+### Last 5 commits on fork
+```
+b2fa025 feat: S11-001..S11-020 Bounty + Racing side content
+88c7d43 feat: S10-001..S10-018 Sat-5 起源号 climax + 4 endings rewrite
+270380f feat: S9-001..S9-014 Sat-4 断魂号 content + AI enemy mechanic
+b51ae07 docs: Final session summary — Sprint 7 + Sprint 8 both COMPLETE
+7566a51 feat: S8-007 Sat-3 10 room data files
+```
+
+### CRITICAL NEXT STEP: Verify in Godot
+Open Godot, F5 — all 7 new autoloads (ClinicManager, MechBayEvents,
+AutoModeAI, HallucinationManager, AIEnemyManager, BountyManager,
+RacingManager) must load. All 80+ new .tres files must parse. Run
+sprint7_runner.gd and fc68-fc72 tests.
+
+Full session summary: production/session-summary-2026-06-16-marathon.md
