@@ -127,7 +127,7 @@ func play_ending() -> Error:
 	return err
 
 func _on_ending_dialogue_ended(letter: String) -> void:
-	# Play post-credit scene
+	# Play post-credit scene (UI scene, S10-014..S10-017)
 	play_post_credit_scene(letter)
 	# Save ending stamp
 	save_ending_stamp(letter)
@@ -135,10 +135,27 @@ func _on_ending_dialogue_ended(letter: String) -> void:
 func play_post_credit_scene(letter: String) -> void:
 	ending_post_credit_started.emit(letter)
 	print("[EndingController] playing post-credit scene for ending %s" % letter)
-	# The actual scene is rendered by the dialogue system / UI overlay.
-	# Here we just emit the signal so external systems can react.
-	# (Implementation deferred — S10-014/015/016/017 will provide scene logic.)
-	ending_post_credit_finished.emit(letter)
+	# Trigger the PostCreditScene UI (S10-014..S10-017)
+	# The scene is loaded on-demand (not autoloaded) to avoid resource bloat
+	var pcs_script: Script = load("res://src/ui/post_credit_scene.gd")
+	if pcs_script == null:
+		push_warning("EndingController: PostCreditScene script not found")
+		ending_post_credit_finished.emit(letter)
+		return
+	# Get the scene tree root
+	var tree: SceneTree = Engine.get_main_loop()
+	if tree == null:
+		ending_post_credit_finished.emit(letter)
+		return
+	var pcs: Control = pcs_script.new()
+	tree.root.add_child.call_deferred(pcs)
+	# Wait one frame for add_child to complete, then play
+	pcs.play_post_credit.call_deferred(letter)
+	# Listen for close to emit our signal
+	pcs.closed.connect(_on_post_credit_closed.bind(letter), CONNECT_ONE_SHOT)
+
+func _on_post_credit_closed(_letter: String) -> void:
+	ending_post_credit_finished.emit(_letter)
 
 func save_ending_stamp(letter: String) -> void:
 	var meta: Node = get_node_or_null("/root/MetaState")
