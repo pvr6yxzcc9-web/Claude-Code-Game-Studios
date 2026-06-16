@@ -1,25 +1,17 @@
 extends Node
 # Party Battle Controller (Sprint 7-001 S7-001 REAL implementation)
 #
-# This is the **minimal-risk first refactor** toward 3v1 combat.
-# It does NOT modify the existing 1v1 battle_scene.gd. Instead, it
-# is a separate controller that:
-# - Watches the GameStateMachine for state_battle transitions
-# - Reads the party data (3 mechs) from WeaponLoadout + MechLoadout
-# - Provides 1/2/3 keys to switch active mech mid-battle
-# - Iterates through 3 mechs (1 turn each) before enemy attack
+# PR 2: Now reads party data from PartyManager autoload (stub for now).
+# Still does NOT modify the existing 1v1 battle_scene.gd.
 #
-# Existing 1v1 fights in Ch1/Ch2 are **unchanged** — they use the
-# legacy battle_scene.gd path. The legacy_1v1_mode flag is NOT yet
-# read by anything; this controller runs in PARALLEL with the 1v1
-# logic and overrides the active battle if the party has 3 mechs.
+# PR 2 changes:
+# - Read party mechs from PartyManager.get_party_mechs() (was hardcoded fallback)
+# - Hook into state_battle transitions (logs a hint, doesn't auto-start)
+# - Added _load_party_mechs_fallback() for testing without PartyManager
 #
-# This is the **first real implementation** of S7-001. It will be
-# extended in subsequent PRs (per the sprint-07-001 plan):
-# - PR 1 (this file): Party data + 1/2/3 + 3v1 round loop
-# - PR 2 (later): Integrate with existing on_player_attack damage flow
-# - PR 3 (later): Replace legacy 1v1 entirely
-# - PR 4 (later): Wire HUD (S7-004), Mech Bay (S7-007), etc.
+# Future PRs (per the sprint-07-001 plan):
+# - PR 3: Replace legacy 1v1 entirely
+# - PR 4: Wire HUD (S7-004), Mech Bay (S7-007), etc.
 
 # === Signals ===
 
@@ -54,12 +46,15 @@ func _ready() -> void:
     print("[PartyBattleController] ready (S7-001 first PR)")
 
 func _on_state_changed(_old: StringName, new: StringName) -> void:
-    if new == &"state_battle":
-        # The existing BattleScene will also handle this.
-        # We DON'T start our own battle here — we wait for the user
-        # to call start_party_battle() explicitly (e.g., via debug command
-        # or via S7-001's data wiring).
-        pass
+    # S7-001 PR 2: Hook into state_battle transitions.
+    # The existing BattleScene ALSO handles this (for 1v1 fights).
+    # For now, our controller is dormant — it doesn't auto-start
+    # unless the user explicitly calls start_party_battle().
+    # Future PRs will integrate the 3v1 path as the default for
+    # 3-pilot parties.
+    if new == &"state_battle" and not _in_battle:
+        # Optional: log a hint that 3v1 is available
+        print("[PartyBattleController] state_battle detected, but 3v1 is dormant. Call debug_start_test_battle() to test.")
 
 # === Public API ===
 
@@ -102,19 +97,21 @@ func end_party_battle(victory: bool) -> void:
 # === Party Loading (S7-003 data) ===
 
 func _load_party_mechs() -> Array[Dictionary]:
-    var mechs: Array[Dictionary] = []
-    var loadout: Node = get_node_or_null("/root/MechLoadout")
-    if loadout == null:
-        # Fallback: 3 default mechs (for Sprint 7 testing before
-        # MechLoadout is fully wired)
-        return [
-            {"id": "ranger", "name": "漫游者", "max_hp": 400, "hp": 400, "weapon_slots": [&"rifle", &"knife", &"throwable"]},
-            {"id": "frostbite", "name": "霜尾", "max_hp": 320, "hp": 320, "weapon_slots": [&"greatsword", &"cryo_grenade", &""]},
-            {"id": "bomber", "name": "轰天", "max_hp": 480, "hp": 480, "weapon_slots": [&"rail_cannon", &"grenade_launcher", &"repair_drone"]},
-        ]
-    # Real loading from MechLoadout
-    # TODO Sprint 7 PR 2: read from loadout._mechs when S7-003 is committed
-    return mechs
+    # S7-001 PR 2: Read from PartyManager (the new autoload, stub for now).
+    # PartyManager is the data source; MechLoadout (S7-003) will replace
+    # it when committed.
+    var pm: Node = get_node_or_null("/root/PartyManager")
+    if pm == null:
+        push_warning("PartyBattleController: PartyManager autoload missing — using hardcoded fallback")
+        return _load_party_mechs_fallback()
+    return pm.get_party_mechs()
+
+func _load_party_mechs_fallback() -> Array[Dictionary]:
+    return [
+        {"id": "ranger", "name": "漫游者", "max_hp": 400, "hp": 400, "pilot_id": "ranger", "is_active": true, "parts_hp": {"head": 100, "chest": 100, "arms": 100, "legs": 100}, "weapon_slots": [&"rifle", &"knife", &"throwable"]},
+        {"id": "frostbite", "name": "霜尾", "max_hp": 320, "hp": 320, "pilot_id": "frostbite", "is_active": false, "parts_hp": {"head": 80, "chest": 80, "arms": 80, "legs": 80}, "weapon_slots": [&"greatsword", &"cryo_grenade", &""]},
+        {"id": "bomber", "name": "轰天", "max_hp": 480, "hp": 480, "pilot_id": "bomber", "is_active": false, "parts_hp": {"head": 120, "chest": 120, "arms": 120, "legs": 120}, "weapon_slots": [&"rail_cannon", &"grenade_launcher", &"repair_drone"]},
+    ]
 
 # === Combat Flow ===
 
