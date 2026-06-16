@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c5_r10"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c5_r10"
+display_name = "The Creator's Chamber"
+chapter = 13
+description = "Vast. Golden. Silent. The Creator waits."
+tile_set = &"ch5"
+enemy_encounters = Array[StringName]([&"boss_creator"])
+has_boss = true
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c5_r9"])
+decoy_count = 0

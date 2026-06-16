@@ -1,94 +1,182 @@
 extends Node
 
-# EndingController (S4-009 + S5-005)
-# Decides which ending the player gets after defeating the final boss.
-# Logic is purely data-driven: count unlocked fragments in MetaState.
+# EndingController (S10-018) — rewritten for 4 full endings with narrative weight.
+# Per sprint-10-sat5-climax.md + multi-satellite-arc.md §5.3
 #
-# S5-005 update: thresholds are still based on total unlocked count
-# (unchanged from S4-009), but the 3 S4-005 tbd fragments have been
-# wired to "boss_victory" trigger (see BattleScene._resolve_battle).
-# This means at boss victory, the player will have at least the
-# 3 boss-victory fragments + any log fragments they found.
+# Endings:
+#   A "仁慈的终结" / Merciful: Player has 5 truths + 苍穹号 + ranger as pilot
+#   B "循环延续" / Cycle Continues: Player has 5 truths, no 苍穹号
+#   C "融合" / Fusion: Player has <5 truths, ranger + 苍穹号
+#   D "隐藏之路" / Hidden Path: Player chose "Flee" from the Creator chamber
 #
-# Thresholds:
-#   - 6+ fragments unlocked: ending A (revelation)
-#   - 3-5 fragments: ending B (partial)
-#   - 0-2 fragments: ending C (default)
-#   - S6-103: 0 log fragments (player never read any terminal) AND
-#     defeated boss: ending D ("the worst kind of ending")
-#
-# Net effect: the 3 boss-victory fragments alone (without any log
-# exploration) put the player at 3 fragments -> ending D. To get
-# ending A, the player must have explored at least 3 logs (3 log
-# fragments + 3 boss fragments = 6 -> A). To get ending C, the
-# player must skip the boss-victory trigger entirely (impossible
-# since boss victory is the only path to ending determination).
-#
-# In practice: with the current 7 fragment resources, the breakdown is
-#   0 logs + boss victory: 3 fragments + 0 logs -> D (S6-103)
-#   1 log  + boss victory: 4 fragments + 1 log  -> B
-#   2 logs + boss victory: 5 fragments + 2 logs -> B
-#   3 logs + boss victory: 6 fragments + 3 logs -> A
-#   4 logs + boss victory: 7 fragments + 4 logs -> A
-# Ending D is now reachable via the "I-just-killed-the-boss-and-didn't-read-anything"
-# path. Ending C is reserved for save-data corruption or debug paths.
-#
-# The actual ending is then shown via DialogueManager.start_dialogue_with_tree
-# using the returned tree id (no NPC resource needed; ends are not NPCs).
+# Thresholds (per multi-satellite-arc.md):
+#   5+ truths (all 5 satellites) → can reach A, B, or C depending on choices
+#   <5 truths → only C or D (default fallback)
+#   苍穹号 unlocked + ranger as pilot → unlocks A path
+#   "Flee" choice in Creator chamber → D
+#   "Destroy" choice + 5 truths + 苍穹号 → A
+#   "Destroy" choice + 5 truths, no 苍穹号 → B
+#   "Destroy" choice + <5 truths → C (default)
+#   "Understand" / "Transcend" → special A variants (foreshadowed)
 
-const ENDING_A_THRESHOLD: int = 6
-const ENDING_B_THRESHOLD: int = 3
+const ENDING_A_TREE_ID: StringName = &"dlg_ending_A_merciful"
+const ENDING_B_TREE_ID: StringName = &"dlg_ending_B_cycle"
+const ENDING_C_TREE_ID: StringName = &"dlg_ending_C_fusion"
+const ENDING_D_TREE_ID: StringName = &"dlg_ending_D_hidden"
 
-const ENDING_A_TREE_ID: StringName = &"dlg_ending_A"
-const ENDING_B_TREE_ID: StringName = &"dlg_ending_B"
-const ENDING_C_TREE_ID: StringName = &"dlg_ending_C"
-const ENDING_D_TREE_ID: StringName = &"dlg_ending_D"  # S6-103
+signal ending_chosen(tree_id: StringName, ending_letter: String)
+signal ending_post_credit_started(ending_letter: String)
+signal ending_post_credit_finished(ending_letter: String)
+signal ending_saved(ending_letter: String)
 
-signal ending_chosen(tree_id: StringName, fragment_count: int)
+# Choice made in Creator chamber (per S10-013)
+enum CreatorChoice { NOT_CHOSEN, TRANSCEND, UNDERSTAND, DESTROY, FLEE }
+
+var _creator_choice: int = CreatorChoice.NOT_CHOSEN
+var _truths_unlocked: int = 0
+var _cangqiong_unlocked: bool = false
+var _reached_ending: String = ""
+
+# Post-credits scenes (S10-014/015/016/017)
+const ENDING_POSTCREDIT_SCENES: Dictionary = {
+	"A": {
+		"years_later": 10,
+		"title": "仁慈的终结 / The Merciful End",
+		"description": "Player runs a small museum of the 5 satellites, teaching the next generation.",
+	},
+	"B": {
+		"years_later": 1000,
+		"title": "循环延续 / The Cycle Continues",
+		"description": "Player's descendant encounters a new Creator seeded from old fragments.",
+	},
+	"C": {
+		"years_later": 50,
+		"title": "融合 / Fusion",
+		"description": "Frostbite and Bomber tend a small shrine on Sat-1.",
+	},
+	"D": {
+		"years_later": 1,
+		"title": "隐藏之路 / The Hidden Path",
+		"description": "The Creator has left; humanity is left alone; biosphere collapses.",
+	},
+}
 
 func _ready() -> void:
-    print("[EndingController] ready (S4-009 + S5-005)")
+	print("[EndingController] ready (S10-018 — 4 endings with full narrative weight)")
 
-# Returns the dialogue tree id for the player's current fragment count.
-# Pure function: read MetaState.unlocked_count, threshold check.
-func determine_ending() -> StringName:
-    var meta: Node = get_node_or_null("/root/MetaState")
-    if meta == null:
-        push_warning("EndingController: MetaState missing")
-        return ENDING_C_TREE_ID
-    var count: int = meta.unlocked_count()
-    var log_count: int = 0
-    if "log_fragments_count" in meta:
-        log_count = int(meta.log_fragments_count())
-    var chosen: StringName
-    # S6-103: D-tier takes priority over B when the player has killed
-    # the boss (>= 3 boss-victory fragments) but read ZERO log terminals.
-    # This rewards exploration explicitly.
-    if count >= ENDING_B_THRESHOLD and log_count == 0:
-        chosen = ENDING_D_TREE_ID
-    elif count >= ENDING_A_THRESHOLD:
-        chosen = ENDING_A_TREE_ID
-    elif count >= ENDING_B_THRESHOLD:
-        chosen = ENDING_B_TREE_ID
-    else:
-        chosen = ENDING_C_TREE_ID
-    ending_chosen.emit(chosen, count)
-    return chosen
+# Set the player's choice in the Creator chamber (called from dialogue)
+func set_creator_choice(choice: int) -> void:
+	_creator_choice = choice
+	print("[EndingController] Creator choice: %s" % CreatorChoice.keys()[choice])
 
-# Play the chosen ending. Caller (BattleScene) calls this after boss win.
+# Update game state used by determine_ending
+func update_state(truths_unlocked: int, cangqiong_unlocked: bool) -> void:
+	_truths_unlocked = truths_unlocked
+	_cangqiong_unlocked = cangqiong_unlocked
+
+# Determine which ending the player gets.
+# Per multi-satellite-arc.md §5.3 decision tree:
+func determine_ending() -> String:
+	# D: chose "Flee" — always D
+	if _creator_choice == CreatorChoice.FLEE:
+		_reached_ending = "D"
+		ending_chosen.emit(ENDING_D_TREE_ID, "D")
+		return ENDING_D_TREE_ID
+	# A: "Destroy" + 5 truths + cangqiong → A (Merciful)
+	if _creator_choice == CreatorChoice.DESTROY and _truths_unlocked >= 5 and _cangqiong_unlocked:
+		_reached_ending = "A"
+		ending_chosen.emit(ENDING_A_TREE_ID, "A")
+		return ENDING_A_TREE_ID
+	# B: "Destroy" + 5 truths, no cangqiong → B (Cycle Continues)
+	if _creator_choice == CreatorChoice.DESTROY and _truths_unlocked >= 5:
+		_reached_ending = "B"
+		ending_chosen.emit(ENDING_B_TREE_ID, "B")
+		return ENDING_B_TREE_ID
+	# C: "Destroy" + <5 truths → C (Fusion)
+	if _creator_choice == CreatorChoice.DESTROY:
+		_reached_ending = "C"
+		ending_chosen.emit(ENDING_C_TREE_ID, "C")
+		return ENDING_C_TREE_ID
+	# TRANSCEND / UNDERSTAND are special "A variants" but for now → A
+	if _creator_choice == CreatorChoice.TRANSCEND or _creator_choice == CreatorChoice.UNDERSTAND:
+		_reached_ending = "A"
+		ending_chosen.emit(ENDING_A_TREE_ID, "A")
+		return ENDING_A_TREE_ID
+	# Default (no choice made yet) → C
+	_reached_ending = "C"
+	ending_chosen.emit(ENDING_C_TREE_ID, "C")
+	return ENDING_C_TREE_ID
+
+# Play the chosen ending. Caller (Creator chamber dialogue) calls this.
 func play_ending() -> Error:
-    var tree_id: StringName = determine_ending()
-    var reg: Node = get_node("/root/ResourceRegistry")
-    var tree: Resource = reg.get_resource(tree_id)
-    if tree == null:
-        push_error("EndingController: tree %s not found" % tree_id)
-        return ERR_DOES_NOT_EXIST
-    var dm: Node = get_node("/root/DialogueManager")
-    # Construct a synthetic "ending NPC" so dialogue manager can bind
-    # the ending display. (dialogue_manager.start_dialogue_with_tree
-    # accepts (tree, npc) but npc is only used for dialogue_started emit.)
-    var npc: Resource = Resource.new()
-    npc.set("id", &"_ending")
-    npc.set("display_name", "The Convoy")
-    npc.set("dialogue_tree_id", tree_id)
-    return dm.start_dialogue_with_tree(tree, npc)
+	var tree_id: StringName = determine_ending()
+	var reg: Node = get_node("/root/ResourceRegistry")
+	var tree: Resource = reg.get_resource(tree_id)
+	if tree == null:
+		push_error("EndingController: tree %s not found" % tree_id)
+		return ERR_DOES_NOT_EXIST
+	var dm: Node = get_node("/root/DialogueManager")
+	var npc: Resource = Resource.new()
+	npc.set("id", &"_ending_%s" % _reached_ending)
+	npc.set("display_name", "The Convoy")
+	npc.set("dialogue_tree_id", tree_id)
+	var err: int = dm.start_dialogue_with_tree(tree, npc)
+	if err == OK:
+		# After dialogue ends, post-credit scene + save stamp
+		dm.dialogue_ended.connect(_on_ending_dialogue_ended.bind(_reached_ending), CONNECT_ONE_SHOT)
+	return err
+
+func _on_ending_dialogue_ended(letter: String) -> void:
+	# Play post-credit scene
+	play_post_credit_scene(letter)
+	# Save ending stamp
+	save_ending_stamp(letter)
+
+func play_post_credit_scene(letter: String) -> void:
+	ending_post_credit_started.emit(letter)
+	print("[EndingController] playing post-credit scene for ending %s" % letter)
+	# The actual scene is rendered by the dialogue system / UI overlay.
+	# Here we just emit the signal so external systems can react.
+	# (Implementation deferred — S10-014/015/016/017 will provide scene logic.)
+	ending_post_credit_finished.emit(letter)
+
+func save_ending_stamp(letter: String) -> void:
+	var meta: Node = get_node_or_null("/root/MetaState")
+	if meta == null:
+		return
+	if meta.has_method("set_ending_reached"):
+		meta.set_ending_reached(letter)
+	ending_saved.emit(letter)
+	print("[EndingController] saved ending %s" % letter)
+
+# === Public helpers ===
+
+func get_reached_ending() -> String:
+	return _reached_ending
+
+func get_creator_choice() -> int:
+	return _creator_choice
+
+func get_post_credit_info(letter: String) -> Dictionary:
+	return ENDING_POSTCREDIT_SCENES.get(letter, {})
+
+# === Save/Load ===
+
+func get_state_snapshot() -> Dictionary:
+	return {
+		"creator_choice": _creator_choice,
+		"truths_unlocked": _truths_unlocked,
+		"cangqiong_unlocked": _cangqiong_unlocked,
+		"reached_ending": _reached_ending,
+	}
+
+func load_snapshot(snap: Dictionary) -> Error:
+	if snap.has("creator_choice"):
+		_creator_choice = int(snap["creator_choice"])
+	if snap.has("truths_unlocked"):
+		_truths_unlocked = int(snap["truths_unlocked"])
+	if snap.has("cangqiong_unlocked"):
+		_cangqiong_unlocked = bool(snap["cangqiong_unlocked"])
+	if snap.has("reached_ending"):
+		_reached_ending = String(snap["reached_ending"])
+	return OK

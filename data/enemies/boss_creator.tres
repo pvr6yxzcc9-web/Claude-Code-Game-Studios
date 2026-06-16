@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://enemy_boss_creator"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/boss_creator.png" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"boss_creator"
+display_name = "造物者本体"
+sprite = ExtResource("2_sprite")
+max_hp = 5000
+attack = 50
+accuracy = 0.9
+boss = true
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"creator_signal"])
+resistances = Array[StringName]([])
+drops = Array[Resource]([])

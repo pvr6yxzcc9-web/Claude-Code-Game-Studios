@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_fragment_ch5_6"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_ch5_6"
+title = "Mei's Final Truth"
+body = "Pluto was a child. Its death was a choice. I honor it by living."
+author = "Mei Zhang"
+importance = 1
+unlock_fragment_id = &"fragment_ch5_6"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch5_cangqiong_deceased"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch5_cangqiong_deceased.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch5_cangqiong_deceased"
+display_name = "苍穹号 (遗骸)"
+portrait = ExtResource("2_portrait")
+faction = &"creator"
+dialogue_tree_id = &"dlg_ch5_cangqiong_deceased"
+location = &"chapter5_origin"
+role = &"lore_keeper"
+inventory_id = &""
+description = "Sat-5 character."
+priority = 3

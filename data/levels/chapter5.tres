@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://level_chapter5_001"]
+
+[ext_resource type="Script" path="res://src/resource/level_data.gd" id="1_level"]
+
+[resource]
+script = ExtResource("1_level")
+id = &"chapter5_origin"
+display_name = "Chapter 5 — The Origin"
+chapter_index = 5
+room_ids = Array[StringName]([&"c5_r1", &"c5_r2", &"c5_r3", &"c5_r4", &"c5_r5", &"c5_r6", &"c5_r7", &"c5_r8", &"c5_r9", &"c5_r10"])
+boss_id = &"boss_creator"
+encounter_rate = 0.3
+description = "The Creator's origin. The cycle began here. The cycle ends here."

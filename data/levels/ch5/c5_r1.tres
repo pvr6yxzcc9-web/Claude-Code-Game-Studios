@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c5_r1"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c5_r1"
+display_name = "The Antechamber"
+chapter = 13
+description = "Gold inlaid walls. The air hums."
+tile_set = &"ch5"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_ch5_arrival"])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c5_r2"])
+decoy_count = 0

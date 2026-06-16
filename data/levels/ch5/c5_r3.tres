@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c5_r3"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c5_r3"
+display_name = "The Empty Throne"
+chapter = 13
+description = "A throne. No one sits. The dust is perfect."
+tile_set = &"ch5"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([&"fragment_ch5_2"])
+exits = Array[StringName]([&"c5_r2", &"c5_r4"])
+decoy_count = 0

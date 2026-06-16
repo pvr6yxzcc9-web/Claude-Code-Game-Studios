@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c5_r8"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c5_r8"
+display_name = "The Garden of Frozen Mothers"
+chapter = 13
+description = "Frostbite's mother, half-human, half-fragment."
+tile_set = &"ch5"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([&"ch5_frostbite_mother", &"ch5_bomber_father"])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([&"fragment_ch5_6"])
+exits = Array[StringName]([&"c5_r6", &"c5_r7", &"c5_r9"])
+decoy_count = 0
