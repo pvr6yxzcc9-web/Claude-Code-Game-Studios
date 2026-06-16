@@ -28,6 +28,7 @@ const PRODUCER_NAMESPACES: Array[StringName] = [
     &"player_controller",
     &"battle_core",
     &"hud_settings",
+    &"clinic_manager",
 ]
 
 var _pending_slot: int = -2  # -2 = idle, -1 = autosave, 0-2 = manual
