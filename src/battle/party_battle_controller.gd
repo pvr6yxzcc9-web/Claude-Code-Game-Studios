@@ -1,19 +1,17 @@
 extends Node
 # Party Battle Controller (Sprint 7-001 S7-001 REAL implementation)
 #
-# PR 3: Now uses BattleMathLib for damage formulas.
+# PR 4: Add legacy_1v1_mode flag + state_battle integration.
 # Still does NOT modify the existing 1v1 battle_scene.gd.
 #
-# PR 3 changes:
-# - Player attacks use BattleMathLib.roll_range() + clamp_damage()
-# - Enemy attacks use BattleMathLib.roll_accuracy() + roll_range()
-# - Damage is no longer the PR 1 placeholder (randi_range(20, 30))
-# - This is consistent with the existing 1v1 battle_scene.gd
-#   pattern (which also uses BattleMathLib)
+# PR 4 changes:
+# - Add _mode flag (default MODE_1V1 for production safety)
+# - When _mode = MODE_3V1, the 3v1 path activates on state_battle
+# - When _mode = MODE_AUTO, auto-detect based on party size
+# - Existing 1v1 BattleScene still works (unchanged)
 #
-# Future PRs (per the sprint-07-001 plan):
-# - PR 4: Replace legacy 1v1 entirely
-# - PR 5: Wire HUD (S7-004), Mech Bay (S7-007), etc.
+# SAFETY: _mode defaults to MODE_1V1. The 3v1 path is opt-in only.
+# Production 1v1 fights in Ch1/Ch2 are unchanged.
 
 # === Signals ===
 
@@ -24,6 +22,16 @@ signal active_mech_changed(new_index: int)
 signal party_member_knocked_out(pilot_id: StringName)
 signal enemy_turn_started()
 signal enemy_attacked(target_index: int, damage: int)
+signal party_mode_changed(new_mode: int)  # 0=1v1, 1=3v1, 2=auto
+
+# === Mode Configuration ===
+
+const MODE_1V1: int = 0
+const MODE_3V1: int = 1
+const MODE_AUTO: int = 2  # auto-detect based on party size
+
+# Current mode (default MODE_1V1 for production safety)
+var _mode: int = MODE_1V1
 
 # === Party State ===
 
@@ -48,15 +56,64 @@ func _ready() -> void:
     print("[PartyBattleController] ready (S7-001 first PR)")
 
 func _on_state_changed(_old: StringName, new: StringName) -> void:
-    # S7-001 PR 2: Hook into state_battle transitions.
-    # The existing BattleScene ALSO handles this (for 1v1 fights).
-    # For now, our controller is dormant — it doesn't auto-start
-    # unless the user explicitly calls start_party_battle().
-    # Future PRs will integrate the 3v1 path as the default for
-    # 3-pilot parties.
+    # S7-001 PR 4: Hook into state_battle with mode-based dispatch.
+    # Existing 1v1 BattleScene ALSO listens; we don't suppress it.
+    # The 3v1 path is opt-in via set_mode(MODE_3V1) or MODE_AUTO.
     if new == &"state_battle" and not _in_battle:
-        # Optional: log a hint that 3v1 is available
-        print("[PartyBattleController] state_battle detected, but 3v1 is dormant. Call debug_start_test_battle() to test.")
+        var effective_mode: int = _resolve_mode()
+        if effective_mode == MODE_3V1:
+            var pending_id: StringName = _get_pending_enemy_id()
+            if pending_id != &"":
+                print("[PartyBattleController] state_battle → 3v1 (enemy: %s)" % pending_id)
+                start_party_battle(pending_id)
+            else:
+                print("[PartyBattleController] state_battle → 3v1 mode, but no pending enemy. Use debug_start_test_battle() to test.")
+        # else: MODE_1V1 — existing BattleScene handles it. We stay dormant.
+
+func _resolve_mode() -> int:
+    if _mode == MODE_AUTO:
+        var pm: Node = get_node_or_null("/root/PartyManager")
+        if pm != null and pm.get_party_mechs().size() >= 3:
+            return MODE_3V1
+        return MODE_1V1
+    return _mode
+
+func _get_pending_enemy_id() -> StringName:
+    # The encounter_tile sets BattleScene._pending_enemy_id; we
+    # can't read that directly. Until encounter_tile exposes a
+    # global pending ID, this is empty. Use debug_start_test_battle()
+    # to test 3v1 without an encounter_tile trigger.
+    return &""
+
+# === Mode API (PR 4 new) ===
+
+func set_mode(mode: int) -> void:
+    if mode not in [MODE_1V1, MODE_3V1, MODE_AUTO]:
+        push_error("PartyBattleController: invalid mode %d" % mode)
+        return
+    _mode = mode
+    party_mode_changed.emit(mode)
+    print("[PartyBattleController] mode → %s" % _mode_name(mode))
+
+func get_mode() -> int:
+    return _mode
+
+func _mode_name(mode: int) -> String:
+    match mode:
+        MODE_1V1: return "1v1 (legacy)"
+        MODE_3V1: return "3v1 (party)"
+        MODE_AUTO: return "auto"
+        _: return "unknown"
+
+# Convenience debug commands
+func set_party_mode_3v1() -> void:
+    set_mode(MODE_3V1)
+
+func set_party_mode_1v1() -> void:
+    set_mode(MODE_1V1)
+
+func set_party_mode_auto() -> void:
+    set_mode(MODE_AUTO)
 
 # === Public API ===
 
