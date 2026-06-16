@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r5"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r5"
+display_name = "The Egg Chamber"
+chapter = 8
+description = "Hundreds of eggs embedded in the walls. Some are pulsing. Some are hatching."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"ch3_hive_breeder", &"ch3_hive_larva", &"ch3_hive_larva", &"ch3_hive_larva"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_sat3_egg_chamber"])
+fragment_ids = Array[StringName]([&"fragment_hive_3"])
+exits = Array[StringName]([&"c3_r4", &"c3_r6"])
+decoy_count = 0

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r10"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r10"
+display_name = "The Queen's Throne"
+chapter = 9
+description = "The deepest chamber. The walls are alive. The queen waits."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"boss_hive_queen_guardian"])
+has_boss = true
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([])
+decoy_count = 0

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r4"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r4"
+display_name = "The Survivor Cache"
+chapter = 8
+description = "A reinforced safe-room built by the original salvage crew. Stocked with supplies and one paranoid survivor."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"ch3_hive_cannon", &"ch3_hive_mycelium"])
+has_boss = false
+npcs = Array[StringName]([&"ch3_hive_survivor"])
+terminals = Array[StringName]([&"log_sat3_supplies"])
+fragment_ids = Array[StringName]([&"fragment_hive_2"])
+exits = Array[StringName]([&"c3_r3", &"c3_r5", &"c3_r6"])
+decoy_count = 1

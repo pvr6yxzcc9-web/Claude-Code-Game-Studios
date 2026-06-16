@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r9"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r9"
+display_name = "The Approach"
+chapter = 9
+description = "The corridor before the throne room. The walls pulse in unison. You can feel her."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"ch3_hive_breeder", &"ch3_hive_guardian", &"ch3_hive_cannon"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_sat3_final_warning"])
+fragment_ids = Array[StringName]([&"fragment_hive_7"])
+exits = Array[StringName]([&"c3_r8", &"c3_r10"])
+decoy_count = 1

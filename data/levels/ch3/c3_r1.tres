@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r1"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r1"
+display_name = "The Air Lock"
+chapter = 7
+description = "A standard air lock, but the walls are coated in translucent purple mycelium. The door at the far end is sealed with hive matter. Dim amber light."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"ch3_hive_larva", &"ch3_hive_larva"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_sat3_arrival"])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c3_r2"])
+decoy_count = 1

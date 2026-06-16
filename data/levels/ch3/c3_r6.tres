@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c3_r6"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c3_r6"
+display_name = "The Crew Quarters"
+chapter = 8
+description = "Salvage crew quarters, overgrown with hive matter. Personal effects scattered among the pods. One pod is open."
+tile_set = &"ch3"
+enemy_encounters = Array[StringName]([&"ch3_hive_parasite", &"ch3_hive_guardian"])
+has_boss = false
+npcs = Array[StringName]([&"ch3_surviving_crew"])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([&"fragment_hive_4"])
+exits = Array[StringName]([&"c3_r4", &"c3_r5", &"c3_r7"])
+decoy_count = 0
