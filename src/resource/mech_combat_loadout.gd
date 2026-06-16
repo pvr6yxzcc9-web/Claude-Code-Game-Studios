@@ -20,6 +20,10 @@ var mech_id: StringName = &""  # e.g. &"ranger_mech"
 var display_name: String = ""  # e.g. "漫游者号"
 var class_type: StringName = &"infantry"  # infantry / cavalry / artillery / legendary
 
+# S7-007: pilot currently driving this mech. Default mapping is in
+# MechLoadout.DEFAULT_PILOT_MAPPING but can be reassigned via Mech Bay.
+var pilot_id: StringName = &""
+
 # === Weapon slots (S7-002) ===
 
 # 3 weapon slots (4 for 苍穹号, set via max_weapon_slots)

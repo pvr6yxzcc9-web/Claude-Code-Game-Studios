@@ -96,6 +96,11 @@ func _register_default_mech(mech_id: StringName, display_name: String,
 	loadout.max_arms_hp = base_hp
 	loadout.max_legs_hp = base_hp
 	loadout.module_ids = [&""]
+	# S7-007: assign default pilot from DEFAULT_PILOT_MAPPING
+	for pilot_id in DEFAULT_PILOT_MAPPING:
+		if DEFAULT_PILOT_MAPPING[pilot_id] == mech_id:
+			loadout.pilot_id = pilot_id
+			break
 	# Class-specific stats
 	match class_type:
 		&"infantry":
@@ -177,11 +182,21 @@ func is_unlocked(mech_id: StringName) -> bool:
 	return mech.unlocked
 
 # Get the mech that a given pilot is currently assigned to.
+# Iterates _mechs to find the one with matching pilot_id (S7-007: pilot
+# assignment can be changed via Mech Bay, so static mapping is insufficient).
 func get_mech_for_pilot(pilot_id: StringName) -> MechCombatLoadout:
-	var mech_id: StringName = DEFAULT_PILOT_MAPPING.get(pilot_id, &"")
-	if mech_id == &"":
+	if pilot_id == &"":
 		return null
-	return _mechs.get(mech_id, null)
+	for mech_id in _mechs:
+		var mech: MechCombatLoadout = _mechs[mech_id]
+		if mech.pilot_id == pilot_id:
+			return mech
+	# Fall back to default mapping if no per-mech assignment was found
+	# (handles newly-registered mechs whose _register_default_mech set pilot_id)
+	var default_mech_id: StringName = DEFAULT_PILOT_MAPPING.get(pilot_id, &"")
+	if default_mech_id != &"":
+		return _mechs.get(default_mech_id, null)
+	return null
 
 # === Parts HP helpers (S7-003) ===
 
@@ -300,6 +315,7 @@ func get_state_snapshot() -> Dictionary:
 			"display_name": loadout.display_name,
 			"class_type": loadout.class_type,
 			"unlocked": loadout.unlocked,
+			"pilot_id": loadout.pilot_id,  # S7-007
 			"weapon_slots": loadout.weapon_slots.duplicate(),
 			"ammo_slots": loadout.ammo_slots.duplicate(),
 			"max_weapon_slots": loadout.max_weapon_slots,
@@ -372,6 +388,8 @@ func load_snapshot(snap: Dictionary) -> Error:
 				loadout.module_ids.clear()
 				for m in mods:
 					loadout.module_ids.append(StringName(m))
+			if md.has("pilot_id"):
+				loadout.pilot_id = StringName(md["pilot_id"])
 	if snap.has("legacy_parts"):
 		var lp: Dictionary = snap["legacy_parts"]
 		for key in lp.keys():
