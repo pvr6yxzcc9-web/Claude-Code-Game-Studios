@@ -243,3 +243,42 @@ Task: **Production stage active 2026-06-13.** Sprint 1 in progress (5/7 Must-Hav
 - `prototypes/暗雷回合制战斗-concept/REPORT.md` — NEW (PROCEED)
 - `production/gate-checks/` — 3 new gate reports (initial FAIL, RECHECK CONCERNS, FINAL PASS, sprint1-mid)
 - `production/stage.txt` — updated to "Production"
+
+---
+
+## Update 2026-06-16 (Sprint 7 + Sprint 8 COMPLETE)
+
+**Current Status**: 2 major sprints shipped in one session.
+
+### Sprint 7 (Party System) — 12/12 stories COMPLETE
+- S7-002 WeaponLoadout per-mech decoupling (d0221b7)
+- S7-003 MechLoadout 4-mech roster (9e22425)
+- S7-004 HUD 3-4 mech HP bars + click (65bb953)
+- S7-005 Dialogue companion swap (b585b97)
+- S7-006 Town clinic revival — ClinicManager autoload (f521e5f)
+- S7-007 Mech Bay menu — MechBayEvents + UI (3a6f19f)
+- S7-008 苍穹号 inheritance cutscene (9ab15dc)
+- S7-009 Combat formulas F1-F7 (BattleMathLib.cs) (3e0470e)
+- S7-010 Save/Load versioning v1→v2 (3e0470e)
+- S7-011 Auto mode 3-pilot AI — AutoModeAI autoload (3e0470e)
+- S7-012 Consolidated test runner (876be5c)
+
+### Sprint 8 (Sat-3 蜂巢号 Content) — 14/14 stories COMPLETE
+- S8-001..S8-006 tiles + enemy/boss sprites + boss .tres
+- S8-007 10 room data files — RoomData resource (7566a51)
+- S8-008 4 NPC .tres + portraits
+- S8-009 gen_ch3_assets.py (17 generated assets)
+- S8-010 NPC portraits
+- S8-011 7 fragment .tres (prior session)
+- S8-012 hive_heart.wav BGM
+- S8-013 HallucinationManager autoload (0e05aa6)
+- S8-014 fc68 + fc69 tests
+
+### New autoloads added this session (4)
+- ClinicManager, MechBayEvents, AutoModeAI, HallucinationManager
+
+### New resource types (2)
+- MechCombatLoadout, RoomData
+
+### Next: Sprint 9 — Sat-4 断魂号 (military)
+See `production/sprints/sprint-09-sat4-military.md` for 15 stories.
