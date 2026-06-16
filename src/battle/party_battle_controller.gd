@@ -271,6 +271,12 @@ func _unhandled_input(event: InputEvent) -> void:
                 _set_active_mech(2)
             KEY_SPACE:
                 _active_mech_attack()
+            KEY_A:
+                # Toggle Auto mode (PR 6)
+                _auto_mode = not _auto_mode
+                print("[PartyBattleController] Auto mode %s" % ("ON" if _auto_mode else "OFF"))
+                if _auto_mode and _party_phase == &"player":
+                    _auto_step()
             KEY_ESCAPE:
                 end_party_battle(false)
 
@@ -283,6 +289,48 @@ func _set_active_mech(index: int) -> void:
     _active_mech_index = index
     active_mech_changed.emit(index)
     print("[PartyBattleController] Active mech: %s" % _party[index].name)
+
+# === Auto Mode (PR 6) ===
+
+# S7-001 PR 6: Auto mode 3-pilot AI. When toggled ON, each mech
+# automatically takes its turn (attacks) without the player pressing
+# SPACE for each. The AI is "good but not optimal" — it just
+# attacks the enemy with the active mech, in sequence. A future
+# PR (Sprint 7-011) will add pilot-specific AI behaviors.
+var _auto_mode: bool = false
+const AUTO_INTERVAL_SEC: float = 1.2
+
+func _auto_step() -> void:
+    # Auto mode iteration. Called when the player presses A.
+    if not _auto_mode or not _in_battle or _party_phase != &"player":
+        return
+    # If the current active mech is down, find the next living one
+    if _party[_active_mech_index].hp <= 0:
+        var next: int = -1
+        for i in _party.size():
+            if _party[i].hp > 0:
+                next = i
+                break
+        if next == -1:
+            return
+        _set_active_mech(next)
+    # If the active mech has already acted this round, skip to the next
+    if _active_mech_index in _mechs_acted_this_round:
+        var next2: int = -1
+        for i in _party.size():
+            var check_index: int = (_active_mech_index + 1 + i) % _party.size()
+            if _party[check_index].hp > 0 and check_index not in _mechs_acted_this_round:
+                next2 = check_index
+                break
+        if next2 == -1:
+            return
+        _set_active_mech(next2)
+    # Attack
+    _active_mech_attack()
+    # Schedule next step
+    if _auto_mode and _in_battle:
+        await get_tree().create_timer(AUTO_INTERVAL_SEC).timeout
+        _auto_step()
 
 # === Debug ===
 
