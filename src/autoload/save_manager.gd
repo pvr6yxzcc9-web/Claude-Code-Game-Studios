@@ -9,7 +9,7 @@ signal save_failed(slot: int, error: String)
 signal load_completed(slot: int)
 signal load_failed(slot: int, error: String)
 
-const SAVE_VERSION_CURRENT: int = 1
+const SAVE_VERSION_CURRENT: int = 2
 const SLOT_AUTOSAVE: int = -1
 const MANUAL_SLOT_COUNT: int = 3
 
@@ -186,8 +186,46 @@ func _pascalize(s: String) -> String:
     return out
 
 func _upgrade_snapshot(snap: Dictionary, from: int, to: int) -> Dictionary:
-    # Per ADR-0005: no upgrade functions defined yet (v0=v1)
+    # Per ADR-0005: chain upgrades. v1 → v2 adds party state (S7-010).
     if from == to:
         return snap
+    if from == 1 and to == 2:
+        return _upgrade_v1_to_v2(snap)
     push_warning("SaveManager: no upgrade path from v%d to v%d" % [from, to])
     return snap
+
+# S7-010: v1 → v2 migration. Adds party state (per-pilot level/XP/abilities,
+# 4 mechs), cangqiong_unlocked flag (always false for migrated saves), and
+# pilot states (defaults to all ACTIVE).
+func _upgrade_v1_to_v2(snap: Dictionary) -> Dictionary:
+    # Add party state under "party" namespace (not in PRODUCER_NAMESPACES yet,
+    # so we create it inline)
+    if not snap.has("party"):
+        snap["party"] = _default_party_state_v2()
+    # Ensure mech_loadout has cangqiong_unlocked (false for migrated saves)
+    if not snap.has("mech_loadout"):
+        snap["mech_loadout"] = {}
+    if not snap["mech_loadout"].has("cangqiong_unlocked"):
+        snap["mech_loadout"]["cangqiong_unlocked"] = false
+    # Ensure clinic has pilot_states (all ACTIVE for migrated saves)
+    if not snap.has("clinic"):
+        snap["clinic"] = {}
+    if not snap["clinic"].has("pilot_states"):
+        snap["clinic"]["pilot_states"] = {
+            "ranger": 0,  # PilotState.ACTIVE
+            "frostbite": 0,
+            "bomber": 0,
+        }
+    # Bump version
+    snap["save_version"] = 2
+    print("[SaveManager] upgraded snapshot v1 → v2 (party state added)")
+    return snap
+
+# Default party state for new games and v1 migrations
+func _default_party_state_v2() -> Dictionary:
+    return {
+        "ranger": {"level": 1, "xp": 0, "abilities": []},
+        "frostbite": {"level": 1, "xp": 0, "abilities": [], "recruited": false},
+        "bomber": {"level": 1, "xp": 0, "abilities": [], "recruited": false},
+        "active_pilot": "ranger",
+    }
