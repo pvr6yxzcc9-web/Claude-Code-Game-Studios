@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch3_hive_survivor"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch3_hive_survivor.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch3_hive_survivor"
+display_name = "蜂巢幸存者"
+portrait = ExtResource("2_portrait")
+faction = &"independent"
+dialogue_tree_id = &"dlg_ch3_hive_survivor"
+location = &"chapter3_hive"
+role = &"lore_keeper"
+inventory_id = &""
+description = "A survivor of a previous salvage crew, hiding in the hive for 3 years. Paranoid but helpful."
+priority = 2

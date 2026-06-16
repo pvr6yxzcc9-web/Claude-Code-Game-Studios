@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch3_surviving_crew"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch3_surviving_crew.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch3_surviving_crew"
+display_name = "残存船员"
+portrait = ExtResource("2_portrait")
+faction = &"salvage_crew"
+dialogue_tree_id = &"dlg_ch3_surviving_crew"
+location = &"chapter3_hive"
+role = &"quest_giver"
+inventory_id = &""
+description = "A fellow salvage crew member who was thought dead. Injured but alive. Can offer side quests."
+priority = 3

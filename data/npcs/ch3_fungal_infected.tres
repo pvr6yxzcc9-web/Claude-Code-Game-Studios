@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch3_fungal_infected"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch3_fungal_infected.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch3_fungal_infected"
+display_name = "真菌感染者"
+portrait = ExtResource("2_portrait")
+faction = &"hive"
+dialogue_tree_id = &"dlg_ch3_fungal_infected"
+location = &"chapter3_hive"
+role = &"ambient"
+inventory_id = &""
+description = "A partially-infected crew member, talking in riddles about the hive mind. Lore only."
+priority = 1

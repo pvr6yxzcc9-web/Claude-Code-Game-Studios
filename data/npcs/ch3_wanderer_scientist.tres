@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch3_wanderer_scientist"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch3_wanderer_scientist.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch3_wanderer_scientist"
+display_name = "流浪科学家"
+portrait = ExtResource("2_portrait")
+faction = &"independent"
+dialogue_tree_id = &"dlg_ch3_wanderer_scientist"
+location = &"chapter3_hive"
+role = &"lore_keeper"
+inventory_id = &""
+description = "A scientist who has been wandering the hive for years, studying its biology. Speaks in fragments."
+priority = 2
