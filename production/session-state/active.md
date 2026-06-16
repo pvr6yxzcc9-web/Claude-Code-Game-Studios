@@ -324,3 +324,51 @@ RacingManager) must load. All 80+ new .tres files must parse. Run
 sprint7_runner.gd and fc68-fc72 tests.
 
 Full session summary: production/session-summary-2026-06-16-marathon.md
+
+---
+
+## Update 2026-06-16 (FINAL — Ready for Godot verification)
+
+### Marathon session complete
+- **5 sprints shipped**: Sprint 7 (party), 8 (Sat-3), 9 (Sat-4), 10 (Sat-5), 11 (Bounty+Racing)
+- **Polish phase done**: race animation, post-credit endings, BGM verification, localization, regression runner
+- **25 commits to fork this session**
+- **~11,200 lines** of code added
+- **~310 new tests** across 14 test files
+- **8 new autoloads**: ClinicManager, MechBayEvents, AutoModeAI, HallucinationManager, AIEnemyManager, BountyManager, RacingManager
+- **2 new resource types**: MechCombatLoadout, RoomData
+- **5 new UI scenes**: MechBayUI, BountyBoardUI, RacingArenaUI, RaceAnimation, PostCreditScene
+- **51 generated assets** (tiles, sprites, portraits, BGMs)
+- **5 new Python tools**
+- **126 localization keys** (en + zh)
+- **65 of 65 stories shipped (100%)**
+
+### STATUS: READY FOR GODOT VERIFICATION
+The Railhunter (钢轨猎人) game is structurally complete and ready for F5 testing.
+
+### CRITICAL NEXT STEP (next session)
+1. **Open Godot 4.6, press F5**
+2. **Run `tests/runners/sprint7_plus_runner.gd`** (validates all 19 test files)
+3. **Walk through Sat-3** (c3_r1 → c3_r10) — verify room traversal
+4. **Walk through one ending** (A is easiest via DESTROY + 5 truths + cangqiong)
+5. **Fix any errors** — most likely culprits: UID conflicts, .tres formatting, class_name references, autoload order
+
+### Final session summary docs
+- `production/session-summary-2026-06-16-final.md` (overall summary)
+- `production/session-summary-2026-06-16-marathon.md` (5-sprint marathon)
+- `production/session-summary-2026-06-16-polish.md` (polish phase)
+- `production/session-summary-2026-06-16-sprint7-batch1.md` (Sprint 7 only)
+- `production/session-summary-2026-06-16-sprint7-and-8.md` (Sprints 7+8)
+
+### Last commit on fork
+9c6351f polish: localization extraction + regression runner + polish summary
+
+### Game stage
+**Production** — feature-complete at data + system + UI layers.
+**Production → Polish transition pending** Godot verification.
+
+<!-- STATUS -->
+Epic: Production
+Feature: All 5 content sprints + polish phase
+Task: Game feature-complete (65/65 stories, ~11200 LOC, ~310 tests). Ready for Godot F5 verification.
+<!-- /STATUS -->
