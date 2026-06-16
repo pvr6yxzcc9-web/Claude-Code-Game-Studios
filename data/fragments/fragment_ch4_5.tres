@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_fragment_ch4_5"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_ch4_5"
+title = "Pluto Speaks"
+body = "I am not a god. I am a question. The Creator feared my answer. Now you must answer it."
+author = "Pluto (fragment)"
+importance = 2
+unlock_fragment_id = &"fragment_ch4_5"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch4_war_orphan"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch4_war_orphan.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch4_war_orphan"
+display_name = "战时遗孤"
+portrait = ExtResource("2_portrait")
+faction = &"independent"
+dialogue_tree_id = &"dlg_ch4_war_orphan"
+location = &"chapter4_warzone"
+role = &"ambient"
+inventory_id = &""
+description = "Sat-4 character."
+priority = 2

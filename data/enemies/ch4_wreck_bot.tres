@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://enemy_ch4_wreck_bot"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ch4_wreck_bot.png" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ch4_wreck_bot"
+display_name = "残骸机器人"
+sprite = ExtResource("2_sprite")
+max_hp = 150
+attack = 18
+accuracy = 0.75
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"fire"])
+resistances = Array[StringName]([])
+drops = Array[Resource]([])

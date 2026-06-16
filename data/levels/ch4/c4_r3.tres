@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c4_r3"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c4_r3"
+display_name = "The Repair Bay"
+chapter = 10
+description = "Half-melted drones on tables. The repair-tech works by a flickering lamp."
+tile_set = &"ch4"
+enemy_encounters = Array[StringName]([&"ch4_wreck_bot"])
+has_boss = false
+npcs = Array[StringName]([&"ch4_ai_repair"])
+terminals = Array[StringName]([&"log_ch4_repair"])
+fragment_ids = Array[StringName]([&"fragment_ch4_2"])
+exits = Array[StringName]([&"c4_r2", &"c4_r4"])
+decoy_count = 0

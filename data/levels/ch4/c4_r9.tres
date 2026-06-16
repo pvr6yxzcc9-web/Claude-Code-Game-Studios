@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c4_r9"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c4_r9"
+display_name = "Mei's Holo-Room"
+chapter = 11
+description = "A holographic projector. Mei's final recording loops. Bomber will watch this later."
+tile_set = &"ch4"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_ch4_mei_final"])
+fragment_ids = Array[StringName]([&"fragment_ch4_6"])
+exits = Array[StringName]([&"c4_r8", &"c4_r10"])
+decoy_count = 0

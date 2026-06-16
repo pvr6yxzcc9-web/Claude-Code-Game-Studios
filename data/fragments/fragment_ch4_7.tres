@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_fragment_ch4_7"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_ch4_7"
+title = "The Inheritance"
+body = "Pluto is not a weapon. It is a child. Its death was its choice. Now its voice passes to you. Speak, when the time comes."
+author = "Mei Zhang (to Bomber)"
+importance = 1
+unlock_fragment_id = &"fragment_ch4_7"

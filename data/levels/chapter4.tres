@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="LevelData" load_steps=2 format=3 uid="uid://level_chapter4_001"]
+
+[ext_resource type="Script" path="res://src/resource/level_data.gd" id="1_level"]
+
+[resource]
+script = ExtResource("1_level")
+id = &"chapter4_warzone"
+display_name = "Chapter 4 — The Warzone"
+chapter_index = 4
+room_ids = Array[StringName]([&"c4_r1", &"c4_r2", &"c4_r3", &"c4_r4", &"c4_r5", &"c4_r6", &"c4_r7", &"c4_r8", &"c4_r9", &"c4_r10"])
+boss_id = &"boss_pluto_remnant"
+encounter_rate = 0.45
+description = "The rebellion is over. Pluto is dead. The wreckage remembers. The AI fragments remember too."

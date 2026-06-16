@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c4_r10"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c4_r10"
+display_name = "Pluto's Throne"
+chapter = 11
+description = "The fragmented AI waits. Its eye glows red. The final battle begins."
+tile_set = &"ch4"
+enemy_encounters = Array[StringName]([&"boss_pluto_remnant"])
+has_boss = true
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([&"fragment_ch4_7"])
+exits = Array[StringName]([&"c4_r9"])
+decoy_count = 0

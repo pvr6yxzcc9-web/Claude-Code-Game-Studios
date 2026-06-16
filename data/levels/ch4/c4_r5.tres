@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c4_r5"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c4_r5"
+display_name = "Bomber's Cradle"
+chapter = 10
+description = "An overturned mech. A woman climbs out. She points a gun at you."
+tile_set = &"ch4"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([&"ch4_bomber_recruit"])
+terminals = Array[StringName]([&"log_ch4_bomber_arrival"])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c4_r4", &"c4_r6"])
+decoy_count = 0
