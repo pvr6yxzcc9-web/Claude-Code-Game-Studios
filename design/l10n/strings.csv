@@ -74,3 +74,53 @@ ui.terminal.marker_label,TERMINAL,终端
 ui.npc.marker_label,NPC,NPC
 ui.breakable.marker_label,?,?
 ui.hint.player_pos,Player at (%d, %d),玩家位于 (%d, %d)
+ui.mech_bay.title,MECH BAY,机甲库
+ui.mech_bay.close_hint,"[M] Close","[M] 关闭"
+ui.mech_bay.active,Active,当前
+ui.mech_bay.locked,Locked,未解锁
+ui.mech_bay.hp_label,"HP: %d/%d","HP: %d/%d"
+ui.mech_bay.pilot_label,"pilot: %s","驾驶员: %s"
+ui.mech_bay.no_pilot,"pilot: —","驾驶员: —"
+ui.bounty_board.title,BOUNTY BOARD,赏金板
+ui.bounty_board.status_available,AVAILABLE,可接取
+ui.bounty_board.status_accepted,ACCEPTED,已接取
+ui.bounty_board.status_completed,COMPLETED,已完成
+ui.bounty_board.status_failed,FAILED,失败
+ui.bounty_board.status_abandoned,ABANDONED,已放弃
+ui.bounty_board.threat_label,"Threat: %d","威胁: %d"
+ui.bounty_board.reward_label,"Reward: %d gold","奖励: %d 金币"
+ui.bounty_board.level_label,"Level: %d","推荐等级: %d"
+ui.bounty_board.plot_marker,[PLOT],[剧情]
+ui.bounty_board.done_marker,"[DONE]","[完成]"
+ui.racing_arena.title,RACING ARENA,竞速场
+ui.racing_arena.gold_label,"Gold: %d","金币: %d"
+ui.racing_arena.tracks_label,TRACKS,赛道
+ui.racing_arena.mechs_label,RACING MECHS,竞速机甲
+ui.racing_arena.bet_label,BET,下注
+ui.racing_arena.bet_value,"Bet: %dg","下注: %d 金币"
+ui.racing_arena.bet_max,"Bet: %dg (MAX)","下注: %d 金币 (最大)"
+ui.racing_arena.race_button,PLACE BET & RACE,下注并竞速
+ui.racing_arena.race_in_progress,Race in progress!,竞速进行中！
+ui.racing_arena.winner_label,"WINNER: %s (%.1fs)","胜者: %s (%.1f秒)"
+ui.racing_arena.you_won,"You won! Payout: %d gold","你赢了！赔付: %d 金币"
+ui.racing_arena.you_lost,You lost. Better luck next time.,你输了。下次好运。
+ui.race_animation.title,RACE IN PROGRESS,竞速进行中
+ui.race_animation.skip_hint,"[SPACE] Skip | Auto-close in 8s","[空格] 跳过 | 8秒后自动关闭"
+ui.post_credit.ending_a_title,仁慈的终结,仁慈的终结
+ui.post_credit.ending_a_subtitle,The Merciful End,仁慈的终结
+ui.post_credit.ending_a_years,"10 years later","十年后"
+ui.post_credit.ending_b_title,循环延续,循环延续
+ui.post_credit.ending_b_subtitle,The Cycle Continues,循环延续
+ui.post_credit.ending_b_years,"1,000 years later","一千年后"
+ui.post_credit.ending_c_title,融合,融合
+ui.post_credit.ending_c_subtitle,Fusion,融合
+ui.post_credit.ending_c_years,"50 years later","五十年后"
+ui.post_credit.ending_d_title,隐藏之路,隐藏之路
+ui.post_credit.ending_d_subtitle,The Hidden Path,隐藏之路
+ui.post_credit.ending_d_years,"1 year later","一年后"
+ui.cangqiong.already_inherited,"[苍穹号 has already been inherited]","[苍穹号已被继承]"
+ui.cangqiong.bond_text,"The bond is established.","连接已建立。"
+ui.cangqiong.received_text,"苍穹号 is now in your roster. Open the Mech Bay (M key) to see your 4 mechs and assign pilots.","苍穹号已加入你的机甲库。按 M 键打开机甲库查看你的 4 台机甲并分配驾驶员。"
+ui.hallucination.decoy_label,?,?
+ui.clinic.gold_label,"Gold: %d","金币: %d"
+ui.clinic.revival_button,"Revive (%d gold)","复活 (%d 金币)"
