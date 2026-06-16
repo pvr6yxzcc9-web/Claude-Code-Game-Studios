@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_hive_1_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_hive_1"
+title = "蜂巢是活的 (The Hive is Alive)"
+body = "I found the researcher's log. She wrote that the organism on Sat-3 was not a fungus. It was not a parasite. It was a single, distributed intelligence. The walls, the floors, the air itself — all of it, one mind. I tried to speak to it. I think it heard me. I think it answered."
+unlock_condition = &"read_log_sat3_engineer_final"
+related_fragment_ids = Array[StringName]([&"fragment_hive_2", &"fragment_hive_4"])
+lore_layer = 4

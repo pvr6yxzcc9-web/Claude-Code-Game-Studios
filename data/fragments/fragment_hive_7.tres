@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_hive_7_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_hive_7"
+title = "信号是摇篮曲 (The Signal is a Lullaby)"
+body = "I have been listening to the signal for 50 years. I was wrong about everything. It is not a warning. It is not a threat. It is a lullaby. The Creator is singing itself to sleep. We — humanity, the satellites, the hive, the AI, the fragments — we are the song. When the song ends, the Creator will wake. And then it will see what it has sung into being. Us."
+unlock_condition = &"defeated_boss_hive_queen_guardian_2"
+related_fragment_ids = Array[StringName]([&"fragment_hive_3", &"fragment_hive_4", &"fragment_hive_5", &"fragment_hive_6"])
+lore_layer = 8

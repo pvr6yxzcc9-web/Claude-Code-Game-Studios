@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_hive_2_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_hive_2"
+title = "我是神经元 (I am a Neuron)"
+body = "My mother is alive. She is in the ice. She can speak. But the words come out slow, like she's thinking through water. She says the hive is a body, and we are all neurons in it. She says the body is thinking. The body is the Creator. The Creator is dreaming of us."
+unlock_condition = &"spoke_to_frostbite_mother"
+related_fragment_ids = Array[StringName]([&"fragment_hive_1", &"fragment_hive_3"])
+lore_layer = 5

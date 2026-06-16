@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_hive_5_001"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_hive_5"
+title = "镜中的笑 (The Smile in the Mirror)"
+body = "I saw my reflection in the mirrored wall. It smiled. I did not. I walked closer. The reflection walked slower. I raised my hand. The reflection raised its hand — but the wrong hand. I am not alone in this station. I have never been alone."
+unlock_condition = &"visited_c3_r7"
+related_fragment_ids = Array[StringName]([&"fragment_hive_3", &"fragment_hive_4"])
+lore_layer = 6
