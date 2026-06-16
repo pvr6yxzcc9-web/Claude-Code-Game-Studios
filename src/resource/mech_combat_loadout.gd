@@ -2,16 +2,27 @@
 class_name MechCombatLoadout
 extends Resource
 
-# MechCombatLoadout (S7-002) — per-mech weapon + ammo + parts HP data.
-# Each mech has its own MechCombatLoadout instance held by WeaponLoadout.
-# Replaces the global weapon_slots in the legacy 1v1 model.
+# MechCombatLoadout (S7-002 + S7-003) — per-mech all-in-one data.
+# Each mech in the roster has one of these. Holds:
+#   - Identity (mech_id, display_name, class_type)
+#   - Weapon slots + ammo (3-4 slots)
+#   - 4 parts HP (head / chest / arms / legs) per party-system.md §3.5
+#   - Stats (mobility / armor / firepower)
+#   - Module slots (1 for normal, 2 for 苍穹号)
 #
-# NOTE: This is distinct from the `MechLoadout` autoload (src/autoload/
-# mech_loadout.gd), which tracks the 5 equipable mech parts (torso /
-# left_arm / right_arm / legs / core). That one is for parts; this one is
-# for weapons. Renamed to avoid class_name collision.
+# NOTE: Distinct from the `MechLoadout` autoload (src/autoload/mech_loadout.gd),
+# which tracks the roster of mechs + global cycling API. This resource is the
+# per-mech data; the autoload manages a collection of them.
 
-# 3 weapon slots (4 for 苍穹号, set per-mech via max_weapon_slots)
+# === Identity (S7-003) ===
+
+var mech_id: StringName = &""  # e.g. &"ranger_mech"
+var display_name: String = ""  # e.g. "漫游者号"
+var class_type: StringName = &"infantry"  # infantry / cavalry / artillery / legendary
+
+# === Weapon slots (S7-002) ===
+
+# 3 weapon slots (4 for 苍穹号, set via max_weapon_slots)
 var weapon_slots: Array[StringName] = [&"", &"", &""]
 # 3 ammo slots (parallel to weapon_slots)
 var ammo_slots: Array[StringName] = [&"", &"", &""]
@@ -19,20 +30,31 @@ var ammo_slots: Array[StringName] = [&"", &"", &""]
 # Active slot within this mech (not a global index)
 var active_slot: int = 0
 
-# 4 parts HP (per party-system.md §3.5)
+# Max weapon slots (3 for normal mechs, 4 for 苍穹号)
+var max_weapon_slots: int = 3
+
+# === Parts HP (S7-002, S7-003 §3.5) ===
+
 var head_hp: int = 100
 var chest_hp: int = 100
 var arms_hp: int = 100
 var legs_hp: int = 100
 
-# Max HP (per part)
 var max_head_hp: int = 100
 var max_chest_hp: int = 100
 var max_arms_hp: int = 100
 var max_legs_hp: int = 100
 
-# Special module slot
-var module_id: StringName = &""
+# === Stats (S7-003) ===
 
-# Max weapon slots (3 for normal mechs, 4 for 苍穹号)
-var max_weapon_slots: int = 3
+var mobility: int = 3
+var armor: int = 3
+var firepower: int = 3
+
+# === Modules (S7-003) ===
+# 1 slot for normal mechs, 2 slots for 苍穹号
+var module_ids: Array[StringName] = [&""]
+
+# === Unlocked flag (S7-003) ===
+# 苍穹号 is locked until Ch13 inheritance. Other mechs are unlocked from game start.
+var unlocked: bool = true

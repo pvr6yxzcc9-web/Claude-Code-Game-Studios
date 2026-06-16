@@ -47,14 +47,17 @@ func _ready() -> void:
 	# Default loadout for FC-1: slot 0 = blaster_rifle (legacy)
 	weapon_slots[0] = &"blaster_rifle"
 
-	# S7-002: Register the 3 default mechs with starter loadouts.
-	# This replaces the old single-pilot 3-slot model.
-	register_mech(&"ranger", 3, [&"blaster_rifle", &"", &""], [&"basic_cell", &"", &""])
-	register_mech(&"frostbite", 3, [&"rifle", &"knife", &"throwable"], [&"basic_cell", &"", &""])
-	register_mech(&"bomber", 3, [&"rail_cannon", &"grenade_launcher", &"repair_drone"], [&"heavy_round", &"", &""])
+	# S7-002 + S7-003: Register the 3 default mechs with starter loadouts.
+	# Mech IDs match the MechLoadout roster (ranger_mech / frostbite_mech /
+	# bomber_mech). 苍穹号 (cangqiong_mech) is registered with its 4 slots
+	# but the player can't equip it until Ch13 inheritance.
+	register_mech(&"ranger_mech", 3, [&"blaster_rifle", &"", &""], [&"basic_cell", &"", &""])
+	register_mech(&"frostbite_mech", 3, [&"rifle", &"knife", &"throwable"], [&"basic_cell", &"", &""])
+	register_mech(&"bomber_mech", 3, [&"rail_cannon", &"grenade_launcher", &"repair_drone"], [&"heavy_round", &"", &""])
+	register_mech(&"cangqiong_mech", 4, [&"plasma_cannon", &"laser_lance", &"missile_pod", &"emp_blaster"], [&"plasma_cell", &"energy_cell", &"missile", &"emp_charge"])
 
-	# S7-002: Set ranger as the active mech (legacy compat)
-	set_active_mech(&"ranger")
+	# S7-002: Set ranger_mech as the active mech (legacy compat)
+	set_active_mech(&"ranger_mech")
 
 	print("[WeaponLoadout] ready (S7-002 — per-mech loadouts)")
 
@@ -230,7 +233,7 @@ func get_state_snapshot() -> Dictionary:
 			"max_chest_hp": loadout.max_chest_hp,
 			"max_arms_hp": loadout.max_arms_hp,
 			"max_legs_hp": loadout.max_legs_hp,
-			"module_id": loadout.module_id,
+			"module_ids": loadout.module_ids.duplicate(),
 			"max_weapon_slots": loadout.max_weapon_slots,
 		}
 	return {
@@ -293,8 +296,11 @@ func load_snapshot(snap: Dictionary) -> Error:
 				loadout.arms_hp = int(md["arms_hp"])
 			if md.has("legs_hp"):
 				loadout.legs_hp = int(md["legs_hp"])
-			if md.has("module_id"):
-				loadout.module_id = StringName(md["module_id"])
+			if md.has("module_ids"):
+				var mods: Array = md["module_ids"]
+				loadout.module_ids.clear()
+				for m in mods:
+					loadout.module_ids.append(StringName(m))
 	# Sync legacy view to active mech
 	_sync_legacy_view_from_active()
 	return OK
