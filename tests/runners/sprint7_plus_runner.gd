@@ -28,6 +28,9 @@ const TEST_SCRIPTS: Array[String] = [
 	"res://tests/integration/fc73_bounty_racing_ui_test.gd",
 	# Sprint 12 — Polish
 	"res://tests/integration/fc74_polish_test.gd",
+	"res://tests/integration/fc75_audit_test.gd",
+	"res://tests/integration/fc76_full_game_flow_test.gd",
+	"res://tests/integration/fc77_combat_stress_test.gd",
 	# Sprint 7 unit tests
 	"res://tests/unit/autoload/fc60_weapon_decoupling_test.gd",
 	"res://tests/unit/autoload/fc61_mech_swap_test.gd",
