@@ -1,17 +1,19 @@
 extends Node
 # Party Battle Controller (Sprint 7-001 S7-001 REAL implementation)
 #
-# PR 2: Now reads party data from PartyManager autoload (stub for now).
+# PR 3: Now uses BattleMathLib for damage formulas.
 # Still does NOT modify the existing 1v1 battle_scene.gd.
 #
-# PR 2 changes:
-# - Read party mechs from PartyManager.get_party_mechs() (was hardcoded fallback)
-# - Hook into state_battle transitions (logs a hint, doesn't auto-start)
-# - Added _load_party_mechs_fallback() for testing without PartyManager
+# PR 3 changes:
+# - Player attacks use BattleMathLib.roll_range() + clamp_damage()
+# - Enemy attacks use BattleMathLib.roll_accuracy() + roll_range()
+# - Damage is no longer the PR 1 placeholder (randi_range(20, 30))
+# - This is consistent with the existing 1v1 battle_scene.gd
+#   pattern (which also uses BattleMathLib)
 #
 # Future PRs (per the sprint-07-001 plan):
-# - PR 3: Replace legacy 1v1 entirely
-# - PR 4: Wire HUD (S7-004), Mech Bay (S7-007), etc.
+# - PR 4: Replace legacy 1v1 entirely
+# - PR 5: Wire HUD (S7-004), Mech Bay (S7-007), etc.
 
 # === Signals ===
 
@@ -123,8 +125,14 @@ func _active_mech_attack() -> void:
         print("[PartyBattleController] %s is down, skipping" % mech.name)
         return
 
-    # Simplified damage: roll 20-30 damage (real damage formula is in S7-009)
-    var damage: int = randi_range(20, 30)
+    # S7-001 PR 3: Use BattleMathLib.roll_range() for damage
+    # (replaces the PR 1 placeholder randi_range(20, 30)).
+    # S7-009 will add the full damage formula (weapon, ammo,
+    # weakness, crit) — for now we use a simple min/max roll.
+    # This is consistent with the existing 1v1 battle_scene.gd
+    # pattern (which also uses BattleMathLib).
+    var damage: int = BattleMathLib.roll_range(20, 30)
+    damage = BattleMathLib.clamp_damage(damage)
     _enemy.hp = max(0, _enemy.hp - damage)
     print("[PartyBattleController] %s attacks %s for %d" % [mech.name, _enemy.display_name, damage])
     party_member_attacked.emit(mech.id, 0, damage)
@@ -162,9 +170,19 @@ func _execute_enemy_attack() -> void:
         end_party_battle(false)
         return
     var target: Dictionary = _party[target_index]
-    var damage: int = _enemy.attack
-    target.hp = max(0, target.hp - damage)
-    print("[PartyBattleController] Enemy attacks %s for %d" % [target.name, damage])
+    # S7-001 PR 3: Use BattleMathLib for accuracy roll + damage
+    var accuracy: float = float(_enemy.get("accuracy", 0.85))
+    var damage: int = 0
+    if BattleMathLib.roll_accuracy(accuracy):
+        damage = BattleMathLib.roll_range(
+            int(_enemy.get("attack", 10)) - 2,
+            int(_enemy.get("attack", 10)) + 2
+        )
+        damage = BattleMathLib.clamp_damage(damage)
+        target.hp = max(0, target.hp - damage)
+        print("[PartyBattleController] Enemy attacks %s for %d (acc=%.2f)" % [target.name, damage, accuracy])
+    else:
+        print("[PartyBattleController] Enemy missed %s (acc=%.2f)" % [target.name, accuracy])
     enemy_attacked.emit(target_index, damage)
     if target.hp <= 0:
         party_member_knocked_out.emit(target.id)
