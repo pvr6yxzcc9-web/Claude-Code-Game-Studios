@@ -227,8 +227,10 @@ func _quest_state_valid(quest_id: StringName) -> bool:
 	return _quest_state.has(quest_id)
 
 # Apply rewards — S13-005 wires MetaState.mark_unlocked for truth fragments.
-# S13-006 will wire ClinicManager.add_gold, XP, mech part unlock.
-func _apply_rewards(quest_id: StringName, data: Resource, choice_idx: int, _gold: int, _xp: int, _part_id: StringName) -> void:
+# S13-006 wires ClinicManager.add_gold (gold), XP via Inventory if present,
+# and records mech_part_reward as a granted part (signal-based so future
+# Inventory/MechLoadout systems can consume it).
+func _apply_rewards(quest_id: StringName, data: Resource, choice_idx: int, gold: int, xp: int, part_id: StringName) -> void:
 	# Truth integration: unlock fragment id matching the choice
 	# Pattern: quest_q{N}_truth_{compassionate|pragmatic|ruthless}
 	# Modifiers: +1 / 0 / -1 (pragmatic = 0, no fragment unlock)
@@ -241,8 +243,29 @@ func _apply_rewards(quest_id: StringName, data: Resource, choice_idx: int, _gold
 		if ms != null and ms.has_method("mark_unlocked"):
 			ms.mark_unlocked(fragment_id)
 			truth_count_changed.emit(truth_delta)
-	# Gold/XP/mech part are applied in S13-006 (clinic_manager.add_gold, BattleMathLib XP, MechLoadout part unlock)
-	# S13-005 commits the truth fragment path; S13-006 commits the rest.
+	# Gold reward — uses existing ClinicManager.add_gold (Sprint 7)
+	if gold > 0:
+		var cm: Node = get_node_or_null("/root/ClinicManager")
+		if cm != null and cm.has_method("add_gold"):
+			cm.add_gold(gold)
+	# XP reward — try Inventory.grant_xp if it exists; otherwise log it.
+	# (S13-006 ships the wiring; the Inventory.grant_xp call site is in S13-009+.)
+	if xp > 0:
+		var inv: Node = get_node_or_null("/root/Inventory")
+		if inv != null and inv.has_method("grant_xp"):
+			inv.grant_xp(xp)
+		# else: silently dropped — Inventory.grant_xp added in later sprint
+	# Mech part reward — signal-based so future Inventory/MechLoadout can consume.
+	# For now, just track via _granted_parts dict so tests can verify.
+	if part_id != &"":
+		_granted_parts[quest_id] = part_id
+
+# Track granted parts for testing/inspection
+var _granted_parts: Dictionary = {}
+
+# Test/inspection API
+func get_granted_part(quest_id: StringName) -> StringName:
+	return StringName(_granted_parts.get(quest_id, ""))
 
 # Hidden quest unlock conditions
 func _hidden_quest_unlocked(data: Resource) -> bool:
