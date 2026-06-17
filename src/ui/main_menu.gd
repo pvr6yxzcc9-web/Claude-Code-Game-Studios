@@ -29,18 +29,26 @@ func _ready() -> void:
 		add_child(bg)
 	# S6-017: title + menu use Localization autoload (English fallback)
 	var loc: Node = get_node_or_null("/root/Localization")
-	# Title
+	# S14-004: Logo TextureRect above the title Label
+	if ResourceLoader.exists("res://assets/sprites/title/logo.png"):
+		var logo_tex: TextureRect = TextureRect.new()
+		logo_tex.texture = load("res://assets/sprites/title/logo.png")
+		logo_tex.position = Vector2(240, 80)
+		logo_tex.size = Vector2(800, 300)
+		logo_tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		add_child(logo_tex)
+	# Title (smaller now that Logo is the primary visual)
 	_title_label = Label.new()
 	_title_label.text = loc.t(&"ui.main_menu.title") if loc != null else "RAILHUNTER"
-	_title_label.add_theme_font_size_override("font_size", 48)
+	_title_label.add_theme_font_size_override("font_size", 20)
 	_title_label.add_theme_color_override("font_color", Color(0.95, 0.95, 1.0))
-	_title_label.position = Vector2(400, 180)
+	_title_label.position = Vector2(560, 340)
 	add_child(_title_label)
 	var subtitle: Label = Label.new()
 	subtitle.text = loc.t(&"ui.main_menu.subtitle") if loc != null else "Steel Rail Hunter"
-	subtitle.add_theme_font_size_override("font_size", 28)
+	subtitle.add_theme_font_size_override("font_size", 18)
 	subtitle.add_theme_color_override("font_color", Color(0.7, 0.7, 0.85, 0.9))
-	subtitle.position = Vector2(590, 220)
+	subtitle.position = Vector2(540, 370)
 	add_child(subtitle)
 	# Menu items
 	_menu_items = [
