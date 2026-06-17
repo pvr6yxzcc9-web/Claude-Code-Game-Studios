@@ -43,6 +43,8 @@ const TEST_SCRIPTS: Array[String] = [
 	"res://tests/integration/fc82_vfx_ui_test.gd",
 	# Sprint 18 — ch1 Tileset
 	"res://tests/integration/fc83_ch1_tileset_test.gd",
+	# Sprint 19 — Boss Animation Frames
+	"res://tests/integration/fc84_boss_anim_test.gd",
 	# Sprint 7 unit tests
 	"res://tests/unit/autoload/fc60_weapon_decoupling_test.gd",
 	"res://tests/unit/autoload/fc61_mech_swap_test.gd",
