@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r1"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r1"
+display_name = "The Air Lock"
+chapter = 1
+description = "Standard air lock. The outer door is frozen shut. Frost on every surface. A single dim light flickers above the control panel."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([])
+has_boss = false
+npcs = Array[StringName]([&"ch1_derelict_captain"])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c1_r2"])
+decoy_count = 0

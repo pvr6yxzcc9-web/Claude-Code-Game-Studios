@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r7"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r7"
+display_name = "The Manifest Vault"
+chapter = 1
+description = "The captain's safe. The manifest is here. Three pages of nothing. The truth is in the nothing. The nothing is the crew."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_hollow_tech"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([&"fragment_ch1_5"])
+exits = Array[StringName]([&"c1_r5", &"c1_r8"])
+decoy_count = 0

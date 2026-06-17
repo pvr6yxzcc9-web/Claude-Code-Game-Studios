@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_sat1_marlow_note_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_sat1_marlow_note"
+title = "MARLOW'S DEPARTURE NOTE"
+body = "If you're reading this, you're the one I sent. Twenty years on this ship and the cargo bay is the only thing that's changed — and it hasn't changed. It's just older. The inheritance is 苍穹号 — a ship I found on the upper decks. Pre-Rift. Intact. The captain doesn't know. The convoy doesn't know. I know. You know now. The inheritance is yours if you can get out of here alive. Find me on Sat-2. I'll know the manifest is real. — Marlow"
+author = "First Mate Marlow"

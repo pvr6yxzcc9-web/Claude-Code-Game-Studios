@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r9"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r9"
+display_name = "Marlow's Last Quarters"
+chapter = 1
+description = "Marlow's bunk. The pillow still has the shape of his head. He left in a hurry. He left for Sat-2. He left instructions."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_frozen_crew"])
+has_boss = false
+npcs = Array[StringName]([&"ch1_marlow_first_mate"])
+terminals = Array[StringName]([&"log_sat1_marlow_note"])
+fragment_ids = Array[StringName]([&"fragment_ch1_6", &"fragment_ch1_7"])
+exits = Array[StringName]([&"c1_r8", &"c1_r10"])
+decoy_count = 0

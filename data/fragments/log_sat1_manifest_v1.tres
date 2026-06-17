@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_sat1_manifest_v1_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_sat1_manifest_v1"
+title = "MANIFEST VERSION 1"
+body = "Forty-two crew. No cargo description. The convoy didn't want to know what they were carrying. The manifest says nothing because the cargo is everything. If you're reading this, the convoy has been gone longer than twelve years. We are the cargo. The cargo is us. Decide what that means to you."
+author = "Manifest vault, draft 1"

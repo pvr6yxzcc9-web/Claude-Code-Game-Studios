@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r3"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r3"
+display_name = "Engineering Bay"
+chapter = 1
+description = "Workbenches covered in half-finished repairs. A welding torch still burns blue. The engineer has made this her home for twelve years."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_cargo_bot"])
+has_boss = false
+npcs = Array[StringName]([&"ch1_salvage_engineer"])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c1_r2", &"c1_r4", &"c1_r6"])
+decoy_count = 0

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_sat1_manifest_v2_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_sat1_manifest_v2"
+title = "MANIFEST VERSION 2"
+body = "We were carrying forty-two crew. We were carrying the Marrow's last hope. The cold is not the weather. The cold is what's in the hold. The seals cracked at year three. The cold got in. The cold got us. We are the cargo. We are the warning. The convoy knows."
+author = "Manifest vault, draft 2"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r2"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r2"
+display_name = "Corridor of the Lost Crew"
+chapter = 1
+description = "A long corridor. The walls are lined with emergency suits, all empty. The cold has preserved them. One suit is missing its helmet."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_feral_scavenger"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_sat1_manifest_v1"])
+fragment_ids = Array[StringName]([&"fragment_ch1_1"])
+exits = Array[StringName]([&"c1_r1", &"c1_r3"])
+decoy_count = 0

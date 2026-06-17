@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r5"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r5"
+display_name = "Reactor Access"
+chapter = 1
+description = "Catwalks over the reactor pit. The reactor is dark — been dark for years. But something keeps the cold. Something keeps the seals."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_warden_construct"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([&"log_sat1_manifest_v3"])
+fragment_ids = Array[StringName]([&"fragment_ch1_2"])
+exits = Array[StringName]([&"c1_r4", &"c1_r7"])
+decoy_count = 0

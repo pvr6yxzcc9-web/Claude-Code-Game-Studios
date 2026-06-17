@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TerminalLogData" load_steps=2 format=3 uid="uid://log_sat1_manifest_v3_001"]
+
+[ext_resource type="Script" path="res://src/resource/terminal_log_data.gd" id="1_log"]
+
+[resource]
+script = ExtResource("1_log")
+id = &"log_sat1_manifest_v3"
+title = "MANIFEST VERSION 3 — FINAL"
+body = "Three drafts. Same answer. Forty-two crew. No cargo. The convoy didn't fail us. We failed the convoy. We were carrying something worse than ourselves. Something that wanted out. We are the cargo. We are the container. We are the warning. Marlow knows. Marlow is gone. The inheritance is here. Find the first mate on Sat-2. Tell him the Marrow is ready."
+author = "Manifest vault, final"

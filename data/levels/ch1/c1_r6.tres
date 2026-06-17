@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RoomData" load_steps=2 format=3 uid="uid://room_c1_r6"]
+
+[ext_resource type="Script" path="res://src/resource/room_data.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+id = &"c1_r6"
+display_name = "Drone Hangar"
+chapter = 1
+description = "Six bays for salvage drones. Two are open. The drones are autonomous now — they don't need crews to hunt."
+tile_set = &"ch1"
+enemy_encounters = Array[StringName]([&"ch1_drone_remnant", &"ch1_drone_remnant"])
+has_boss = false
+npcs = Array[StringName]([])
+terminals = Array[StringName]([])
+fragment_ids = Array[StringName]([])
+exits = Array[StringName]([&"c1_r3"])
+decoy_count = 0
