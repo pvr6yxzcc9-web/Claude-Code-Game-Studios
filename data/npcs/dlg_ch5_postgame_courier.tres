@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ch5_postgame_courier_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ch5_postgame_courier"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "You crossed the line. 35 truths. The cycle is broken. Or it isn't. There is one more thing. The Creator left a final message. Are you ready to hear it?",
+"choices": [
+{"label": "Tell me the final truth.", "next": "ready"},
+{"label": "I need more time.", "next": "bye"}
+]
+},
+&"ready": {
+"text": "Then listen. The truth is not in the data. The truth is in the listening. q12: the last choice.",
+"choices": [
+{"label": "Accept the final truth.", "next": "accept"},
+{"label": "Walk away.", "next": "bye"}
+]
+},
+&"accept": {
+"text": "Quest q12 is now available. The cycle ends here. Your choice matters.",
+"choices": []
+},
+&"bye": {
+"text": "I will be here. The Creator waits for no one. But waits for you.",
+"choices": []
+}
+}

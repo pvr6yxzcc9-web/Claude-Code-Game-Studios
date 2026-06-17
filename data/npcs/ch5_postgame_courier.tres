@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch5_postgame_courier"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch5_postgame_courier.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch5_postgame_courier"
+display_name = "信使 (通关后)"
+portrait = ExtResource("2_portrait")
+faction = &"creator"
+dialogue_tree_id = &"dlg_ch5_postgame_courier"
+location = &"chapter5_origin"
+role = &"quest_giver"
+inventory_id = &""
+description = "An ethereal messenger who appears only after the player has completed ending A or B and unlocked all 35 truths. Offers q12: the hidden post-game truth."
+gives_quest_ids = [&"q12_hidden_postgame"]
+quest_complete_dialogue_id = &"dlg_q12_turnin"
+quest_done_dialogue_id = &"dlg_q12_done"
+priority = 5

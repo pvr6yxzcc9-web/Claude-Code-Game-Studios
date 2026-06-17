@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch2_ice_hermit"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch2_ice_hermit.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch2_ice_hermit"
+display_name = "冰隐士"
+portrait = ExtResource("2_portrait")
+faction = &"independent"
+dialogue_tree_id = &"dlg_ice_hermit"
+location = &"chapter2_frozen_reactor"
+role = &"quest_giver"
+inventory_id = &""
+description = "Hooded hermit living in the frozen reactor ruins. Guards a pre-Rift artifact. Offers q2: choose between family heirloom, black market sale, or theft."
+gives_quest_ids = [&"q2_ice_hermit_relic"]
+quest_complete_dialogue_id = &"dlg_q2_turnin"
+quest_done_dialogue_id = &"dlg_q2_done"
+priority = 3

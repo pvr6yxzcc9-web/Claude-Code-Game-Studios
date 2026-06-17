@@ -294,3 +294,61 @@ func test_hidden_quest_q12_locked_until_35_truths() -> void:
 	# Without 35 truths and ending, q12 should be ERR_UNAVAILABLE
 	var err: int = qm.accept_quest(qm.QUEST_HIDDEN_POSTGAME)
 	assert_eq(err, ERR_UNAVAILABLE, "q12 locked without 35 truths + ending A/B")
+
+# === S13-013: All 4 quest-giver NPCs exist ===
+
+func test_all_quest_giver_npcs_registered() -> void:
+	var reg: Node = _reg()
+	if reg == null:
+		pending("ResourceRegistry missing")
+		return
+	# Sat-2 trio (added in S13-013) + Sat-5 postgame courier
+	var expected_npcs: Array[StringName] = [
+		&"ch2_scavenger_leader",
+		&"ch2_ice_hermit",
+		&"ch2_drone_operator",
+		&"ch5_postgame_courier",
+	]
+	for npc_id in expected_npcs:
+		var npc: Resource = reg.get_resource(npc_id)
+		assert_not_null(npc, "NPC %s registered" % String(npc_id))
+		# Each must be a quest_giver with a quest in gives_quest_ids
+		assert_eq(String(npc.get("role", "")), "quest_giver", "%s is quest_giver" % String(npc_id))
+		var gives: Array = npc.get("gives_quest_ids", [])
+		assert_gt(gives.size(), 0, "%s gives at least 1 quest" % String(npc_id))
+		# Has turn-in + done dialogues
+		assert_ne(String(npc.get("quest_complete_dialogue_id", "")), "", "%s has quest_complete_dialogue_id" % String(npc_id))
+		assert_ne(String(npc.get("quest_done_dialogue_id", "")), "", "%s has quest_done_dialogue_id" % String(npc_id))
+
+func test_sat2_quest_givers_connected_to_correct_quests() -> void:
+	var reg: Node = _reg()
+	if reg == null:
+		pending("ResourceRegistry missing")
+		return
+	# ch2_scavenger_leader -> q1
+	# ch2_ice_hermit -> q2
+	# ch2_drone_operator -> q3
+	# ch5_postgame_courier -> q12
+	var bindings: Dictionary = {
+		&"ch2_scavenger_leader": &"q1_rescue_scavenger_leader",
+		&"ch2_ice_hermit": &"q2_ice_hermit_relic",
+		&"ch2_drone_operator": &"q3_drone_ambush",
+		&"ch5_postgame_courier": &"q12_hidden_postgame",
+	}
+	for npc_id in bindings:
+		var npc: Resource = reg.get_resource(npc_id)
+		if npc == null:
+			continue
+		var gives: Array = npc.get("gives_quest_ids", [])
+		assert_eq(String(gives[0]), String(bindings[npc_id]), "%s gives %s" % [String(npc_id), String(bindings[npc_id])])
+
+func test_postgame_courier_default_dialogue_tree_exists() -> void:
+	var reg: Node = _reg()
+	if reg == null:
+		pending("ResourceRegistry missing")
+		return
+	# The postgame NPC's default dialogue (used when no quest is active) must load
+	var dlg: Resource = reg.get_resource(&"dlg_ch5_postgame_courier")
+	assert_not_null(dlg, "dlg_ch5_postgame_courier loaded")
+	if dlg != null:
+		assert_ne(String(dlg.get("start_node_id", "")), "", "has start_node_id")

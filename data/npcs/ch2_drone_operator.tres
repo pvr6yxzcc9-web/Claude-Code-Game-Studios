@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch2_drone_operator"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch2_drone_operator.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch2_drone_operator"
+display_name = "无人机操作员"
+portrait = ExtResource("2_portrait")
+faction = &"engineers"
+dialogue_tree_id = &"dlg_drone_op"
+location = &"chapter2_frozen_reactor"
+role = &"quest_giver"
+inventory_id = &""
+description = "Sat-2 engineer with goggles and antenna. Six autonomous drones are harassing caravans. Offers q3: reprogram, scrap for parts, or sell to military."
+gives_quest_ids = [&"q3_drone_ambush"]
+quest_complete_dialogue_id = &"dlg_q3_turnin"
+quest_done_dialogue_id = &"dlg_q3_done"
+priority = 3

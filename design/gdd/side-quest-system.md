@@ -226,3 +226,4 @@ Each story ships independently behind a `_quests_enabled: bool = false` flag in 
 | Date | Author | Change |
 |---|---|---|
 | 2026-06-17 | claude | Initial GDD created (S13-001) |
+| 2026-06-17 | claude | S13-013: 4 quest-giver NPCs added (ch2_scavenger_leader, ch2_ice_hermit, ch2_drone_operator, ch5_postgame_courier) |

@@ -66,6 +66,11 @@ EXPECTED_FILES: dict[str, str] = {
 	f"{OUT_DIR_NPCS}/ch4_ai_repair.png": "64x64 PNG",
 	f"{OUT_DIR_NPCS}/ch4_pluto_fragment.png": "64x64 PNG",
 	f"{OUT_DIR_NPCS}/ch4_war_orphan.png": "64x64 PNG",
+	# S13-013: quest-giver NPC portraits (4)
+	f"{OUT_DIR_NPCS}/ch2_scavenger_leader.png": "64x64 PNG",
+	f"{OUT_DIR_NPCS}/ch2_ice_hermit.png": "64x64 PNG",
+	f"{OUT_DIR_NPCS}/ch2_drone_operator.png": "64x64 PNG",
+	f"{OUT_DIR_NPCS}/ch5_postgame_courier.png": "64x64 PNG",
 	# Title backgrounds (3)
 	f"{OUT_DIR_TITLE}/title_ch3.png": "1280x720 PNG",
 	f"{OUT_DIR_TITLE}/title_ch4.png": "1280x720 PNG",
