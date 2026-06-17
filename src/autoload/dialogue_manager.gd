@@ -17,6 +17,12 @@ var current_tree: Resource = null
 var current_node_id: StringName = &""
 var is_active: bool = false
 
+# S13-005: when a quest turn-in dialogue is in progress, this is set to the
+# quest_id. Tracked so end_dialogue() can call QuestManager.complete_quest
+# with the last choice the player made. Empty when not a quest dialogue.
+var current_quest_id: StringName = &""
+var _last_choice_made: int = -1
+
 # S7-005: in-dialogue companion (the pilot "speaking" alongside the main character)
 # Defaults to empty — caller (e.g. interaction code) can pre-set via
 # set_in_dialogue_companion(id) before calling start_dialogue.
@@ -115,11 +121,21 @@ func start_dialogue_with_tree(tree: Resource, npc: Resource) -> Error:
     current_tree = tree
     is_active = true
     current_node_id = StringName(tree.get("start_node_id"))
+    current_quest_id = &""  # S13-005: not a quest dialogue by default
+    _last_choice_made = -1
     var sm: Node = get_node("/root/GameStateMachine")
     sm.transition_to(&"state_dialogue")
     dialogue_started.emit(npc)
     _emit_current_node()
     return OK
+
+# S13-005: Start a quest turn-in dialogue. Identical to start_dialogue_with_tree
+# but marks the dialogue so end_dialogue() calls QuestManager.complete_quest.
+func start_quest_dialogue(tree: Resource, npc: Resource, quest_id: StringName) -> Error:
+    var err: Error = start_dialogue_with_tree(tree, npc)
+    if err == OK:
+        current_quest_id = quest_id
+    return err
 
 func choose(choice_index: int) -> void:
     if not is_active or current_tree == null:
@@ -134,6 +150,7 @@ func choose(choice_index: int) -> void:
     if choice_index < 0 or choice_index >= choices.size():
         return  # invalid choice, ignore
     choice_made.emit(choice_index)
+    _last_choice_made = choice_index  # S13-005: track for quest completion
     var next_id: StringName = StringName(choices[choice_index].get("next", ""))
     if next_id == &"":
         end_dialogue()
@@ -200,6 +217,15 @@ func _emit_current_node() -> void:
         node_entered.emit(current_node_id, text, choices)
 
 func end_dialogue() -> void:
+    # S13-005: if this was a quest turn-in dialogue, complete the quest with
+    # the last choice the player made. Re-checked in QuestManager.complete_quest
+    # so an abandoned-mid-dialogue quest will reject the completion.
+    if current_quest_id != &"" and _last_choice_made >= 0:
+        var qm: Node = get_node_or_null("/root/QuestManager")
+        if qm != null and qm.has_method("complete_quest"):
+            qm.complete_quest(current_quest_id, _last_choice_made)
+        current_quest_id = &""
+        _last_choice_made = -1
     is_active = false
     current_npc = null
     current_tree = null

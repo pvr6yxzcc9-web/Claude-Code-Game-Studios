@@ -68,7 +68,7 @@ var _quest_choice: Dictionary = {}
 
 # Feature flag — flipped true in S13-005 when dialogue-reward wiring lands.
 # Until then, accept_quest is a no-op so the rest of the game isn't affected.
-@export var _quests_enabled: bool = false
+@export var _quests_enabled: bool = true  # S13-005: enabled after dialogue-reward wiring
 
 func _ready() -> void:
 	# Register all 12 quests (no-op for the data; .tres is the source of truth)
@@ -226,11 +226,23 @@ func fail_quest(quest_id: StringName) -> Error:
 func _quest_state_valid(quest_id: StringName) -> bool:
 	return _quest_state.has(quest_id)
 
-# Apply rewards — stub in S13-003, real impl in S13-005/006
-func _apply_rewards(_quest_id: StringName, _data: Resource, _choice_idx: int, _gold: int, _xp: int, _part_id: StringName) -> void:
-	# S13-003: no-op. S13-005 wires MetaState.mark_unlocked.
-	# S13-006 wires ClinicManager.add_gold, XP, mech part unlock.
-	pass
+# Apply rewards — S13-005 wires MetaState.mark_unlocked for truth fragments.
+# S13-006 will wire ClinicManager.add_gold, XP, mech part unlock.
+func _apply_rewards(quest_id: StringName, data: Resource, choice_idx: int, _gold: int, _xp: int, _part_id: StringName) -> void:
+	# Truth integration: unlock fragment id matching the choice
+	# Pattern: quest_q{N}_truth_{compassionate|pragmatic|ruthless}
+	# Modifiers: +1 / 0 / -1 (pragmatic = 0, no fragment unlock)
+	var truth_mods: Array = data.get("truth_count_modifier", [1, 0, -1])
+	var truth_delta: int = int(truth_mods[choice_idx])
+	if truth_delta != 0:
+		var choice_name: String = ["compassionate", "pragmatic", "ruthless"][choice_idx]
+		var fragment_id: StringName = StringName("quest_%s_truth_%s" % [String(quest_id), choice_name])
+		var ms: Node = get_node_or_null("/root/MetaState")
+		if ms != null and ms.has_method("mark_unlocked"):
+			ms.mark_unlocked(fragment_id)
+			truth_count_changed.emit(truth_delta)
+	# Gold/XP/mech part are applied in S13-006 (clinic_manager.add_gold, BattleMathLib XP, MechLoadout part unlock)
+	# S13-005 commits the truth fragment path; S13-006 commits the rest.
 
 # Hidden quest unlock conditions
 func _hidden_quest_unlocked(data: Resource) -> bool:
