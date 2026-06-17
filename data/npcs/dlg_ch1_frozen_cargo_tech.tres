@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ch1_frozen_cargo_tech_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ch1_frozen_cargo_tech"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "I've worked the cargo bay for twelve years. Twelve. My skin is blue. My breath is visible. I don't mind. The cold keeps things preserved. The cargo, the crew, the truth. All preserved. All waiting.",
+"choices": [
+{"label": "What cargo?", "next": "truth"},
+{"label": "What crew?", "next": "crew"},
+{"label": "What truth?", "next": "deep_truth"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"truth": {
+"text": "Forty-two of us. In the hold. We were the cargo. The convoy didn't want to know what we were carrying. So they sealed us in and called it done. Twelve years of cryo-sleep. Twelve years of dreaming. The dreams are the cargo now.",
+"choices": [
+{"label": "What dreams?", "next": "deep_truth"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"crew": {
+"text": "The captain thinks we're the crew. The first mate thinks we're cargo. The convoy knows we're both. Forty-two of us. Twelve years in cryo. The seals cracked. The cold got in. The cold got us.",
+"choices": [
+{"label": "What truth?", "next": "deep_truth"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"deep_truth": {
+"text": "Truth is cold. Truth is preserved. The truth is that the convoy didn't fail us. We failed the convoy. We were carrying something worse than ourselves. Something that wanted out. We're the cargo. We're the container. We're the warning.",
+"choices": [
+{"label": "I understand.", "next": "bye"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"bye": {
+"text": "The cold keeps things preserved. The cold keeps us honest. When the convoy comes back, ask them what we were carrying. Ask them why they sealed us in. Ask them what the warning was for.",
+"choices": []
+}
+}

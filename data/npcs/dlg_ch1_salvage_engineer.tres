@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ch1_salvage_engineer_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ch1_salvage_engineer"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "Need a repair? A spare part? An answer you probably don't want? I'm the engineer. Everything breaks. Everything can be fixed. Some things should be left broken.",
+"choices": [
+{"label": "Repair my mech.", "next": "repair"},
+{"label": "What broke in the cargo bay?", "next": "cargo_bay"},
+{"label": "What should be left broken?", "next": "secret"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"repair": {
+"text": "Bring me 200 gold and I'll patch you up. The cold does things to the joints. Don't ask me what. Just bring the gold.",
+"choices": [{"label": "Done.", "next": "bye"}]
+},
+&"cargo_bay": {
+"text": "The seals are cracked. Twelve years of pressure cycles will do that. The cargo holds — it's not the cold that gets you, it's the pressure differential. We don't open the doors. We don't talk about what's inside. We don't.",
+"choices": [
+{"label": "What should be left broken?", "next": "secret"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"secret": {
+"text": "The captain says it's cargo. The first mate says it's a mistake. The cold says it's quiet. I say: it's waiting. The seals don't crack from cold. They crack from inside. Whatever's in the hold, it's been pushing for twelve years. We welded the doors. Twice.",
+"choices": [{"label": "I have to go.", "next": "bye"}]
+},
+&"bye": {
+"text": "Everything breaks. Everything can be fixed. The gold helps.",
+"choices": []
+}
+}

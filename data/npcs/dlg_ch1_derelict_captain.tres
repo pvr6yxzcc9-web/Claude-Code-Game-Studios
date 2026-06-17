@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ch1_derelict_captain_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ch1_derelict_captain"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "Twenty years I ran the Marrow. Twenty years of salvage, of cold, of counting crew. The Marrow was a good ship before the convoy. The convoy was a mistake. I won't say more — you wouldn't believe me anyway.",
+"choices": [
+{"label": "What convoy?", "next": "convoy"},
+{"label": "Where's Marlow?", "next": "marlow_q"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"convoy": {
+"text": "Forty-two of us. Sealed in the hold. They called it cargo. I called it a death sentence. The convoy sealed us in and flew away. We've been here ever since. Sal what we can. Wait for what we can't.",
+"choices": [
+{"label": "What was the cargo?", "next": "cargo"},
+{"label": "Where's Marlow now?", "next": "marlow_q"},
+{"label": "Goodbye.", "next": "bye"}
+]
+},
+&"cargo": {
+"text": "Don't ask. Some cargo you don't open. Some you can't. The 42 are still down there in the hold. Still sealed. Some nights I hear them tapping on the doors. Tapping patterns. SOS patterns. Tapping for twelve years.",
+"choices": [{"label": "I have to go.", "next": "bye"}]
+},
+&"marlow_q": {
+"text": "Marlow was our first mate. Tough. Tougher than me. He left two years ago with the rest of the senior crew. Said he had business on the upper decks. Said he'd send someone to check on us. He sent you, didn't he.",
+"choices": [{"label": "Yes.", "next": "marlow_a"}, {"label": "I have to go.", "next": "bye"}]
+},
+&"marlow_a": {
+"text": "Then you're here about the ship. About 苍穹号. I was his second for fifteen years. I know the inheritance. But you don't get it for free. The Marrow holds secrets. The cargo holds answers. The choice is yours.",
+"choices": [{"label": "I understand.", "next": "bye"}]
+},
+&"bye": {
+"text": "The Marrow remembers. We all do. When the convoy comes back — and it will — we'll be ready. Or we won't. Either way: welcome aboard.",
+"choices": []
+}
+}

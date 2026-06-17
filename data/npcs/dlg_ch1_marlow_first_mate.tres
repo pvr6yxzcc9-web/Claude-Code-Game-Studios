@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_ch1_marlow_first_mate_001"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_ch1_marlow_first_mate"
+start_node_id = &"greet"
+nodes = {
+&"greet": {
+"text": "Marlow sent you. Good. I've been waiting. Twenty years on this ship and the cargo bay is the only thing that's changed — and it hasn't changed. It's just older. The cargo is just older. The crew is just older. Marlow knew. He left because he knew.",
+"choices": [
+{"label": "What did Marlow know?", "next": "marlow_knew"},
+{"label": "Why are you waiting?", "next": "waiting"},
+{"label": "Where's the inheritance?", "next": "inheritance"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"marlow_knew": {
+"text": "Marlow was first mate for fifteen years. Tough. Tougher than the captain. He found the manifest in the upper decks. The manifest said: nothing. The manifest is a lie. The manifest says nothing because the cargo is everything. Marlow knew. He left to find help. He sent you.",
+"choices": [
+{"label": "Where's the inheritance?", "next": "inheritance"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"waiting": {
+"text": "Twelve years. The captain thinks we wait for the convoy. The engineer thinks we wait for repairs. The tech thinks we wait for the cold. I wait for someone to open the cargo bay. Someone to see what's inside. Someone to finally know.",
+"choices": [
+{"label": "What do you know?", "next": "marlow_knew"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"inheritance": {
+"text": "Marlow left instructions. The inheritance is 苍穹号 — a ship he found on the upper decks. Pre-Rift. Intact. The captain doesn't know. The convoy doesn't know. I know. You know now. The inheritance is yours if you can get out of here alive.",
+"choices": [
+{"label": "How do I get out?", "next": "escape"},
+{"label": "What's in the cargo?", "next": "marlow_knew"},
+{"label": "I have to go.", "next": "bye"}
+]
+},
+&"escape": {
+"text": "The upper decks. Through the reactor. Through the hold. Through the convoy's manifest. Find Marlow on Sat-2. Tell him Marrow is ready. He'll know what it means. He'll know the inheritance is delivered.",
+"choices": [{"label": "I'll find him.", "next": "bye"}]
+},
+&"bye": {
+"text": "Twenty years I've waited. Twenty years I've kept the secret. The cargo is the crew. The crew is the cargo. The inheritance is the answer. Find Marlow. Get out. Don't look back.",
+"choices": []
+}
+}
