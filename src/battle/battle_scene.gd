@@ -21,6 +21,7 @@ var _hit_flash_timer: SceneTreeTimer = null
 
 # UI elements
 var _bg: ColorRect
+var _bg_sprite: TextureRect  # S14-002: satellite-themed background image
 var _title_label: Label
 var _enemy_name: Label
 var _enemy_hp_label: Label
@@ -31,9 +32,16 @@ var _instr2: Label
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	hide()
-	# Background overlay
+	# S14-002: satellite background image (loaded dynamically by chapter)
+	_bg_sprite = TextureRect.new()
+	_bg_sprite.name = "bg_sprite"
+	_bg_sprite.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_bg_sprite.stretch_mode = TextureRect.STRETCH_SCALE
+	_bg_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	add_child(_bg_sprite)
+	# Background overlay (darkens the sprite for legibility)
 	_bg = ColorRect.new()
-	_bg.color = Color(0, 0, 0, 0.75)
+	_bg.color = Color(0, 0, 0, 0.55)
 	_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(_bg)
 	# Title
@@ -140,6 +148,7 @@ func _enter_battle() -> void:
 	_enemy_base_modulate = Color.WHITE
 	_enemy_visual.modulate = _enemy_base_modulate
 	_enemy_hp = int(_enemy.get("max_hp"))
+	_load_battle_background(String(_enemy.get("id", "")))
 	_refresh()
 	print("[BattleScene] encounter started: %s (HP=%d)" % [_enemy.get("display_name"), _enemy_hp])
 	var hud: Node = get_tree().get_root().find_child("HUD", true, false)
@@ -350,3 +359,25 @@ func _shake_camera(amount: float, duration: float) -> void:
 			.set_trans(Tween.TRANS_SINE)
 	# Final reset
 	tween.tween_property(camera, "offset", original, 0.05)
+
+# S14-002: load satellite-themed battle background based on enemy id
+# Pattern: ch1_*, ch2_*, ch3_*, ch4_*, ch5_* → bg_sat1..5.png
+# Default to bg_sat1 if no match.
+func _load_battle_background(enemy_id: String) -> void:
+	if _bg_sprite == null:
+		return
+	var sat: int = 1  # default
+	if enemy_id.begins_with("ch2_") or enemy_id.begins_with("boss_marrow"):
+		sat = 2
+	elif enemy_id.begins_with("ch3_") or enemy_id.begins_with("boss_hive"):
+		sat = 3
+	elif enemy_id.begins_with("ch4_") or enemy_id.begins_with("boss_pluto"):
+		sat = 4
+	elif enemy_id.begins_with("ch5_") or enemy_id.begins_with("boss_creator"):
+		sat = 5
+	var bg_path: String = "res://assets/sprites/battle/bg_sat%d.png" % sat
+	if ResourceLoader.exists(bg_path):
+		_bg_sprite.texture = load(bg_path)
+	else:
+		_bg_sprite.texture = null
+
