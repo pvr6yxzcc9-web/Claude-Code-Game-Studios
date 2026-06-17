@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q6_done"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q6_done"
+start_node_id = &"q6_start"
+nodes = {
+&"q6_start": {
+"text": "Queen's Ambrosia\n\nRoyal jelly from the queen. Worth 5000 gold on the black market. The faction wants it for the cure. The queen is dying.",
+"choices": [
+{"label": "[1] We deliver it to the faction. They fund the cure. (Compassionate)", "next": &"q6_comp_end"},
+{"label": "[2] We sell half to the faction, half to the black market. Everyone gets something. (Pragmatic)", "next": &"q6_prag_end"},
+{"label": "[3] We sell it all. The queen dies. The cure is delayed another year. (Ruthless)", "next": &"q6_ruth_end"},
+]
+},
+&"q6_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q6_truth_compassionate",
+"choices": []
+},
+&"q6_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q6_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q6_truth_ruthless",
+"choices": []
+},
+}

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q3_offer"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q3_offer"
+start_node_id = &"q3_start"
+nodes = {
+&"q3_start": {
+"text": "Malfunctioning Drone Ambush\n\nSix salvage drones went autonomous last week. They've been harassing caravans. The military wants them, the engineers want them, I want them off my route.",
+"choices": [
+{"label": "[1] We reprogram them. They become allies. (Compassionate)", "next": &"q3_comp_end"},
+{"label": "[2] We sell the route to the engineers, they take the drones for parts, we take 30% of the salvage. (Pragmatic)", "next": &"q3_prag_end"},
+{"label": "[3] We scrap them for parts ourselves. 4 weapons, 2 power cores. The military can go hang. (Ruthless)", "next": &"q3_ruth_end"},
+]
+},
+&"q3_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q3_truth_compassionate",
+"choices": []
+},
+&"q3_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q3_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q3_truth_ruthless",
+"choices": []
+},
+}

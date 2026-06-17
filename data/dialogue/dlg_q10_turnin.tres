@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q10_turnin"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q10_turnin"
+start_node_id = &"q10_start"
+nodes = {
+&"q10_start": {
+"text": "Creator's Premonition\n\nA vision. The Creator, in the chamber, says: 'You will be the last.' The party is shaken. The ending feels near.",
+"choices": [
+{"label": "[1] We study it. Document everything. The truth is more important than the ending. (Compassionate)", "next": &"q10_comp_end"},
+{"label": "[2] We share it with the party. They all carry the weight. (Pragmatic)", "next": &"q10_prag_end"},
+{"label": "[3] We ignore it. The Creator is just another enemy. We focus on what's next. (Ruthless)", "next": &"q10_ruth_end"},
+]
+},
+&"q10_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q10_truth_compassionate",
+"choices": []
+},
+&"q10_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q10_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q10_truth_ruthless",
+"choices": []
+},
+}

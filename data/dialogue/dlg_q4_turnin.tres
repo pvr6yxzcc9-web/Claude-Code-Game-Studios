@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q4_turnin"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q4_turnin"
+start_node_id = &"q4_start"
+nodes = {
+&"q4_start": {
+"text": "Hive Survivor's Trust\n\nA survivor in the lower hive. Won't talk to anyone. Says the queen's getting ready to hatch. The commander wants intel.",
+"choices": [
+{"label": "[1] We share our rations. Listen to her story. She tells us where the queen's chamber is. (Compassionate)", "next": &"q4_comp_end"},
+{"label": "[2] We trade: 200 gold for full intel. She takes it. (Pragmatic)", "next": &"q4_prag_end"},
+{"label": "[3] We drag her to the commander. She tells him everything. 500 gold bounty. (Ruthless)", "next": &"q4_ruth_end"},
+]
+},
+&"q4_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q4_truth_compassionate",
+"choices": []
+},
+&"q4_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q4_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q4_truth_ruthless",
+"choices": []
+},
+}

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q5_done"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q5_done"
+start_node_id = &"q5_start"
+nodes = {
+&"q5_start": {
+"text": "Fungal Infection Cure\n\nThe scientist needs live fungal spores for a cure. The spores are also a potent bioweapon. The hive is full of them.",
+"choices": [
+{"label": "[1] We collect the spores. Give them to the scientist. She starts working on the cure. (Compassionate)", "next": &"q5_comp_end"},
+{"label": "[2] We collect two batches. Give one to the scientist, sell the other. (Pragmatic)", "next": &"q5_prag_end"},
+{"label": "[3] We collect the spores. Sell them all to the highest bidder. No cure this year. (Ruthless)", "next": &"q5_ruth_end"},
+]
+},
+&"q5_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q5_truth_compassionate",
+"choices": []
+},
+&"q5_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q5_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q5_truth_ruthless",
+"choices": []
+},
+}

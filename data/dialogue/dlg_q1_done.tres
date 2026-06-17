@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q1_done"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q1_done"
+start_node_id = &"q1_start"
+nodes = {
+&"q1_start": {
+"text": "Rescue the Scavenger Leader\n\nThe leader's been stuck in that collapsed cave for three days. The captor is wounded but desperate. We have to do something.",
+"choices": [
+{"label": "[1] We sneak in at night. Rescue the leader, leave the captor alive. (Compassionate)", "next": &"q1_comp_end"},
+{"label": "[2] We offer the captor 500 gold. He releases the leader and we all walk away. (Pragmatic)", "next": &"q1_prag_end"},
+{"label": "[3] We storm the cave. Kill the captor, take the leader, take his stash. (Ruthless)", "next": &"q1_ruth_end"},
+]
+},
+&"q1_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q1_truth_compassionate",
+"choices": []
+},
+&"q1_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q1_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q1_truth_ruthless",
+"choices": []
+},
+}

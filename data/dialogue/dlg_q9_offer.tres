@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q9_offer"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q9_offer"
+start_node_id = &"q9_start"
+nodes = {
+&"q9_start": {
+"text": "War Orphan's Home\n\nA child, alone since the war. The orphanage is gone. The shelter is full. The adoption list is long.",
+"choices": [
+{"label": "[1] We take her in. One more seat in the mech bay. (Compassionate)", "next": &"q9_comp_end"},
+{"label": "[2] We sponsor her. 500 gold a month to the shelter. We visit when we can. (Pragmatic)", "next": &"q9_prag_end"},
+{"label": "[3] We leave her at the shelter. It's not our war. (Ruthless)", "next": &"q9_ruth_end"},
+]
+},
+&"q9_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q9_truth_compassionate",
+"choices": []
+},
+&"q9_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q9_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q9_truth_ruthless",
+"choices": []
+},
+}

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q7_offer"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q7_offer"
+start_node_id = &"q7_start"
+nodes = {
+&"q7_start": {
+"text": "Veteran's Arsenal\n\nPre-Rift weapons cache. The veteran says it's his unit's memorial. The commander wants it for the arsenal.",
+"choices": [
+{"label": "[1] We leave it as a memorial. The veteran tells us about the war. (Compassionate)", "next": &"q7_comp_end"},
+{"label": "[2] We split: take 3 weapons, leave 3. The veteran takes the rest to the commander. (Pragmatic)", "next": &"q7_prag_end"},
+{"label": "[3] We take it all. The veteran protests. We pay him 200 gold to walk away. (Ruthless)", "next": &"q7_ruth_end"},
+]
+},
+&"q7_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q7_truth_compassionate",
+"choices": []
+},
+&"q7_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q7_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q7_truth_ruthless",
+"choices": []
+},
+}

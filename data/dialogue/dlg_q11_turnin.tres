@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q11_turnin"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q11_turnin"
+start_node_id = &"q11_start"
+nodes = {
+&"q11_start": {
+"text": "Cangqiong's Legacy\n\n苍穹号 — the ship — is yours now. Marlow's last will says: pass it to the next pilot. Or keep it. Or destroy it. Your call.",
+"choices": [
+{"label": "[1] We pass 苍穹号 to the next pilot. The cycle continues. (Compassionate)", "next": &"q11_comp_end"},
+{"label": "[2] We keep 苍穹号. We earned it. The next pilot can wait. (Pragmatic)", "next": &"q11_prag_end"},
+{"label": "[3] We destroy 苍穹号. The cycle ends here. No more inheritors. (Ruthless)", "next": &"q11_ruth_end"},
+]
+},
+&"q11_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q11_truth_compassionate",
+"choices": []
+},
+&"q11_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q11_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q11_truth_ruthless",
+"choices": []
+},
+}

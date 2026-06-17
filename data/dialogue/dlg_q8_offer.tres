@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q8_offer"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q8_offer"
+start_node_id = &"q8_start"
+nodes = {
+&"q8_start": {
+"text": "AI Fragment Merge\n\nDamaged AI core. The repair tech says it can be healed. The military wants it for weapons. The crew wants it scrapped.",
+"choices": [
+{"label": "[1] We heal it. It becomes a useful ally in the final push. (Compassionate)", "next": &"q8_comp_end"},
+{"label": "[2] We repurpose it. It runs the base comms. We keep it for ourselves. (Pragmatic)", "next": &"q8_prag_end"},
+{"label": "[3] We scrap it. The parts are worth 2000 gold. The tech is upset. (Ruthless)", "next": &"q8_ruth_end"},
+]
+},
+&"q8_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q8_truth_compassionate",
+"choices": []
+},
+&"q8_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q8_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q8_truth_ruthless",
+"choices": []
+},
+}

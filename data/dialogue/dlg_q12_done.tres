@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueTree" load_steps=2 format=3 uid="uid://dlg_q12_done"]
+
+[ext_resource type="Script" path="res://src/resource/dialogue_tree.gd" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+id = &"dlg_q12_done"
+start_node_id = &"q12_start"
+nodes = {
+&"q12_start": {
+"text": "??? (Post-Game)\n\nThe post-game courier stands at the edge of the chamber. They have one more truth. Are you ready?",
+"choices": [
+{"label": "[1] We listen. The final truth is gentle. (Compassionate)", "next": &"q12_comp_end"},
+{"label": "[2] We listen. The final truth is honest. (Pragmatic)", "next": &"q12_prag_end"},
+{"label": "[3] We refuse. Some truths are too heavy. (Ruthless)", "next": &"q12_ruth_end"},
+]
+},
+&"q12_comp_end": {
+"text": "You chose compassion. The NPC accepts your decision. Quest complete. (truth +1)",
+"unlock_fragment_id": &"quest_q12_truth_compassionate",
+"choices": []
+},
+&"q12_prag_end": {
+"text": "You chose pragmatism. The NPC accepts your decision. Quest complete. (truth 0)",
+"choices": []
+},
+&"q12_ruth_end": {
+"text": "You chose ruthlessness. The NPC accepts your decision. Quest complete. (truth -1)",
+"unlock_fragment_id": &"quest_q12_truth_ruthless",
+"choices": []
+},
+}
