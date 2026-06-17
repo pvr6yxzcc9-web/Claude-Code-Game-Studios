@@ -53,6 +53,10 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 
+[gui]
+
+theme/custom = ExtResource("uid://rh_default_theme")
+
 [dotnet]
 
 project/assembly_name="Railhunter"
