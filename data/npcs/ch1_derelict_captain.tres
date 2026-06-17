@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch1_derelict_captain"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch1_derelict_captain.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch1_derelict_captain"
+display_name = "残骸船长"
+portrait = ExtResource("2_portrait")
+faction = &"derelict_crew"
+dialogue_tree_id = &"dlg_ch1_derelict_captain"
+location = &"chapter1_scrapyard"
+role = &"lore_keeper"
+inventory_id = &""
+description = "Captain of the derelict Marrow. 20 years salvage work, scarred by cold. Knows the truth of Sat-1 but won't say it outright."
+priority = 3

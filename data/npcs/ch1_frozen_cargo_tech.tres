@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch1_frozen_cargo_tech"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch1_frozen_cargo_tech.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch1_frozen_cargo_tech"
+display_name = "冰冻货运技师"
+portrait = ExtResource("2_portrait")
+faction = &"derelict_crew"
+dialogue_tree_id = &"dlg_ch1_frozen_cargo_tech"
+location = &"chapter1_scrapyard"
+role = &"lore_keeper"
+inventory_id = &""
+description = "Cryo-vest tech with blue-tinged skin. Worked the cargo bay for 12 years. Has fragments of the truth about what the convoy was carrying."
+priority = 2

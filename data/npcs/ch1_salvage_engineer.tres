@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch1_salvage_engineer"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch1_salvage_engineer.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch1_salvage_engineer"
+display_name = "打捞工程师"
+portrait = ExtResource("2_portrait")
+faction = &"derelict_crew"
+dialogue_tree_id = &"dlg_ch1_salvage_engineer"
+location = &"chapter1_scrapyard"
+role = &"merchant"
+inventory_id = &""
+description = "Grease-stained mechanic with round goggles. Repairs mechs for gold. Speaks in technical metaphors."
+priority = 2

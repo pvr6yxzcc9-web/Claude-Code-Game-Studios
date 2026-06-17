@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="NPCData" load_steps=3 format=3 uid="uid://npc_ch1_marlow_first_mate"]
+
+[ext_resource type="Script" path="res://src/resource/npc_data.gd" id="1_npc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/npcs/ch1_marlow_first_mate.png" id="2_portrait"]
+
+[resource]
+script = ExtResource("1_npc")
+id = &"ch1_marlow_first_mate"
+display_name = "马洛大副"
+portrait = ExtResource("2_portrait")
+faction = &"marlow_crew"
+dialogue_tree_id = &"dlg_ch1_marlow_first_mate"
+location = &"chapter1_scrapyard"
+role = &"quest_giver"
+inventory_id = &""
+description = "Marlow's right hand. Grizzled veteran with an eyepatch. Holds the key to the 苍穹号 inheritance — knows the truth about the Marrow."
+priority = 4
