@@ -43,6 +43,7 @@ ReplayRecorder="*res://src/autoload/replay_recorder.gd"
 SpeedrunTimer="*res://src/autoload/speedrun_timer.gd"
 Localization="*res://src/autoload/localization.gd"
 EndingController="*res://src/autoload/ending_controller.gd"
+QuestManager="*res://src/autoload/quest_manager.gd"
 TutorialManager="*res://src/autoload/tutorial_manager.gd"
 DeathScreen="*res://src/ui/death_screen.gd"
 
