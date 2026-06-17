@@ -159,19 +159,174 @@ def make_ui_click() -> None:
     samples = [s * e * 0.5 for s, e in zip(samples, env)]
     _write_wav(os.path.join(OUT_DIR, "ui_click.wav"), samples)
 
+def make_death() -> None:
+    """Descending pitch thud + noise, ~0.4s."""
+    duration = 0.4
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Low descending sine 200 -> 50 Hz
+        freq = 200 - 150 * (t / duration)
+        s = math.sin(2 * math.pi * freq * t)
+        # Mix with white noise
+        s += (random.random() * 2 - 1) * 0.3
+        samples.append(s)
+    env = _env_adsr(n, 0.05, 0.2, 0.4, 0.75)
+    samples = [s * e * 0.7 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "death.wav"), samples)
+
+
+def make_heal() -> None:
+    """Rising sine + soft chime, ~0.3s."""
+    duration = 0.3
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Rising pitch 400 -> 800 Hz
+        freq = 400 + 400 * (t / duration)
+        s = math.sin(2 * math.pi * freq * t)
+        # Add harmonic
+        s += math.sin(2 * math.pi * freq * 2 * t) * 0.3
+        samples.append(s)
+    env = _env_adsr(n, 0.1, 0.2, 0.5, 0.6)
+    samples = [s * e * 0.4 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "heal.wav"), samples)
+
+
+def make_buff() -> None:
+    """Short upward chirp, ~0.2s."""
+    duration = 0.2
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Triangle-like chirp 300 -> 1200 Hz
+        freq = 300 + 900 * (t / duration)
+        s = math.sin(2 * math.pi * freq * t)
+        # Add sawtooth overtone
+        saw = 2.0 * ((t * freq * 2) % 1.0) - 1.0
+        s += saw * 0.2
+        samples.append(s)
+    env = _env_adsr(n, 0.05, 0.15, 0.6, 0.5)
+    samples = [s * e * 0.5 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "buff.wav"), samples)
+
+
+def make_debuff() -> None:
+    """Descending buzz + noise, ~0.25s."""
+    duration = 0.25
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Descending square 500 -> 100 Hz
+        freq = 500 - 400 * (t / duration)
+        phase = (t * freq) % 1.0
+        sq = 1.0 if phase < 0.5 else -1.0
+        # Mix with noise
+        noise = (random.random() * 2 - 1) * 0.4
+        samples.append(sq * 0.6 + noise)
+    env = _env_adsr(n, 0.05, 0.3, 0.3, 0.6)
+    samples = [s * e * 0.5 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "debuff.wav"), samples)
+
+
+def make_ui_hover() -> None:
+    """Very short high blip, ~0.05s."""
+    duration = 0.05
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        s = math.sin(2 * math.pi * 1500 * t)
+        samples.append(s)
+    env = _env_adsr(n, 0.2, 0.3, 0.0, 0.5)
+    samples = [s * e * 0.3 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "ui_hover.wav"), samples)
+
+
+def make_ui_open() -> None:
+    """Quick ascending pair, ~0.15s."""
+    duration = 0.15
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Two notes ascending 440 -> 660
+        freq = 440 if t < duration * 0.5 else 660
+        s = math.sin(2 * math.pi * freq * t)
+        samples.append(s)
+    env = _env_adsr(n, 0.1, 0.2, 0.4, 0.5)
+    samples = [s * e * 0.4 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "ui_open.wav"), samples)
+
+
+def make_ui_close() -> None:
+    """Quick descending pair, ~0.15s."""
+    duration = 0.15
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        freq = 660 if t < duration * 0.5 else 440
+        s = math.sin(2 * math.pi * freq * t)
+        samples.append(s)
+    env = _env_adsr(n, 0.1, 0.2, 0.4, 0.5)
+    samples = [s * e * 0.4 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "ui_close.wav"), samples)
+
+
+def make_quest_complete() -> None:
+    """3-note ascending arpeggio, ~0.6s."""
+    duration = 0.6
+    n = int(SR * duration)
+    samples = []
+    for i in range(n):
+        t = i / SR
+        # Arpeggio: C5 -> E5 -> G5 -> C6
+        if t < 0.15:
+            freq = 523.25
+        elif t < 0.30:
+            freq = 659.25
+        elif t < 0.45:
+            freq = 783.99
+        else:
+            freq = 1046.50
+        s = math.sin(2 * math.pi * freq * t)
+        s += math.sin(2 * math.pi * freq * 2 * t) * 0.3
+        samples.append(s)
+    env = _env_adsr(n, 0.05, 0.15, 0.6, 0.4)
+    samples = [s * e * 0.4 for s, e in zip(samples, env)]
+    _write_wav(os.path.join(OUT_DIR, "quest_complete.wav"), samples)
+
+
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     random.seed(42)  # deterministic
+    # S6-010 originals
     make_attack_blaster()
     make_attack_railgun()
     make_attack_plasma()
     make_hit_enemy()
     make_ui_click()
-    for name in os.listdir(OUT_DIR):
+    # S14-003 additions
+    make_death()
+    make_heal()
+    make_buff()
+    make_debuff()
+    make_ui_hover()
+    make_ui_open()
+    make_ui_close()
+    make_quest_complete()
+    for name in sorted(os.listdir(OUT_DIR)):
+        if not name.endswith(".wav"):
+            continue
         path = os.path.join(OUT_DIR, name)
         size_kb = os.path.getsize(path) / 1024
         print(f"  wrote {path} ({size_kb:.1f} KB)")
-    print(f"\n5 SFX file(s) generated.")
+    print(f"\n13 SFX file(s) generated.")
 
 if __name__ == "__main__":
     main()

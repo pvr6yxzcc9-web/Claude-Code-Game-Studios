@@ -217,6 +217,10 @@ func on_player_attack(slot: int) -> void:
 	if _enemy_hp <= 0:
 		# S6-003: kill feedback — stronger shake
 		_shake_camera(4.0, 0.30)
+		# S14-003: death SFX
+		var sfx: Node = get_node_or_null("/root/SFXPlayer")
+		if sfx != null and sfx.has_method("play_death"):
+			sfx.play_death()
 		_resolve_battle(true, raw_damage, 0)
 		return
 	var enemy_attack: int = int(_enemy.get("attack"))

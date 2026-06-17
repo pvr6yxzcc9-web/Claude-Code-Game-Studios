@@ -210,6 +210,10 @@ func complete_quest(quest_id: StringName, choice_idx: int) -> Error:
 	var part_id: StringName = StringName(data.get("mech_part_reward", ["", "", ""])[choice_idx])
 	_apply_rewards(quest_id, data, choice_idx, gold, xp, part_id)
 	quest_completed.emit(quest_id, choice_idx, gold, xp, part_id)
+	# S14-003: quest complete SFX
+	var sfx: Node = get_node_or_null("/root/SFXPlayer")
+	if sfx != null and sfx.has_method("play_quest_complete"):
+		sfx.play_quest_complete()
 	return OK
 
 # Fail a quest (player died or quest-specific fail condition)

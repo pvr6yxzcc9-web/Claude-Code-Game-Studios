@@ -28,7 +28,12 @@ func set_volume_db(db: float) -> void:
         _player.volume_db = db
 
 func _load_streams() -> void:
-    for name in [&"attack_blaster", &"attack_railgun", &"attack_plasma", &"hit_enemy", &"ui_click"]:
+    for name in [
+        &"attack_blaster", &"attack_railgun", &"attack_plasma", &"hit_enemy", &"ui_click",
+        # S14-003 additions
+        &"death", &"heal", &"buff", &"debuff",
+        &"ui_hover", &"ui_open", &"ui_close", &"quest_complete",
+    ]:
         var path: String = String(_SFX_DIR) + String(name) + ".wav"
         if ResourceLoader.exists(path):
             _streams[name] = load(path) as AudioStreamWAV
@@ -54,6 +59,48 @@ func play_ui() -> void:
     if _player == null:
         return
     _play_stream_or_beep(&"ui_click", 660.0, 0.05)
+
+# S14-003: New SFX methods (death/heal/buff/debuff + UI variants + quest)
+
+func play_death() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"death", 120.0, 0.4)
+
+func play_heal() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"heal", 600.0, 0.3)
+
+func play_buff() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"buff", 800.0, 0.2)
+
+func play_debuff() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"debuff", 300.0, 0.25)
+
+func play_ui_hover() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"ui_hover", 1500.0, 0.05)
+
+func play_ui_open() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"ui_open", 550.0, 0.15)
+
+func play_ui_close() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"ui_close", 550.0, 0.15)
+
+func play_quest_complete() -> void:
+    if _player == null:
+        return
+    _play_stream_or_beep(&"quest_complete", 700.0, 0.6)
 
 # Map weapon_id to SFX key. Unknown weapons get the blaster shot.
 func _weapon_to_sfx_key(weapon_id: StringName, slot: int) -> StringName:
