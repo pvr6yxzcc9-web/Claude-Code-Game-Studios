@@ -46,6 +46,7 @@ EndingController="*res://src/autoload/ending_controller.gd"
 QuestManager="*res://src/autoload/quest_manager.gd"
 TutorialManager="*res://src/autoload/tutorial_manager.gd"
 DeathScreen="*res://src/ui/death_screen.gd"
+LoadingScreen="*res://src/ui/loading_screen.gd"
 
 [display]
 

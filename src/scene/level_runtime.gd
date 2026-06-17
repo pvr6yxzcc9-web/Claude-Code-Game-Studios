@@ -49,14 +49,22 @@ var _polling_enabled: bool = false
 # S6-102: switch to a different level (chapter transition). Reloads
 # the level data, clears the room, and rebuilds from room 0.
 func change_chapter(new_level_id: StringName) -> void:
+	# S14-005: show loading during chapter change
+	var ls: Node = get_node_or_null("/root/LoadingScreen")
+	if ls != null and ls.has_method("show_loading"):
+		ls.show_loading("Changing chapter...")
 	level_id = new_level_id
 	var reg: Node = get_node("/root/ResourceRegistry")
 	level_data = reg.get_resource(level_id) if reg != null else null
 	if level_data == null:
 		push_error("LevelRuntime: level %s not found" % level_id)
+		if ls != null and ls.has_method("hide_loading"):
+			ls.hide_loading()
 		return
 	current_room_index = 0
 	build_room(0)
+	if ls != null and ls.has_method("hide_loading"):
+		ls.hide_loading()
 	print("[LevelRuntime] changed to chapter %d (%s)" % [
 		int(level_data.get("chapter_index")) if level_data != null else 0, level_id])
 

@@ -119,6 +119,10 @@ func _on_state_changed(_old: StringName, new: StringName) -> void:
 
 func _enter_battle() -> void:
 	in_battle = true
+	# S14-005: show loading screen during battle init
+	var ls: Node = get_node_or_null("/root/LoadingScreen")
+	if ls != null and ls.has_method("show_loading"):
+		ls.show_loading("Initializing battle...")
 	show()
 	var reg: Node = get_node("/root/ResourceRegistry")
 	# Pick the enemy: if a previous encounter tile set the pending id, use it
@@ -150,6 +154,9 @@ func _enter_battle() -> void:
 	_enemy_hp = int(_enemy.get("max_hp"))
 	_load_battle_background(String(_enemy.get("id", "")))
 	_refresh()
+	# S14-005: hide loading screen after battle init
+	if ls != null and ls.has_method("hide_loading"):
+		ls.hide_loading()
 	print("[BattleScene] encounter started: %s (HP=%d)" % [_enemy.get("display_name"), _enemy_hp])
 	var hud: Node = get_tree().get_root().find_child("HUD", true, false)
 	if hud != null and hud.has_method("set_mode"):
