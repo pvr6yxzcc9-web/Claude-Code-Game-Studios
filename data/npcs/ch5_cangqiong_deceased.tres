@@ -14,4 +14,7 @@ location = &"chapter5_origin"
 role = &"lore_keeper"
 inventory_id = &""
 description = "Sat-5 character."
+gives_quest_ids = [&"q11_cangqiong_legacy"]
+quest_complete_dialogue_id = &"dlg_q11_turnin"
+quest_done_dialogue_id = &"dlg_q11_done"
 priority = 3

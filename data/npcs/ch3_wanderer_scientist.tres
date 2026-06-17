@@ -14,4 +14,7 @@ location = &"chapter3_hive"
 role = &"lore_keeper"
 inventory_id = &""
 description = "A scientist who has been wandering the hive for years, studying its biology. Speaks in fragments."
+gives_quest_ids = [&"q5_fungal_infection_cure"]
+quest_complete_dialogue_id = &"dlg_q5_turnin"
+quest_done_dialogue_id = &"dlg_q5_done"
 priority = 2

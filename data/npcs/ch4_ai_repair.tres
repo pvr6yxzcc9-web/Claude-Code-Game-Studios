@@ -14,4 +14,7 @@ location = &"chapter4_warzone"
 role = &"quest_giver"
 inventory_id = &""
 description = "Sat-4 character."
+gives_quest_ids = [&"q8_ai_fragment_merge"]
+quest_complete_dialogue_id = &"dlg_q8_turnin"
+quest_done_dialogue_id = &"dlg_q8_done"
 priority = 3

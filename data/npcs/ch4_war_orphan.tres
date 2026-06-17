@@ -14,4 +14,7 @@ location = &"chapter4_warzone"
 role = &"ambient"
 inventory_id = &""
 description = "Sat-4 character."
+gives_quest_ids = [&"q9_war_orphan_home"]
+quest_complete_dialogue_id = &"dlg_q9_turnin"
+quest_done_dialogue_id = &"dlg_q9_done"
 priority = 2

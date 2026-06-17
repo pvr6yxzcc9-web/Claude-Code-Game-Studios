@@ -14,4 +14,7 @@ location = &"chapter3_hive"
 role = &"lore_keeper"
 inventory_id = &""
 description = "A survivor of a previous salvage crew, hiding in the hive for 3 years. Paranoid but helpful."
+gives_quest_ids = [&"q4_hive_survivor_trust"]
+quest_complete_dialogue_id = &"dlg_q4_turnin"
+quest_done_dialogue_id = &"dlg_q4_done"
 priority = 2

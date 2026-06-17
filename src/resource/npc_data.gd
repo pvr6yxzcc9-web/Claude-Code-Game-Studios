@@ -15,3 +15,10 @@ extends ImmutableResource
 @export var inventory_id: StringName = &""  # optional merchant inventory id
 @export var description: String
 @export_range(0, 5) var priority: int = 0  # quest priority, 0=ambient
+
+# S13-008: Quest handoff fields. If gives_quest_ids is non-empty, this NPC
+# is a quest giver. The 3 dialogue trees let DialogueManager pick the right
+# one based on the quest's current state (AVAILABLE/ACTIVE/COMPLETED).
+@export var gives_quest_ids: Array[StringName] = []  # quests this NPC offers (priority order)
+@export var quest_complete_dialogue_id: StringName = &""  # dialogue during turn-in (when ACTIVE)
+@export var quest_done_dialogue_id: StringName = &""  # dialogue after completion (when COMPLETED)

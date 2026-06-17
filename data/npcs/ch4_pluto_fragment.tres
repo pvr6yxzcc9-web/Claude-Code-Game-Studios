@@ -14,4 +14,7 @@ location = &"chapter4_warzone"
 role = &"ambient"
 inventory_id = &""
 description = "Sat-4 character."
+gives_quest_ids = [&"q10_creator_premonition"]
+quest_complete_dialogue_id = &"dlg_q10_turnin"
+quest_done_dialogue_id = &"dlg_q10_done"
 priority = 1

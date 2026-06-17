@@ -14,4 +14,7 @@ location = &"chapter4_warzone"
 role = &"lore_keeper"
 inventory_id = &""
 description = "Sat-4 character."
+gives_quest_ids = [&"q7_veteran_arsenal"]
+quest_complete_dialogue_id = &"dlg_q7_turnin"
+quest_done_dialogue_id = &"dlg_q7_done"
 priority = 2

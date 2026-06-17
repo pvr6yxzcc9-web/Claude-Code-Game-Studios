@@ -14,4 +14,7 @@ location = &"chapter3_hive"
 role = &"quest_giver"
 inventory_id = &""
 description = "A fellow salvage crew member who was thought dead. Injured but alive. Can offer side quests."
+gives_quest_ids = [&"q6_queen_ambrosia"]
+quest_complete_dialogue_id = &"dlg_q6_turnin"
+quest_done_dialogue_id = &"dlg_q6_done"
 priority = 3
