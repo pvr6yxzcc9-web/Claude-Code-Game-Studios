@@ -31,6 +31,8 @@ const TEST_SCRIPTS: Array[String] = [
 	"res://tests/integration/fc75_audit_test.gd",
 	"res://tests/integration/fc76_full_game_flow_test.gd",
 	"res://tests/integration/fc77_combat_stress_test.gd",
+	# Sprint 13 — Side Quests
+	"res://tests/integration/fc78_side_quest_test.gd",
 	# Sprint 7 unit tests
 	"res://tests/unit/autoload/fc60_weapon_decoupling_test.gd",
 	"res://tests/unit/autoload/fc61_mech_swap_test.gd",
