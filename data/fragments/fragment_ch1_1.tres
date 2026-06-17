@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_fragment_ch1_1"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_ch1_1"
+title = "Captain's Log, Day 0"
+body = "Convoy departed at 0400. Forty-two crew aboard. Manifest shows generic salvage. Cold storage active. The cargo hold is sealed. As it should be. As it always has been."
+author = "Captain D. Vance"
+importance = 1
+unlock_fragment_id = &"fragment_ch1_1"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StoryFragmentData" load_steps=2 format=3 uid="uid://fragment_fragment_ch1_5"]
+
+[ext_resource type="Script" path="res://src/resource/story_fragment_data.gd" id="1_frag"]
+
+[resource]
+script = ExtResource("1_frag")
+id = &"fragment_ch1_5"
+title = "The Seals"
+body = "Year five. The seals cracked from inside. We welded them. Year eight. The seals cracked again. We welded them again. Year twelve. The seals cracked a third time. We stopped welding. Whatever's in the hold, it's not waiting anymore."
+author = "Captain D. Vance"
+importance = 3
+unlock_fragment_id = &"fragment_ch1_5"
