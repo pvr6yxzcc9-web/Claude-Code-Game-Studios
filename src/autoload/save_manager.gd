@@ -29,6 +29,7 @@ const PRODUCER_NAMESPACES: Array[StringName] = [
     &"battle_core",
     &"hud_settings",
     &"clinic_manager",
+    &"quest_manager",  # S13-004: added Sprint 13; loads after meta_state so quest fragments can call mark_unlocked safely
 ]
 
 var _pending_slot: int = -2  # -2 = idle, -1 = autosave, 0-2 = manual
