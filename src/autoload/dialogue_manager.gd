@@ -76,10 +76,42 @@ func set_in_dialogue_companion(companion_id: StringName) -> void:
     print("[DialogueManager] in-dialogue companion = %s" % companion_id)
 
 # S7-005: pick the dialogue tree for this NPC based on companion.
+# S13-009: also override based on quest state (ACTIVE → turn-in, COMPLETED → done).
 # Returns the companion-specific tree if the NPC has one; otherwise the default.
 func _pick_dialogue_tree(npc: Resource, companion_id: StringName) -> Resource:
     if npc == null:
         return null
+    # S13-009: quest state override. Check gives_quest_ids — if any quest this
+    # NPC gives is ACTIVE, return quest_complete_dialogue_id. If COMPLETED,
+    # return quest_done_dialogue_id. Otherwise fall through.
+    if "gives_quest_ids" in npc:
+        var gives: Variant = npc.get("gives_quest_ids")
+        if gives is Array and not (gives as Array).is_empty():
+            var qm: Node = get_node_or_null("/root/QuestManager")
+            if qm != null:
+                # Priority order: ACTIVE > AVAILABLE > COMPLETED
+                # For ACTIVE, also set current_quest_id so end_dialogue completes it
+                for qid in gives:
+                    var state: int = int(qm.get_quest_state(qid))
+                    if state == 1:  # ACTIVE
+                        var turnin_id: StringName = StringName(npc.get("quest_complete_dialogue_id"))
+                        if turnin_id != &"":
+                            var reg2: Node = get_node("/root/ResourceRegistry")
+                            var turnin_tree: Resource = reg2.get_resource(turnin_id)
+                            if turnin_tree != null:
+                                # Mark this dialogue as a quest dialogue so end_dialogue completes it
+                                # (set here at pick time; start_dialogue_with_tree preserves it)
+                                current_quest_id = qid
+                                return turnin_tree
+                    elif state == 2:  # COMPLETED
+                        var done_id: StringName = StringName(npc.get("quest_done_dialogue_id"))
+                        if done_id != &"":
+                            var reg3: Node = get_node("/root/ResourceRegistry")
+                            var done_tree: Resource = reg3.get_resource(done_id)
+                            if done_tree != null:
+                                return done_tree
+                # Reset current_quest_id (no active quest this turn)
+                current_quest_id = &""
     # Look up companion_trees on the NPC (Dict[StringName, StringName] of tree_id by companion)
     if companion_id != &"" and "companion_trees" in npc:
         var trees: Variant = npc.get("companion_trees")
