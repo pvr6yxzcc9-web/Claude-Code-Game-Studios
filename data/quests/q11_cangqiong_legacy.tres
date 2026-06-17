@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q11_cangqiong_legacy"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q11_cangqiong_legacy"
+title_zh = "苍穹号遗志"
+title_en = "Cangqiong's Legacy"
+description_zh = "Final choice involving 苍穹号. Three paths: pass to next pilot, keep, or destroy."
+description_en = "Final choice involving 苍穹号. Three paths: pass to next pilot, keep, or destroy."
+satellite = 5
+giver_npc_id = &"npc_ch5_marlow_ghost"
+dialogue_tree_id = &"dlg_q11_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch5_marlow_ghost"
+quest_complete_dialogue_id = &"dlg_q11_turnin"
+quest_done_dialogue_id = &"dlg_q11_done"
+gold_reward = [400, 1050, 1500]
+xp_reward = [500, 500, 500]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = true

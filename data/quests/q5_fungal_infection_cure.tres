@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q5_fungal_infection_cure"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q5_fungal_infection_cure"
+title_zh = "真菌感染治愈"
+title_en = "Fungal Infection Cure"
+description_zh = "Scientist needs spores for cure. Three paths: cure her, harvest for sale, or use on enemy."
+description_en = "Scientist needs spores for cure. Three paths: cure her, harvest for sale, or use on enemy."
+satellite = 3
+giver_npc_id = &"npc_ch3_wanderer_scientist"
+dialogue_tree_id = &"dlg_q5_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch3_wanderer_scientist"
+quest_complete_dialogue_id = &"dlg_q5_turnin"
+quest_done_dialogue_id = &"dlg_q5_done"
+gold_reward = [200, 550, 800]
+xp_reward = [300, 300, 300]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

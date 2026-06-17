@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q7_veteran_arsenal"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q7_veteran_arsenal"
+title_zh = "老兵军火库"
+title_en = "Veteran's Arsenal"
+description_zh = "Weapons cache discovered. Three paths: return to faction, keep, or sell."
+description_en = "Weapons cache discovered. Three paths: return to faction, keep, or sell."
+satellite = 4
+giver_npc_id = &"npc_ch4_veteran"
+dialogue_tree_id = &"dlg_q7_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch4_veteran"
+quest_complete_dialogue_id = &"dlg_q7_turnin"
+quest_done_dialogue_id = &"dlg_q7_done"
+gold_reward = [300, 800, 1200]
+xp_reward = [400, 400, 400]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

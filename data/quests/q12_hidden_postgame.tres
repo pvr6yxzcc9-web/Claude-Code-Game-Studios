@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q12_hidden_postgame"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q12_hidden_postgame"
+title_zh = "???"
+title_en = "???"
+description_zh = "A hidden post-game challenge. Requires ≥35 truths and ending A or B."
+description_en = "A hidden post-game challenge. Requires ≥35 truths and ending A or B."
+satellite = 5
+giver_npc_id = &"npc_ch5_postgame_courier"
+dialogue_tree_id = &"dlg_q12_offer"
+prerequisite_quest_ids = [&"q11_cangqiong_legacy"]
+turn_in_npc_id = &"npc_ch5_postgame_courier"
+quest_complete_dialogue_id = &"dlg_q12_turnin"
+quest_done_dialogue_id = &"dlg_q12_done"
+gold_reward = [400, 1050, 1500]
+xp_reward = [500, 500, 500]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = true
+is_plot_required = false

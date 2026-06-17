@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q10_creator_premonition"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q10_creator_premonition"
+title_zh = "造物者的预示"
+title_en = "Creator's Premonition"
+description_zh = "Vision of a Creator. Three paths: study it, ignore, or share with party."
+description_en = "Vision of a Creator. Three paths: study it, ignore, or share with party."
+satellite = 5
+giver_npc_id = &"npc_ch5_pluto_fragment"
+dialogue_tree_id = &"dlg_q10_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch5_pluto_fragment"
+quest_complete_dialogue_id = &"dlg_q10_turnin"
+quest_done_dialogue_id = &"dlg_q10_done"
+gold_reward = [400, 1050, 1500]
+xp_reward = [500, 500, 500]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

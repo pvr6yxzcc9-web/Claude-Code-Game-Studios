@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q3_drone_ambush"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q3_drone_ambush"
+title_zh = "故障无人机"
+title_en = "Malfunctioning Drone Ambush"
+description_zh = "Drones gone rogue. Three paths: reprogram, scrap for parts, or sell to military."
+description_en = "Malfunctioning drones. Three paths: reprogram, scrap for parts, or sell to military."
+satellite = 2
+giver_npc_id = &"npc_ch2_drone_operator"
+dialogue_tree_id = &"dlg_q3_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch2_drone_operator"
+quest_complete_dialogue_id = &"dlg_q3_turnin"
+quest_done_dialogue_id = &"dlg_q3_done"
+gold_reward = [100, 300, 400]
+xp_reward = [200, 200, 200]
+mech_part_reward = [, , &"mech_part_q3_drone_ambush_reward"]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q4_hive_survivor_trust"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q4_hive_survivor_trust"
+title_zh = "蜂巢幸存者的信任"
+title_en = "Hive Survivor's Trust"
+description_zh = "Lone survivor in the hive. Three paths: trust and help, interrogate, or leave to fate."
+description_en = "Lone survivor in the hive. Three paths: trust and help, interrogate, or leave to fate."
+satellite = 3
+giver_npc_id = &"npc_ch3_hive_survivor"
+dialogue_tree_id = &"dlg_q4_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch3_hive_survivor"
+quest_complete_dialogue_id = &"dlg_q4_turnin"
+quest_done_dialogue_id = &"dlg_q4_done"
+gold_reward = [200, 550, 800]
+xp_reward = [300, 300, 300]
+mech_part_reward = [, , ]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

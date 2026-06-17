@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q6_queen_ambrosia"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q6_queen_ambrosia"
+title_zh = "蜂后王浆"
+title_en = "Queen's Ambrosia"
+description_zh = "Royal jelly sample. Three paths: deliver to faction, sell to black market, or destroy it."
+description_en = "Royal jelly sample. Three paths: deliver to faction, sell to black market, or destroy it."
+satellite = 3
+giver_npc_id = &"npc_ch3_surviving_crew"
+dialogue_tree_id = &"dlg_q6_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch3_surviving_crew"
+quest_complete_dialogue_id = &"dlg_q6_turnin"
+quest_done_dialogue_id = &"dlg_q6_done"
+gold_reward = [200, 550, 800]
+xp_reward = [300, 300, 300]
+mech_part_reward = [, , &"mech_part_q6_queen_ambrosia_reward"]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false

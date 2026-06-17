@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3 uid="uid://quest_q8_ai_fragment_merge"]
+
+[ext_resource type="Script" path="res://src/resource/quest_data.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"q8_ai_fragment_merge"
+title_zh = "人工智能残片合并"
+title_en = "AI Fragment Merge"
+description_zh = "Damaged AI core. Three paths: heal it, repurpose, or scrap."
+description_en = "Damaged AI core. Three paths: heal it, repurpose, or scrap."
+satellite = 4
+giver_npc_id = &"npc_ch4_ai_repair"
+dialogue_tree_id = &"dlg_q8_offer"
+prerequisite_quest_ids = []
+turn_in_npc_id = &"npc_ch4_ai_repair"
+quest_complete_dialogue_id = &"dlg_q8_turnin"
+quest_done_dialogue_id = &"dlg_q8_done"
+gold_reward = [300, 800, 1200]
+xp_reward = [400, 400, 400]
+mech_part_reward = [, , &"mech_part_q8_ai_fragment_merge_reward"]
+truth_count_modifier = [1, 0, -1]
+is_repeatable = false
+is_hidden = false
+is_plot_required = false
