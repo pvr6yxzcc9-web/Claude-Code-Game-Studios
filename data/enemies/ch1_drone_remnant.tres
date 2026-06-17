@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_ch1_drone_remnant_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ch1_drone_remnant"
+display_name = "残骸无人机 (Drone Remnant)"
+max_hp = 35
+attack = 12
+accuracy = 0.90
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"emp"])
+resistances = Array[StringName]([&"ice"])

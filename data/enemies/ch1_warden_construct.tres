@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://enemy_ch1_warden_construct_001"]
+
+[ext_resource type="Script" path="res://src/resource/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ch1_warden_construct"
+display_name = "典狱长傀儡 (Warden Construct)"
+max_hp = 120
+attack = 20
+accuracy = 0.85
+boss = false
+boss_immune_to_one_shot = true
+weaknesses = Array[StringName]([&"emp"])
+resistances = Array[StringName]([&"physical"])
