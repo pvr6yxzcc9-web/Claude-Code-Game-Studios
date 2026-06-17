@@ -14,6 +14,7 @@ import struct
 import sys
 
 OUT_DIR_TILES = "assets/tilesets/ch3"
+OUT_DIR_TILES_1 = "assets/tilesets/ch1"
 OUT_DIR_TILES_4 = "assets/tilesets/ch4"
 OUT_DIR_TILES_5 = "assets/tilesets/ch5"
 OUT_DIR_ENEMIES = "assets/sprites/enemies"
@@ -28,6 +29,11 @@ EXPECTED_FILES: dict[str, str] = {
 	f"{OUT_DIR_TILES}/floor_damaged_hive.png": "32x32 PNG",
 	f"{OUT_DIR_TILES}/wall_hive.png": "32x32 PNG",
 	f"{OUT_DIR_TILES}/wall_damaged_hive.png": "32x32 PNG",
+	# Sat-1 tiles (4, S18-001)
+	f"{OUT_DIR_TILES_1}/floor_derelict.png": "32x32 PNG",
+	f"{OUT_DIR_TILES_1}/floor_derelict_damaged.png": "32x32 PNG",
+	f"{OUT_DIR_TILES_1}/wall_derelict.png": "32x32 PNG",
+	f"{OUT_DIR_TILES_1}/wall_derelict_damaged.png": "32x32 PNG",
 	# Sat-4 tiles (4 — note: generator used "{variant}_damaged_military" pattern)
 	f"{OUT_DIR_TILES_4}/floor_military.png": "32x32 PNG",
 	f"{OUT_DIR_TILES_4}/floor_damaged_military.png": "32x32 PNG",
